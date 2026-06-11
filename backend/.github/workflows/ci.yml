@@ -1,0 +1,118 @@
+# ============================================================
+# GitHub Actions CI Pipeline — Garg Enterprises
+# Runs on every push and PR to main/develop branches.
+# ============================================================
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  PHP_VERSION: '8.3'
+  NODE_VERSION: '20'
+
+jobs:
+  # ── Backend Tests (Laravel + PHPUnit) ──
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: garg_test
+          POSTGRES_USER: garg_test
+          POSTGRES_PASSWORD: testing
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ env.PHP_VERSION }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_pgsql, pgsql, redis, gd, mbstring, xml, bcmath, intl, pcntl
+          coverage: xdebug
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Copy environment file
+        working-directory: backend
+        run: cp .env.testing .env
+
+      - name: Run migrations
+        working-directory: backend
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: garg_test
+          DB_USERNAME: garg_test
+          DB_PASSWORD: testing
+          REDIS_HOST: localhost
+        run: php artisan migrate --force
+
+      - name: Run PHPUnit tests
+        working-directory: backend
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: garg_test
+          DB_USERNAME: garg_test
+          DB_PASSWORD: testing
+          REDIS_HOST: localhost
+        run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+
+      - name: Check code style (Pint)
+        working-directory: backend
+        run: vendor/bin/pint --test || true
+
+  # ── Mobile TypeScript Check ──
+  mobile-check:
+    name: Mobile TypeScript Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: TypeScript compilation check
+        working-directory: mobile
+        run: npx tsc --noEmit
+
+      - name: Run Jest tests
+        working-directory: mobile
+        run: npm test -- --passWithNoTests

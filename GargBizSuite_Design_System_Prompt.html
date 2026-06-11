@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GargBizSuite — Complete Design System & Stitch Prompt</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAFBFC;--s1:#F4F6F9;--s2:#EFF2F6;--s3:#E2E8F0;
+  --t1:#0D1117;--t2:#1E293B;--t3:#334155;--t4:#64748B;--t5:#94A3B8;
+  --acc:#1A56DB;--acc2:#1E429F;--accs:#EBF0FF;
+  --gold:#B45309;--golds:#FEF3C7;
+  --gr:#059669;--grs:#ECFDF5;
+  --rd:#DC2626;--rds:#FEF2F2;
+  --or:#EA580C;--ors:#FFF7ED;
+  --bd:#E2E8F0;--bdf:#CBD5E1;
+  --rad:10px;--rads:6px;--radl:16px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shm:0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --shl:0 10px 40px rgba(0,0,0,.1),0 4px 10px rgba(0,0,0,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t2);line-height:1.6;font-size:14px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#f1f5f9}::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:40px 32px}
+.page-header{text-align:center;padding:60px 32px 48px;background:linear-gradient(180deg,#EBF0FF 0%,var(--bg) 100%);border-bottom:1px solid var(--bd);margin-bottom:0}
+.page-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acc);margin-bottom:12px}
+.page-header h1{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--t1);letter-spacing:-1.5px;margin-bottom:10px}
+.page-header p{font-size:16px;color:var(--t4);max-width:560px;margin:0 auto}
+
+/* SECTION */
+.section{padding:48px 0;border-bottom:1px solid var(--bd)}
+.section:last-child{border-bottom:none}
+.s-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px}
+.s-num{width:36px;height:36px;background:var(--acc);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;flex-shrink:0;margin-top:3px}
+.s-info h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--t1);margin-bottom:3px;letter-spacing:-.5px}
+.s-info p{font-size:13px;color:var(--t4)}
+
+/* PROMPT BLOCK */
+.prompt-block{background:var(--t1);border-radius:var(--rad);padding:24px;margin:16px 0;position:relative}
+.prompt-block .pb-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#64748B;margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.prompt-block pre{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#E2E8F0;white-space:pre-wrap;line-height:1.8}
+.prompt-block pre .hl{color:#FBBF24;font-weight:600}
+.prompt-block pre .cm{color:#4B5563}
+.prompt-block pre .kw{color:#60A5FA}
+.prompt-block pre .vl{color:#34D399}
+.copy-btn{position:absolute;top:16px;right:16px;background:#1E293B;border:1px solid #334155;color:#94A3B8;font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.copy-btn:hover{background:#334155;color:#F8FAFC}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--bd);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
+.card-sm{padding:14px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+
+/* COLOR SWATCHES */
+.swatch{border-radius:8px;overflow:hidden;border:1px solid var(--bd)}
+.sw-color{height:72px}
+.sw-info{padding:10px 12px;background:#fff}
+.sw-name{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:2px}
+.sw-hex{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5)}
+.sw-use{font-size:11px;color:var(--t4);margin-top:3px}
+
+/* TYPOGRAPHY SAMPLES */
+.type-sample{border-bottom:1px solid var(--bd);padding:14px 0}
+.type-sample:last-child{border-bottom:none}
+
+/* COMPONENT PREVIEW */
+.comp-preview{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rad);padding:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+
+/* SPACING VIZ */
+.sp-item{display:flex;align-items:center;gap:10px}
+.sp-box{background:var(--accs);border:2px solid var(--acc);border-radius:4px}
+.sp-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc);font-weight:600}
+.sp-desc{font-size:12px;color:var(--t4)}
+
+/* ICON ROW */
+.icon-grid{display:flex;flex-wrap:wrap;gap:8px}
+.icon-item{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px 12px;text-align:center;font-size:22px;min-width:48px}
+
+/* BADGES */
+.bdg{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px}
+
+/* TAGS */
+.tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--accs);color:var(--acc);border:1px solid #BFDBFE}
+
+/* INLINE SAMPLE COMPONENTS */
+.sample-input{width:100%;background:#fff;border:1px solid var(--bdf);border-radius:var(--rads);padding:9px 12px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--t2);outline:none}
+.sample-btn{background:var(--acc);color:#fff;border:none;border-radius:var(--rads);padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sample-btn-s{background:#fff;color:var(--t2);border:1px solid var(--bd);border-radius:var(--rads);padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.sample-card{background:#fff;border:1px solid var(--bd);border-radius:var(--rad);padding:16px;box-shadow:var(--sh)}
+
+/* NAV ITEM SAMPLE */
+.nav-samp{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rads);font-size:13px;font-weight:500}
+.nav-samp.active{background:var(--accs);color:var(--acc)}
+.nav-samp.inactive{color:var(--t4)}
+
+/* CALLOUT */
+.callout{background:var(--accs);border-left:4px solid var(--acc);border-radius:0 var(--rads) var(--rads) 0;padding:14px 16px;margin:12px 0}
+.callout p{font-size:13px;color:var(--acc2)}
+.callout strong{font-weight:700}
+
+/* TABLE OF CONTENTS */
+.toc{background:#fff;border:1px solid var(--bd);border-radius:var(--radl);padding:24px 28px;margin:32px 0}
+.toc h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--t1);margin-bottom:16px}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
+.toc a{color:var(--acc);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;padding:4px 0}
+.toc a:hover{color:var(--acc2)}
+
+@media(max-width:768px){.g2,.g3,.g4,.toc-grid{grid-template-columns:1fr}.page-header h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="eyebrow">Design System Document</div>
+  <h1>GargBizSuite<br>Complete Design Language</h1>
+  <p>Full design specification for Phase 1 mobile application — optimised for Google Stitch, Figma, and AI design tooling</p>
+</div>
+
+<div class="wrap">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3>📋 Document Contents</h3>
+  <div class="toc-grid">
+    <a href="#s1">01 — Master Prompt for Google Stitch</a>
+    <a href="#s2">02 — Brand Identity & Philosophy</a>
+    <a href="#s3">03 — Color System</a>
+    <a href="#s4">04 — Typography Scale</a>
+    <a href="#s5">05 — Spacing & Grid System</a>
+    <a href="#s6">06 — Component Library</a>
+    <a href="#s7">07 — Navigation & Layout</a>
+    <a href="#s8">08 — Icon System</a>
+    <a href="#s9">09 — Screen-by-Screen UX Specs</a>
+    <a href="#s10">10 — Motion & Interaction</a>
+    <a href="#s11">11 — Mobile Patterns</a>
+    <a href="#s12">12 — Accessibility</a>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 1 ═══════ -->
+<div class="section" id="s1">
+  <div class="s-head">
+    <div class="s-num">01</div>
+    <div class="s-info">
+      <h2>Master Google Stitch Prompt</h2>
+      <p>Copy this complete prompt directly into Google Stitch to generate all screens</p>
+    </div>
+  </div>
+
+  <div class="callout"><p>⚡ <strong>How to use:</strong> Paste the prompt block below into Google Stitch → Select "Mobile App" → Choose "Generate All Screens". Stitch will use this as the complete design brief.</p></div>
+
+  <div class="prompt-block">
+    <div class="pb-label">▶ GOOGLE STITCH — MASTER DESIGN PROMPT</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre><span class="hl">APP NAME:</span> GargBizSuite — Inventory & Catalog Management
+<span class="hl">CLIENT:</span> Garg Enterprises, Ludhiana (Hardware & Modular Kitchen Dealer)
+<span class="hl">PLATFORM:</span> Mobile App (iOS + Android, React Native)
+<span class="hl">PHASE:</span> Phase 1 — Catalog Management + Inventory Management
+<span class="hl">USERS:</span> 4 roles — Owner, Sales Manager, Floor Staff, Godown Operator
+<span class="hl">TONE:</span> Enterprise SaaS, Professional, Trustworthy, Clean, Efficient
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">DESIGN PHILOSOPHY:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+Design a clean, minimal, light-mode enterprise mobile application.
+The app should feel like a premium B2B SaaS product — similar to 
+Notion, Linear, or Stripe Dashboard — adapted for mobile.
+
+Core principles:
+- Clarity over decoration: every element serves a function
+- Data-dense but never cluttered: generous white space
+- Trustworthy and calm: no loud colors, no excessive gradients
+- One primary action per screen: clear visual hierarchy
+- Fast and scannable: users need information at a glance
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">COLOR SYSTEM (LIGHT MODE ONLY):</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="kw">Background Layers:</span>
+  Canvas/Page Background:     #FFFFFF  (pure white — primary surfaces)
+  App Background:             #F7F9FC  (very subtle cool-grey wash)
+  Subtle Fill / Divider bg:   #F1F5F9  (sidebar, input backgrounds)
+  Borders / Dividers:         #E2E8F0  (all card edges, table lines)
+  Strong Border / Focus ring: #CBD5E1  (active input borders)
+
+<span class="kw">Text Colors:</span>
+  Primary Text:               #0D1117  (headings, critical data)
+  Secondary Text:             #1E293B  (body copy, labels)
+  Muted Text:                 #64748B  (captions, hints, timestamps)
+  Placeholder / Disabled:     #94A3B8  (input placeholders)
+
+<span class="kw">Brand / Primary — Blue (Actions, Links, Active States):</span>
+  Primary Blue:               #1A56DB  (CTA buttons, links, active nav)
+  Primary Dark:               #1E429F  (hover states, pressed)
+  Primary Light:              #3F83F8  (icons in blue context)
+  Primary Surface:            #EBF5FF  (blue chip backgrounds, pills)
+  Primary Border:             #BFDBFE  (blue element borders)
+
+<span class="kw">Semantic — Success (In Stock, Approved):</span>
+  Green Strong:               #059669
+  Green Muted:                #D1FAE5
+  Green Surface:              #ECFDF5
+
+<span class="kw">Semantic — Warning (Low Stock, Pending):</span>
+  Amber Strong:               #D97706
+  Amber Muted:                #FDE68A
+  Amber Surface:              #FFFBEB
+
+<span class="kw">Semantic — Error (Out of Stock, Rejected, Critical):</span>
+  Red Strong:                 #DC2626
+  Red Muted:                  #FECACA
+  Red Surface:                #FEF2F2
+
+<span class="kw">Semantic — Info / Transfer / Neutral:</span>
+  Slate Strong:               #475569
+  Slate Surface:              #F8FAFC
+
+<span class="kw">Accent — Gold/Brand (Garg Enterprises brand touch, used sparingly):</span>
+  Gold Accent:                #B45309  (used only for brand logo, special callouts)
+  Gold Surface:               #FEF3C7
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">TYPOGRAPHY:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="kw">Font Stack:</span>
+  Display / Headings:   "Syne" (Google Fonts) — bold, geometric, modern
+  Body / UI Text:       "DM Sans" (Google Fonts) — clean, readable, professional
+  Data / Numbers / SKU: "JetBrains Mono" (Google Fonts) — monospaced, precise
+  
+<span class="kw">Type Scale (Mobile — pt):</span>
+  Display Large:    28pt / Syne / Weight 800 / Letter-spacing -0.5pt
+  Display:          22pt / Syne / Weight 700 / Letter-spacing -0.3pt
+  Title Large:      18pt / Syne / Weight 700 / Letter-spacing -0.2pt
+  Title:            16pt / DM Sans / Weight 600
+  Title Small:      14pt / DM Sans / Weight 600
+  Body Large:       15pt / DM Sans / Weight 400 / Line-height 1.6
+  Body:             14pt / DM Sans / Weight 400 / Line-height 1.6
+  Body Small:       13pt / DM Sans / Weight 400
+  Caption:          12pt / DM Sans / Weight 400 / Color: Muted
+  Label / Tag:      11pt / DM Sans / Weight 600 / Letter-spacing 0.3pt
+  Overline:         10pt / DM Sans / Weight 700 / Letter-spacing 1.2pt / ALL CAPS
+  Code / SKU:       12pt / JetBrains Mono / Weight 500
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">SPACING SYSTEM:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+Base unit: 4pt
+  sp-1:   4pt    (micro — icon to label gap)
+  sp-2:   8pt    (tight — within component)
+  sp-3:   12pt   (small — between related items)
+  sp-4:   16pt   (medium — card internal padding)
+  sp-5:   20pt   (base — standard padding)
+  sp-6:   24pt   (section gap — within screen)
+  sp-7:   32pt   (large — between major sections)
+  sp-8:   48pt   (XL — hero / page-level spacing)
+
+Screen horizontal padding: 16pt (standard), 20pt (tablet/large phones)
+List item height: 56pt (standard row), 72pt (with subtitle), 48pt (compact)
+Bottom nav height: 64pt + safe-area-bottom
+Top nav bar height: 56pt + safe-area-top
+Tab bar height: 48pt
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">BORDER RADIUS:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Micro (chips, badges):   4pt
+  Small (inputs, buttons): 8pt  
+  Medium (cards, modals):  12pt
+  Large (bottom sheets):   20pt top radius
+  Full (avatar, toggle):   100pt (fully rounded)
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">SHADOW / ELEVATION:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Level 0 — Flat:      No shadow. Border only: 1pt solid #E2E8F0
+  Level 1 — Subtle:    0 1pt 3pt rgba(0,0,0,0.06), 0 1pt 2pt rgba(0,0,0,0.04)
+  Level 2 — Card:      0 4pt 16pt rgba(0,0,0,0.08), 0 2pt 4pt rgba(0,0,0,0.04)
+  Level 3 — Modal:     0 20pt 60pt rgba(0,0,0,0.15), 0 8pt 16pt rgba(0,0,0,0.06)
+  Level 4 — Toast:     0 8pt 32pt rgba(0,0,0,0.12)
+  
+  Prefer flat (border) over shadow for list items and most cards.
+  Use Level 2 only for floating elements: FAB, modal, sheet.
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">ICON SYSTEM:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Library:     Phosphor Icons (Duotone style, Medium weight)
+  Sizes:       16pt (inline/caption), 20pt (standard UI), 24pt (nav bar), 32pt (feature icons)
+  Color rule:  Icons always inherit parent text color. Never use solid icon fills.
+  Nav icons:   20pt, active = Primary Blue filled, inactive = Muted grey outline
+  Action icons: 20pt, always Muted grey, turns Primary on hover/active
+  Status icons: 20pt with semantic color (green checkmark, red X, amber warning)
+  
+  Prohibited: Do NOT use emoji as UI icons. Use Phosphor icons exclusively.
+  Prohibited: Do NOT use colored icon backgrounds in lists/rows (only in empty states).
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">CORE COMPONENTS — DETAILED SPECS:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="vl">BUTTON — Primary:</span>
+  Height: 48pt | Border-radius: 8pt | Background: #1A56DB
+  Text: 15pt / DM Sans / Weight 600 / White
+  Icon (optional): 18pt, left of text, 8pt gap
+  Padding: 0 20pt | Full-width on mobile preferred
+  States: Default → Hover (darken 8%) → Pressed (scale 0.97) → Loading (spinner) → Disabled (40% opacity)
+
+<span class="vl">BUTTON — Secondary:</span>
+  Height: 48pt | Border: 1.5pt solid #CBD5E1 | Background: White
+  Text: 15pt / DM Sans / Weight 600 / #1E293B
+  States: Default → Hover (#F8FAFC bg) → Pressed (border darkens)
+
+<span class="vl">BUTTON — Destructive:</span>
+  Height: 48pt | Background: White | Border: 1.5pt solid #FCA5A5
+  Text: 15pt / DM Sans / Weight 600 / #DC2626
+  
+<span class="vl">BUTTON — Text / Ghost:</span>
+  No border, no background. Text: 14pt / Weight 600 / Primary Blue
+  Underline on press only. 
+
+<span class="vl">INPUT FIELD:</span>
+  Height: 48pt | Background: White | Border: 1.5pt solid #E2E8F0
+  Border-radius: 8pt | Text: 14pt / DM Sans / #0D1117
+  Placeholder: 14pt / #94A3B8
+  Label above: 12pt / Weight 600 / #64748B / 6pt gap
+  Focus state: Border changes to #1A56DB (2pt), subtle blue glow ring
+  Error state: Border #DC2626, error message below in red 12pt
+  Icon left: 20pt icon at 16pt left padding
+  Clear button right: only when field has content
+
+<span class="vl">SELECT / DROPDOWN:</span>
+  Same as Input. Chevron-Down icon right side. On tap → Bottom Sheet list.
+  
+<span class="vl">SEARCH BAR:</span>
+  Height: 44pt | Background: #F1F5F9 | No border (unless focused)
+  Border-radius: 100pt (fully rounded pill shape)
+  MagnifyingGlass icon left 14pt | Placeholder: "Search products, SKU..."
+  Focus: White background, 1.5pt #1A56DB border, keyboard opens
+
+<span class="vl">CARD:</span>
+  Background: White | Border: 1pt solid #E2E8F0 | Border-radius: 12pt
+  Padding: 16pt | Shadow: Level 1 subtle
+  Internal dividers: 1pt solid #F1F5F9
+  No gradient fills. No colored card backgrounds (except status summaries).
+
+<span class="vl">LIST ROW (Standard):</span>
+  Height: 56pt | Padding: 0 16pt | Background: White
+  Divider: 0.5pt solid #F1F5F9 at bottom (inset 16pt from left)
+  Leading: 40pt icon container OR 40pt avatar
+  Title: 14pt / Weight 600 / #0D1117
+  Subtitle: 12pt / Weight 400 / #64748B
+  Trailing: Chevron-right 16pt #CBD5E1 OR badge/status chip
+  Pressed state: #F8FAFC background (no heavy highlight)
+
+<span class="vl">LIST ROW (Product/SKU — tall):</span>
+  Height: 72pt | Two-line content + optional stock bar
+  SKU code: 11pt / JetBrains Mono / Muted — below title
+  Stock badge: trailing right
+  
+<span class="vl">BADGE / STATUS CHIP:</span>
+  Height: 22pt | Padding: 0 8pt | Border-radius: 4pt | Font: 11pt / Weight 700
+  In Stock:     Text #059669 / Background #ECFDF5 / Border #A7F3D0
+  Low Stock:    Text #D97706 / Background #FFFBEB / Border #FDE68A
+  Out of Stock: Text #DC2626 / Background #FEF2F2 / Border #FECACA
+  Pending:      Text #1A56DB / Background #EBF5FF / Border #BFDBFE
+  Approved:     Text #059669 / Background #ECFDF5 / Border #A7F3D0
+  Rejected:     Text #DC2626 / Background #FEF2F2 / Border #FECACA
+
+<span class="vl">MOVEMENT TYPE TAG:</span>
+  Height: 22pt | Padding: 0 8pt | Border-radius: 4pt | Font: 10pt / Weight 700 / ALL CAPS
+  INWARD:     Text #065F46 / Bg #ECFDF5
+  OUTWARD:    Text #7F1D1D / Bg #FEF2F2
+  TRANSFER:   Text #1E429F / Bg #EBF5FF
+  ADJUSTMENT: Text #78350F / Bg #FFFBEB
+
+<span class="vl">KPI / STAT CARD:</span>
+  Background: White | Border: 1pt solid #E2E8F0 | Border-radius: 12pt
+  Padding: 16pt | Width: calc(50% - 6pt) on mobile (2-column grid)
+  Icon: 24pt Phosphor icon, color matches semantic meaning
+  Value: 24pt / Syne / Weight 800 / #0D1117
+  Label: 12pt / DM Sans / Weight 600 / #64748B / Letter-spacing 0.3pt
+  Trend: 12pt / Weight 600, green ▲ or red ▼ with percentage
+
+<span class="vl">PROGRESS / STOCK LEVEL BAR:</span>
+  Height: 4pt | Background: #F1F5F9 | Border-radius: 2pt
+  Fill: Green (#059669) if >60% | Amber (#D97706) if 20-60% | Red (#DC2626) if <20%
+  Always show percentage label in 11pt mono beside bar
+
+<span class="vl">SECTION HEADER (in-screen):</span>
+  Font: 11pt / DM Sans / Weight 700 / #94A3B8 / Letter-spacing 1pt / ALL CAPS
+  Padding: 20pt top, 8pt bottom, 16pt horizontal
+  Background: transparent (scrolls with content)
+  Optional trailing link: 13pt / Weight 600 / Primary Blue / "See All"
+
+<span class="vl">DIVIDER:</span>
+  1pt solid #F1F5F9 for subtle separation within sections
+  1pt solid #E2E8F0 for between-section or card boundaries
+  No decorative dividers. No thick rules.
+
+<span class="vl">BOTTOM NAVIGATION BAR:</span>
+  Height: 64pt + safe area | Background: White | Top border: 1pt solid #E2E8F0
+  5 items max | Icon: 24pt | Label: 10pt / Weight 600 / Letter-spacing 0.3pt
+  Active: #1A56DB icon + label | Inactive: #94A3B8 icon + label
+  Active indicator: 3pt rounded dot below icon OR pill bg behind icon+label
+  NO colored background on the entire nav bar
+
+<span class="vl">TOP NAVIGATION BAR:</span>
+  Height: 56pt + safe area | Background: White | Bottom border: 1pt solid #E2E8F0
+  Title: 17pt / Syne / Weight 700 / #0D1117 (centered) OR left-aligned with breadcrumb
+  Back button: ChevronLeft 24pt + "Back" text 15pt (left)
+  Action buttons: 24pt icons right side, max 2 visible, overflow to More menu
+  No drop shadow on nav bar (border only)
+
+<span class="vl">FLOATING ACTION BUTTON (FAB):</span>
+  Size: 56pt × 56pt | Border-radius: 100pt | Background: #1A56DB
+  Icon: Plus 24pt / White | Shadow: Level 2
+  Position: 20pt from bottom-right, above bottom nav
+  Extended FAB (for primary action): 56pt height, min-width 140pt, icon + label
+
+<span class="vl">BOTTOM SHEET:</span>
+  Border-radius: 20pt top corners | Background: White
+  Handle bar: 4pt × 32pt / #CBD5E1 / centered / 8pt from top
+  Header: 17pt / Syne / Weight 700, optional close X button top-right
+  Drag handle region: 40pt tall
+  Content padding: 0 16pt 24pt + safe-area-bottom
+
+<span class="vl">MODAL / DIALOG:</span>
+  Width: screen-16pt margins | Border-radius: 16pt | Background: White
+  Overlay: rgba(0,0,0,0.4) | Padding: 24pt
+  Title: 18pt / Syne / Weight 700 | Body: 14pt / Weight 400 / #64748B
+  Actions: Stack vertically on mobile. Primary button full-width first, secondary below.
+
+<span class="vl">TOAST NOTIFICATION:</span>
+  Bottom: 16pt above bottom safe area | Horizontal margin: 16pt
+  Min-height: 52pt | Border-radius: 10pt | Background: #1E293B (dark, always)
+  Leading icon: 20pt semantic color | Text: 14pt / Weight 500 / White
+  Max-width: screen - 32pt | Auto-dismiss: 3s
+
+<span class="vl">EMPTY STATE:</span>
+  Centered vertically in content area
+  Illustration: Simple line icon, 80pt × 80pt, muted color
+  Title: 17pt / Syne / Weight 700 | Body: 14pt / #64748B | CTA Button below
+  Background: None (transparent — shows page background)
+
+<span class="vl">LOADING / SKELETON:</span>
+  Skeleton shimmer: #F1F5F9 base, animated shimmer in #E2E8F0
+  No spinner overlays on full screens. Inline skeleton shapes only.
+  Global loader: Top progress bar (2pt, blue, at very top under status bar)
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">SCREENS TO GENERATE:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="vl">SCREEN 1 — Login / Role Select:</span>
+  White screen, centered layout
+  Logo: GargBizSuite wordmark (Syne 800) + small cube icon in #1A56DB
+  Tagline: "Inventory. Simplified." in 15pt / #64748B
+  4 role selection cards in 2×2 grid:
+    - Owner (crown icon, gold accent)
+    - Sales Manager (chart icon, blue)
+    - Floor Staff (search icon, green)
+    - Godown Ops (warehouse icon, orange)
+  Each card: White bg, border, 80pt height, icon 28pt, role name 14pt/600, short desc 12pt/muted
+  "Demo Mode" pill below: 11pt / muted / "Tap any role to explore"
+  
+<span class="vl">SCREEN 2 — Dashboard (Owner view):</span>
+  Top bar: "Good Morning, Pankaj 👋" title, notification bell icon
+  Date chip: "Friday, 29 May 2026"
+  KPI row: 2-column card grid with 4 KPIs (Total SKUs, In-Stock, Alerts, Inventory Value)
+  Section header: "TODAY'S MOVEMENTS"
+  Movement list: 4-5 rows, each showing SKU, product name, type badge, quantity, time
+  Section header: "STOCK ALERTS" with "See All" link
+  Alert cards: 2-3 compact rows with severity icon + product + stock vs reorder
+
+<span class="vl">SCREEN 3 — Product Catalog (List view):</span>
+  Search bar (pill style) below top bar
+  Filter chips row: All / Hafele / Blum / Hettich / Yale (horizontally scrollable)
+  Results count: "26,412 products" in small muted text
+  Product list rows (72pt height each):
+    - Brand tag (colored, small pill)
+    - Product name (14pt/600)
+    - SKU code (11pt/mono/muted)
+    - Price (14pt/600/primary blue, trailing)
+    - Status badge (trailing)
+    - Stock bar (below name, thin 4pt bar)
+
+<span class="vl">SCREEN 4 — Product Detail:</span>
+  Full-screen sheet or nav-push
+  Product name title (large, Syne)
+  Brand chip + Category chip row
+  Specs grid: 2-column info grid (Price, Unit, Location, SKU)
+  Stock section card: On-hand qty (large number), reorder point, stock level bar
+  Description text section
+  Sticky bottom bar: "Record Outward" primary button + "Print Label" secondary
+
+<span class="vl">SCREEN 5 — Stock Board:</span>
+  3 summary KPI cards at top: In-Stock / Low / Out-of-Stock
+  Search bar
+  Full list of all SKUs with: name, brand, quantity (large, colored), stock bar, status badge
+  Sort option: By name / Brand / Stock Level / Reorder alert
+
+<span class="vl">SCREEN 6 — Record Movement (Inward GRN):</span>
+  Segmented control at top: Inward | Outward | Transfer | Adjust
+  Form card:
+    - Supplier Name field
+    - Invoice No. field  
+    - Date picker field
+    - Location dropdown
+  "Items" section with inline table:
+    - SKU column (mono)
+    - Product name
+    - Qty ordered
+    - Qty received (editable field)
+    - Condition dropdown
+  "Add Item" row with + icon
+  Sticky bottom bar: "Submit for Approval" primary button
+
+<span class="vl">SCREEN 7 — Barcode Scanner:</span>
+  Full-screen camera view
+  Corner brackets overlay (thin white lines, scanner frame)
+  Scan beam animation (horizontal line moving top to bottom)
+  Below viewfinder: "Point camera at barcode or QR code" hint text
+  Result card slides up from bottom after successful scan:
+    - Checkmark icon (green)
+    - Product name, SKU
+    - Current stock info
+    - "Add to Movement" button
+
+<span class="vl">SCREEN 8 — Approval Queue:</span>
+  Header: "Approvals" title + "3 Pending" badge (blue pill)
+  Filter tabs: Pending | Approved | Rejected (tab bar, 48pt)
+  Approval cards (each):
+    - Movement type badge + Ref number + time
+    - Product name (bold) + SKU (mono)
+    - Detail row: Qty change / Submitted by / Reason
+    - Two buttons: Approve (green outline) + Reject (red outline)
+    - Approved/Rejected state: Single status chip + approver name
+  
+<span class="vl">SCREEN 9 — Reports (Stock Summary):</span>
+  Tab bar: Summary | Movement | Low Stock | Valuation
+  Summary tab:
+    - Horizontal bar chart: Brand vs SKU count (clean, no decoration)
+    - Donut chart: Stock status breakdown (In/Low/Out percentages)
+    - Summary table: scrollable, Brand / SKUs / Value / Status columns
+
+<span class="vl">SCREEN 10 — Settings / Profile:</span>
+  User avatar (initials-based, colored circle)
+  Name, role, last login
+  Section list: Notifications / Display / About / Help
+  Logout button (red text, no background)
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">MICRO-INTERACTIONS & ANIMATION:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Screen transitions:    Horizontal push (iOS-standard). Duration: 320ms ease-out
+  Bottom sheet open:     Slide up. Duration: 380ms spring (damping 0.8)
+  Card press:            Scale to 0.98, bg lighten. Duration: 80ms
+  Button press:          Scale to 0.96. Duration: 100ms
+  Toast appear:          Slide up from bottom + fade in. Duration: 280ms
+  Skeleton loading:      Shimmer left-to-right, 1.4s loop
+  Badge number change:   Bounce-in scale from 0.5 to 1. Duration: 200ms
+  Progress bar fill:     Ease-out, duration 600ms on screen enter
+  Approval action:       Row slides left (approve = green), right (reject = red), then collapses
+  Search results:        Fade-in stagger (20ms between rows)
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">WHAT TO AVOID (DESIGN GUARDRAILS):</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  ❌ No dark mode. Light only.
+  ❌ No gradients on card backgrounds or list items
+  ❌ No decorative blobs, wavy shapes, or mesh gradients
+  ❌ No emoji as functional icons (use Phosphor icons)
+  ❌ No colored icon containers on list rows
+  ❌ No border-radius > 12pt on cards (except bottom sheets = 20pt)
+  ❌ No drop shadows on navigation bars
+  ❌ No purple, pink, or neon accent colors
+  ❌ No full-bleed hero images or background photos
+  ❌ No animated background particles or floating elements
+  ❌ No busy typography mixing (max 2 font families)
+  ❌ No all-caps body text (only overline labels)
+  ❌ No >2 font sizes in a single list row
+  ❌ No inconsistent spacing (always use the 4pt grid)
+  ❌ No ghost buttons with very light border (always 1.5pt minimum)
+</pre>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section" id="s2">
+  <div class="s-head">
+    <div class="s-num">02</div>
+    <div class="s-info">
+      <h2>Brand Identity & Philosophy</h2>
+      <p>The design soul of GargBizSuite</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Design Philosophy</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:10px"><div style="width:8px;height:8px;background:var(--acc);border-radius:2px;flex-shrink:0;margin-top:6px"></div><div><strong style="color:var(--t1)">Clarity First:</strong> <span style="color:var(--t4)">Every pixel has purpose. If it doesn't help the user, remove it.</span></div></div>
+        <div style="display:flex;gap:10px"><div style="width:8px;height:8px;background:var(--acc);border-radius:2px;flex-shrink:0;margin-top:6px"></div><div><strong style="color:var(--t1)">Data Breathes:</strong> <span style="color:var(--t4)">Dense information with generous white space — never crowded.</span></div></div>
+        <div style="display:flex;gap:10px"><div style="width:8px;height:8px;background:var(--acc);border-radius:2px;flex-shrink:0;margin-top:6px"></div><div><strong style="color:var(--t1)">Calm Confidence:</strong> <span style="color:var(--t4)">Cool blues and clean whites communicate reliability and precision.</span></div></div>
+        <div style="display:flex;gap:10px"><div style="width:8px;height:8px;background:var(--acc);border-radius:2px;flex-shrink:0;margin-top:6px"></div><div><strong style="color:var(--t1)">Zero Learning Curve:</strong> <span style="color:var(--t4)">A new employee should navigate confidently within 5 minutes.</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Design References</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px">🎯</span><div><strong style="color:var(--t1)">Linear.app</strong> <span style="color:var(--t4)">— Clean data tables, subtle interaction</span></div></div>
+        <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px">💳</span><div><strong style="color:var(--t1)">Stripe Dashboard</strong> <span style="color:var(--t4)">— KPI cards, transaction rows</span></div></div>
+        <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px">📋</span><div><strong style="color:var(--t1)">Notion</strong> <span style="color:var(--t4)">— Typography hierarchy, white space</span></div></div>
+        <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px">📊</span><div><strong style="color:var(--t1)">Airtable Mobile</strong> <span style="color:var(--t4)">— Mobile table/list patterns</span></div></div>
+        <div style="display:flex;gap:8px;align-items:center"><span style="font-size:16px">🏢</span><div><strong style="color:var(--t1)">SAP Fiori</strong> <span style="color:var(--t4)">— Enterprise mobile list density</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section" id="s3">
+  <div class="s-head">
+    <div class="s-num">03</div>
+    <div class="s-info">
+      <h2>Color System</h2>
+      <p>Full color palette with semantic usage rules</p>
+    </div>
+  </div>
+
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Background & Neutral</div>
+  <div class="g4 mb" style="margin-bottom:20px">
+    <div class="swatch"><div class="sw-color" style="background:#FFFFFF;border-bottom:1px solid var(--bd)"></div><div class="sw-info"><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div><div class="sw-use">Card bg, modal bg</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#F7F9FC"></div><div class="sw-info"><div class="sw-name">Canvas</div><div class="sw-hex">#F7F9FC</div><div class="sw-use">App background</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#F1F5F9"></div><div class="sw-info"><div class="sw-name">Subtle</div><div class="sw-hex">#F1F5F9</div><div class="sw-use">Input bg, sidebar</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#E2E8F0"></div><div class="sw-info"><div class="sw-name">Border</div><div class="sw-hex">#E2E8F0</div><div class="sw-use">Card borders, dividers</div></div></div>
+  </div>
+
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Text Scale</div>
+  <div class="g4 mb" style="margin-bottom:20px">
+    <div class="swatch"><div class="sw-color" style="background:#0D1117"></div><div class="sw-info"><div class="sw-name">Text Primary</div><div class="sw-hex">#0D1117</div><div class="sw-use">Headings, critical</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#1E293B"></div><div class="sw-info"><div class="sw-name">Text Secondary</div><div class="sw-hex">#1E293B</div><div class="sw-use">Body, labels</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#64748B"></div><div class="sw-info"><div class="sw-name">Text Muted</div><div class="sw-hex">#64748B</div><div class="sw-use">Captions, metadata</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#94A3B8"></div><div class="sw-info"><div class="sw-name">Text Disabled</div><div class="sw-hex">#94A3B8</div><div class="sw-use">Placeholders</div></div></div>
+  </div>
+
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Brand & Semantic</div>
+  <div class="g4">
+    <div class="swatch"><div class="sw-color" style="background:#1A56DB"></div><div class="sw-info"><div class="sw-name">Primary Blue</div><div class="sw-hex">#1A56DB</div><div class="sw-use">CTA, active, links</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#059669"></div><div class="sw-info"><div class="sw-name">Success Green</div><div class="sw-hex">#059669</div><div class="sw-use">In Stock, Approved</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#D97706"></div><div class="sw-info"><div class="sw-name">Warning Amber</div><div class="sw-hex">#D97706</div><div class="sw-use">Low Stock, Pending</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#DC2626"></div><div class="sw-info"><div class="sw-name">Error Red</div><div class="sw-hex">#DC2626</div><div class="sw-use">Out of Stock, Reject</div></div></div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section" id="s4">
+  <div class="s-head">
+    <div class="s-num">04</div>
+    <div class="s-info">
+      <h2>Typography Scale</h2>
+      <p>Syne for display, DM Sans for body, JetBrains Mono for data</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="type-sample"><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--t1);letter-spacing:-.5px">Display Large — 28pt Syne 800</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Screen titles, landing headings</div></div>
+    <div class="type-sample"><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--t1);letter-spacing:-.3px">Display — 22pt Syne 700</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Section headings, modal titles</div></div>
+    <div class="type-sample"><div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--t1)">Title Large — 18pt Syne 700</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Navigation bar title</div></div>
+    <div class="type-sample"><div style="font-size:16px;font-weight:600;color:var(--t1)">Title — 16pt DM Sans 600</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Card titles, form section headers</div></div>
+    <div class="type-sample"><div style="font-size:14px;font-weight:600;color:var(--t1)">Title Small — 14pt DM Sans 600</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">List row primary text</div></div>
+    <div class="type-sample"><div style="font-size:14px;font-weight:400;color:var(--t2)">Body — 14pt DM Sans 400 — Standard body text for content, descriptions, and form field content in the application.</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Standard readable content</div></div>
+    <div class="type-sample"><div style="font-size:12px;font-weight:400;color:var(--t4)">Caption — 12pt DM Sans 400 — SKU codes, timestamps, metadata, helper text</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Supporting information</div></div>
+    <div class="type-sample"><div style="font-size:11px;font-weight:700;color:var(--t4);letter-spacing:1.2px;text-transform:uppercase">OVERLINE — 11PT DM SANS 700 ALL CAPS</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Section separators, list category headers</div></div>
+    <div class="type-sample"><div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--t2)">HF-CH-110-SS · ₹2,84,12,400 · SKU: BL-TBX-500</div><div style="font-size:12px;color:var(--t5);font-family:'JetBrains Mono',monospace;margin-top:4px">Data / Numbers / SKU codes — 13pt JetBrains Mono 500</div></div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section" id="s5">
+  <div class="s-head">
+    <div class="s-num">05</div>
+    <div class="s-info">
+      <h2>Spacing & Grid System</h2>
+      <p>4pt base grid — used everywhere, no exceptions</p>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="sp-item"><div class="sp-box" style="width:4px;height:18px"></div><div class="sp-label" style="width:80px">4pt / sp-1</div><div class="sp-desc">Micro gap — icon to text, inline tags</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:8px;height:18px"></div><div class="sp-label" style="width:80px">8pt / sp-2</div><div class="sp-desc">Tight gap — within a component, sibling elements</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:12px;height:18px"></div><div class="sp-label" style="width:80px">12pt / sp-3</div><div class="sp-desc">Small gap — between related items in a group</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:16px;height:18px"></div><div class="sp-label" style="width:80px">16pt / sp-4</div><div class="sp-desc">Medium — card internal padding, list row padding</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:20px;height:18px"></div><div class="sp-label" style="width:80px">20pt / sp-5</div><div class="sp-desc">Base — screen horizontal padding, standard padding</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:24px;height:18px"></div><div class="sp-label" style="width:80px">24pt / sp-6</div><div class="sp-desc">Section gap — between card groups within a screen</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:32px;height:18px"></div><div class="sp-label" style="width:80px">32pt / sp-7</div><div class="sp-desc">Large — between major screen sections</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:48px;height:18px"></div><div class="sp-label" style="width:80px">48pt / sp-8</div><div class="sp-desc">XL — hero, top-of-screen, empty state spacing</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section" id="s6">
+  <div class="s-head">
+    <div class="s-num">06</div>
+    <div class="s-info">
+      <h2>Component Library Preview</h2>
+      <p>Live rendered samples of all core UI components</p>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Buttons</div>
+  <div class="comp-preview mb" style="margin-bottom:16px">
+    <button class="sample-btn">Submit for Approval</button>
+    <button class="sample-btn-s">Cancel</button>
+    <button style="background:rgba(220,38,38,.06);color:#DC2626;border:1.5px solid #FECACA;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Reject</button>
+    <button style="background:rgba(5,150,105,.06);color:#059669;border:1.5px solid #A7F3D0;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Approve</button>
+    <button style="background:none;color:#1A56DB;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">See All →</button>
+  </div>
+
+  <!-- Inputs -->
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Inputs & Search</div>
+  <div class="comp-preview mb" style="margin-bottom:16px;flex-direction:column;gap:12px">
+    <div style="width:100%;max-width:320px">
+      <label style="display:block;font-size:12px;font-weight:600;color:#64748B;margin-bottom:6px;letter-spacing:.3px">SUPPLIER NAME</label>
+      <input class="sample-input" placeholder="e.g. Hafele India Pvt Ltd">
+    </div>
+    <div style="width:100%;max-width:320px;position:relative">
+      <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#94A3B8;font-size:16px">🔍</div>
+      <input class="sample-input" placeholder="Search products, SKU, brand…" style="padding-left:40px;border-radius:100px;background:#F1F5F9;border-color:transparent">
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Status Badges & Tags</div>
+  <div class="comp-preview mb" style="margin-bottom:16px;align-items:center">
+    <span class="bdg" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0">In Stock</span>
+    <span class="bdg" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A">Low Stock</span>
+    <span class="bdg" style="background:#FEF2F2;color:#991B1B;border:1px solid #FECACA">Out of Stock</span>
+    <span class="bdg" style="background:#EBF5FF;color:#1E429F;border:1px solid #BFDBFE">Pending</span>
+    <span class="bdg" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0">✓ Approved</span>
+    <span class="bdg" style="background:#FEF2F2;color:#991B1B;border:1px solid #FECACA">✕ Rejected</span>
+    <span class="bdg" style="background:#ECFDF5;color:#065F46;font-size:10px;font-weight:800;letter-spacing:.5px">INWARD</span>
+    <span class="bdg" style="background:#FEF2F2;color:#991B1B;font-size:10px;font-weight:800;letter-spacing:.5px">OUTWARD</span>
+    <span class="bdg" style="background:#EBF5FF;color:#1E429F;font-size:10px;font-weight:800;letter-spacing:.5px">TRANSFER</span>
+    <span class="bdg" style="background:#FFFBEB;color:#92400E;font-size:10px;font-weight:800;letter-spacing:.5px">ADJUSTMENT</span>
+  </div>
+
+  <!-- Sample List Row -->
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Product List Row</div>
+  <div style="background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:16px">
+    <div style="padding:12px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;gap:12px">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;font-weight:800;color:#2563EB;background:#EBF5FF;border:1px solid #BFDBFE;padding:1px 5px;border-radius:3px;letter-spacing:.3px">BLUM</span>
+          <span style="font-size:14px;font-weight:600;color:#0D1117">TANDEM Box Drawer 500mm</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#94A3B8;margin-bottom:8px">BL-TBX-500</div>
+        <div style="height:3px;background:#F1F5F9;border-radius:2px;width:120px;overflow:hidden"><div style="width:70%;height:100%;background:#059669;border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#1A56DB;margin-bottom:4px">₹3,800</div>
+        <span class="bdg" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0">In Stock</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;gap:12px">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;font-weight:800;color:#D97706;background:#FFFBEB;border:1px solid #FDE68A;padding:1px 5px;border-radius:3px;letter-spacing:.3px">HAFELE</span>
+          <span style="font-size:14px;font-weight:600;color:#0D1117">Cabinet Hinge 110° SS</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#94A3B8;margin-bottom:8px">HF-CH-110-SS</div>
+        <div style="height:3px;background:#F1F5F9;border-radius:2px;width:120px;overflow:hidden"><div style="width:16%;height:100%;background:#DC2626;border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#1A56DB;margin-bottom:4px">₹285</div>
+        <span class="bdg" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A">Low Stock</span>
+      </div>
+    </div>
+    <div style="padding:12px 16px;display:flex;align-items:center;gap:12px">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span style="font-size:10px;font-weight:800;color:#059669;background:#ECFDF5;border:1px solid #A7F3D0;padding:1px 5px;border-radius:3px;letter-spacing:.3px">YALE</span>
+          <span style="font-size:14px;font-weight:600;color:#0D1117">Smart Lock YDM3168 Black</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#94A3B8;margin-bottom:8px">YL-YDM3168-BK</div>
+        <div style="height:3px;background:#F1F5F9;border-radius:2px;width:120px;overflow:hidden"><div style="width:60%;height:100%;background:#D97706;border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:#1A56DB;margin-bottom:4px">₹12,500</div>
+        <span class="bdg" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A">Low Stock</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">KPI Cards</div>
+  <div class="g4" style="margin-bottom:0">
+    <div class="sample-card"><div style="font-size:20px;margin-bottom:8px">📦</div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0D1117;margin-bottom:2px">26,412</div><div style="font-size:11px;font-weight:600;color:#64748B;letter-spacing:.5px;text-transform:uppercase">Total SKUs</div><div style="font-size:12px;font-weight:600;color:#059669;margin-top:6px">▲ 144 this week</div></div>
+    <div class="sample-card"><div style="font-size:20px;margin-bottom:8px">✅</div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0D1117;margin-bottom:2px">22,180</div><div style="font-size:11px;font-weight:600;color:#64748B;letter-spacing:.5px;text-transform:uppercase">In-Stock</div><div style="font-size:12px;font-weight:600;color:#059669;margin-top:6px">84% availability</div></div>
+    <div class="sample-card" style="border-color:#FECACA"><div style="font-size:20px;margin-bottom:8px">⚠️</div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#DC2626;margin-bottom:2px">312</div><div style="font-size:11px;font-weight:600;color:#64748B;letter-spacing:.5px;text-transform:uppercase">Low Alerts</div><div style="font-size:12px;font-weight:600;color:#DC2626;margin-top:6px">▲ 18 since yesterday</div></div>
+    <div class="sample-card"><div style="font-size:20px;margin-bottom:8px">💰</div><div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0D1117;margin-bottom:2px">₹2.84Cr</div><div style="font-size:11px;font-weight:600;color:#64748B;letter-spacing:.5px;text-transform:uppercase">Inv. Value</div><div style="font-size:12px;font-weight:600;color:#059669;margin-top:6px">▲ ₹4.2L MoM</div></div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section" id="s7">
+  <div class="s-head">
+    <div class="s-num">07</div>
+    <div class="s-info">
+      <h2>Navigation & Layout Architecture</h2>
+      <p>Mobile navigation patterns, screen hierarchy, tab structure</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Bottom Navigation — 5 Tabs</div>
+      <div style="background:#F7F9FC;border:1px solid var(--bd);border-radius:10px;padding:12px 8px;display:flex;justify-content:space-between">
+        <div style="text-align:center;flex:1"><div style="font-size:22px">🏠</div><div style="font-size:10px;font-weight:700;color:#1A56DB;margin-top:2px">Home</div></div>
+        <div style="text-align:center;flex:1"><div style="font-size:22px">📋</div><div style="font-size:10px;font-weight:600;color:#94A3B8;margin-top:2px">Catalog</div></div>
+        <div style="text-align:center;flex:1"><div style="width:48px;height:48px;background:#1A56DB;border-radius:100px;display:flex;align-items:center;justify-content:center;margin:0 auto;margin-top:-14px;box-shadow:0 4px 12px rgba(26,86,219,.35)"><span style="font-size:20px;filter:brightness(5)">+</span></div></div>
+        <div style="text-align:center;flex:1"><div style="font-size:22px">✅</div><div style="font-size:10px;font-weight:600;color:#94A3B8;margin-top:2px">Approvals</div></div>
+        <div style="text-align:center;flex:1"><div style="font-size:22px">📊</div><div style="font-size:10px;font-weight:600;color:#94A3B8;margin-top:2px">Reports</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--t4)">Center FAB: Opens quick-action sheet for Record Movement</div>
+    </div>
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Screen Hierarchy</div>
+      <div style="font-size:13px;line-height:2;color:var(--t3)">
+        <div style="color:var(--t1);font-weight:600">📱 App Root</div>
+        <div style="padding-left:16px;border-left:2px solid var(--bd)">
+          <div>├ 🔐 Login / Role Select</div>
+          <div>├ 🏠 Dashboard (Home Tab)</div>
+          <div>├ 📋 Catalog (Tab)
+            <div style="padding-left:16px;color:var(--t4)">└ Product Detail (push)</div>
+          </div>
+          <div>├ 📦 Stock Board (Tab)
+            <div style="padding-left:16px;color:var(--t4)">└ SKU Detail (push)</div>
+          </div>
+          <div>├ ➕ Record Movement (FAB → Sheet)
+            <div style="padding-left:16px;color:var(--t4)">└ Scanner (full screen)</div>
+          </div>
+          <div>├ ✅ Approvals (Tab)</div>
+          <div>└ 📊 Reports (Tab)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section" id="s8">
+  <div class="s-head">
+    <div class="s-num">08</div>
+    <div class="s-info">
+      <h2>Icon System — Phosphor Icons</h2>
+      <p>All icons use Phosphor Duotone, Medium weight. 20pt standard size.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t4);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Navigation Icons (24pt)</div>
+    <div class="icon-grid mb" style="margin-bottom:20px">
+      <div class="icon-item" title="House">🏠</div><div class="icon-item" title="Books">📋</div><div class="icon-item" title="Package">📦</div><div class="icon-item" title="ArrowsLeftRight">🔄</div><div class="icon-item" title="CheckCircle">✅</div><div class="icon-item" title="ChartBar">📊</div><div class="icon-item" title="Gear">⚙️</div>
+    </div>
+    <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t4);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Action Icons (20pt)</div>
+    <div class="icon-grid mb" style="margin-bottom:20px">
+      <div class="icon-item">🔍</div><div class="icon-item">📷</div><div class="icon-item">⬇️</div><div class="icon-item">⬆️</div><div class="icon-item">✏️</div><div class="icon-item">🗑️</div><div class="icon-item">🖨️</div><div class="icon-item">📤</div><div class="icon-item">📥</div><div class="icon-item">🔔</div><div class="icon-item">🔗</div><div class="icon-item">➕</div>
+    </div>
+    <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--t4);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Status Icons (20pt)</div>
+    <div class="icon-grid">
+      <div class="icon-item">✅</div><div class="icon-item">❌</div><div class="icon-item">⚠️</div><div class="icon-item">ℹ️</div><div class="icon-item">🔐</div><div class="icon-item">📈</div><div class="icon-item">📉</div><div class="icon-item">🔺</div>
+    </div>
+    <div style="margin-top:16px;padding:12px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;font-size:13px;color:#92400E">
+      <strong>⚠️ Important for Stitch:</strong> Replace emoji above with Phosphor icon names: <span style="font-family:'JetBrains Mono',monospace">House, Books, Package, ArrowsLeftRight, CheckCircle, ChartBar, Gear, MagnifyingGlass, Camera, ArrowDown, ArrowUp, PencilSimple, Trash, Printer, Export, Import, Bell, Link, Plus, Check, X, Warning, Info</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section" id="s9">
+  <div class="s-head">
+    <div class="s-num">09</div>
+    <div class="s-info">
+      <h2>Screen-by-Screen UX Specifications</h2>
+      <p>Detailed annotation for each of the 10 core screens</p>
+    </div>
+  </div>
+
+  <div class="prompt-block">
+    <div class="pb-label">▶ STITCH SCREEN SPEC — DASHBOARD</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>SCREEN: Dashboard
+ROLE: Owner (full view)
+TOP BAR: 
+  - Left: User avatar (initials circle, 36pt, blue tint)
+  - Center: "GargBizSuite" wordmark 17pt/Syne/700
+  - Right: Bell icon (notification dot if alerts exist)
+HERO GREETING: 
+  - "Good Morning, Pankaj" — 22pt/Syne/800/#0D1117
+  - Date: "Friday, 29 May 2026" — 13pt/mono/muted
+  - 16pt vertical spacing
+KPI SECTION:
+  - Section header: "TODAY'S OVERVIEW"
+  - 2×2 grid of KPI cards (full-width, equal)
+  - Cards: Total SKUs / In-Stock / Alerts (red border) / Inventory Value
+  - Each card: icon top-left, large number, label, trend line
+MOVEMENTS SECTION:
+  - Section header "RECENT MOVEMENTS" + "See All" link
+  - List of 4 rows, each 72pt height
+  - Shows: move-type badge, product name, qty (colored ±), time, status badge
+ALERTS SECTION:
+  - Section header "STOCK ALERTS" + badge count
+  - Compact list: severity icon + product name + qty vs reorder
+  - "View All 312 Alerts" button (secondary, full-width)
+BOTTOM NAV: 5-tab nav bar
+</pre>
+  </div>
+
+  <div class="prompt-block">
+    <div class="pb-label">▶ STITCH SCREEN SPEC — CATALOG</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>SCREEN: Product Catalog
+TOP BAR:
+  - Back chevron (if not tab root) OR title "Catalog"
+  - Right: Grid/List toggle icon
+SEARCH BAR (below top bar, full-width, 44pt):
+  - Pill shape (border-radius 100pt)
+  - Background #F1F5F9 (grey-wash)
+  - MagnifyingGlass icon left
+  - Placeholder: "Search products, SKU, brand…"
+FILTER CHIPS (horizontal scroll row, 40pt height):
+  - "All" (active = blue filled pill), "Hafele", "Blum", "Hettich", 
+    "Yale", "Godrej", "Bosch"
+  - Inactive: border pill. Active: #EBF5FF bg, #1A56DB text, #BFDBFE border
+RESULTS COUNT: "26,412 products" — 12pt/muted, left-aligned
+PRODUCT LIST (standard list, rows):
+  - Each row 72pt height
+  - Left: Brand tag (colored pill 10pt) + Product name (14pt/600) + SKU (11pt/mono/muted) + stock bar (4pt, colored)
+  - Right: Price (14pt/600/primary blue) + Status badge
+  - Divider between rows: 1pt #F1F5F9 (inset 16pt left)
+  - Tappable: navigates to Product Detail screen
+EMPTY STATE: MagnifyingGlass illustration + "No products match your search" + "Clear Filters" button
+</pre>
+  </div>
+
+  <div class="prompt-block">
+    <div class="pb-label">▶ STITCH SCREEN SPEC — RECORD MOVEMENT</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>SCREEN: Record Movement
+ENTRY POINT: FAB (center bottom nav) → Bottom Sheet → Select type
+OR: Direct navigation from Dashboard
+TOP BAR: "Record Movement" title + X close button
+SEGMENTED CONTROL (4 options, 48pt height):
+  - INWARD | OUTWARD | TRANSFER | ADJUST
+  - Active segment: White bg + blue text + subtle shadow
+  - Inactive: Grey-wash bg, muted text
+  - Full width, equal segments
+CONTENT (scrollable form):
+  SECTION 1 — Reference Details:
+    - Card container: white bg, 12pt border-radius
+    - Fields: Supplier / Reference No. / Date / Location (dropdown)
+    - Fields in 2-column grid on each row where labels fit
+  SECTION 2 — Items:
+    - Section header "ITEMS RECEIVED" + Scan button (right, outlined)
+    - Inline mini-table: SKU | Product | Qty | Condition
+    - Each row editable inline
+    - "+ Add Item" row at bottom (tappable)
+  SECTION 3 — Notes:
+    - Single multiline textarea "Add Remarks…"
+STICKY BOTTOM BAR (above keyboard):
+  - "Submit for Approval" — Primary button, full-width
+  - Small muted text: "This request will be sent to owner for review"
+KEYBOARD BEHAVIOR: Form scrolls up, sticky bar stays above keyboard
+</pre>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section" id="s10">
+  <div class="s-head">
+    <div class="s-num">10</div>
+    <div class="s-info">
+      <h2>Motion & Interaction Design</h2>
+      <p>Easing curves, durations, and interaction states</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Timing & Easing</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+        <div class="flex" style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="color:var(--t3)">Micro (press feedback)</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc)">80ms ease-out</span></div>
+        <div class="flex" style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="color:var(--t3)">Standard (transitions)</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc)">280ms ease-out</span></div>
+        <div class="flex" style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="color:var(--t3)">Screen push</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc)">320ms ease-out</span></div>
+        <div class="flex" style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="color:var(--t3)">Bottom sheet</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc)">380ms spring</span></div>
+        <div class="flex" style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Toast notification</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acc)">260ms ease-out</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Interaction States</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+        <div style="border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="font-weight:600;color:var(--t1)">Button Press</span> — Scale to 0.96, 100ms</div>
+        <div style="border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="font-weight:600;color:var(--t1)">List Row Press</span> — #F8FAFC bg, instant</div>
+        <div style="border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="font-weight:600;color:var(--t1)">Input Focus</span> — Blue border, glow ring</div>
+        <div style="border-bottom:1px solid var(--bd);padding-bottom:8px"><span style="font-weight:600;color:var(--t1)">Badge Update</span> — Bounce scale 200ms</div>
+        <div><span style="font-weight:600;color:var(--t1)">Approval Action</span> — Row swipe + collapse</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 11 ═══════ -->
+<div class="section" id="s11">
+  <div class="s-head">
+    <div class="s-num">11</div>
+    <div class="s-info">
+      <h2>Mobile-First UX Patterns</h2>
+      <p>Thumb-zone awareness, gesture patterns, and mobile-specific behaviors</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Thumb Zone Rules</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--t3)">
+        <div>🟢 <strong style="color:var(--t1)">Bottom 40%</strong> — Primary actions, FAB, bottom nav</div>
+        <div>🟡 <strong style="color:var(--t1)">Middle 40%</strong> — Content, list items, form fields</div>
+        <div>🔴 <strong style="color:var(--t1)">Top 20%</strong> — Navigation bar only, minimal interaction</div>
+        <div style="margin-top:4px;padding-top:10px;border-top:1px solid var(--bd)">All CTAs positioned in thumb-reachable zones. Search bar in upper-middle (reachable on stretch).</div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px">Minimum Touch Targets</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--t3)">
+        <div>📐 <strong style="color:var(--t1)">44pt × 44pt</strong> minimum for all interactive elements</div>
+        <div>📐 <strong style="color:var(--t1)">48pt height</strong> for all input fields and buttons</div>
+        <div>📐 <strong style="color:var(--t1)">56pt height</strong> for standard list rows</div>
+        <div>📐 <strong style="color:var(--t1)">64pt height</strong> for bottom navigation bar</div>
+        <div>📐 <strong style="color:var(--t1)">8pt gap</strong> minimum between adjacent touch targets</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 12 ═══════ -->
+<div class="section" id="s12">
+  <div class="s-head">
+    <div class="s-num">12</div>
+    <div class="s-info">
+      <h2>Accessibility Standards</h2>
+      <p>WCAG 2.1 AA compliance requirements</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="g2" style="gap:20px">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px">Color Contrast Minimums</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:6px"><span style="color:var(--t3)">Body text on white</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gr)">12.5:1 ✓</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:6px"><span style="color:var(--t3)">Primary blue on white</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gr)">5.8:1 ✓</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--bd);padding-bottom:6px"><span style="color:var(--t3)">White on primary blue</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gr)">5.8:1 ✓</span></div>
+          <div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Muted text minimum</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gr)">4.5:1 ✓</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px">Accessibility Checklist</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--t3)">
+          <div>✅ All interactive elements have accessible labels</div>
+          <div>✅ Focus states visible (2pt blue outline)</div>
+          <div>✅ Status communicated by color AND icon/text</div>
+          <div>✅ Text sizes ≥ 12pt (no tiny type)</div>
+          <div>✅ Error messages describe the issue clearly</div>
+          <div>✅ Screen reader compatible semantic HTML</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:40px 0 20px;border-top:1px solid var(--bd);margin-top:20px">
+  <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px">GargBizSuite Design System v1.0</div>
+  <div style="font-size:13px;color:var(--t5)">Prepared by Digital Builders for Garg Enterprises, Ludhiana · Phase 1 · May 2026</div>
+  <div style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5)">Ashish Gupta · Digital Builders · +91-9087021592</div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+function copyBlock(btn) {
+  const pre = btn.previousElementSibling;
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.style.color = '#34D399';
+    btn.style.borderColor = '#34D399';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

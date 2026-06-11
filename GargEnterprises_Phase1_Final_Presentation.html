@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garg Enterprises · Phase 1 · PRD + TRD + Cost</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── VARS ── */
+:root{
+  --bg:#f7f8fc;--surface:#ffffff;--surface2:#f0f2f9;
+  --border:#dde1ef;--border2:#c8cedf;
+  --ink:#0d1428;--ink2:#1e2d4f;--ink3:#3d4f70;
+  --muted:#6b7a99;--muted2:#a0aec0;
+  --navy:#0a1628;--navy2:#112244;
+  --teal:#0a7b7b;--teal-l:#e5f4f4;--teal-m:#7ec8c8;
+  --gold:#9a6000;--gold-l:#fdf4e0;--gold-m:#f0cc70;
+  --green:#126633;--green-l:#e8f7ee;--green-m:#6fd099;
+  --red:#a81c1c;--red-l:#fdf0f0;--red-m:#f0a0a0;
+  --blue:#1940b0;--blue-l:#eef3ff;--blue-m:#90aff0;
+  --purple:#5218a0;--purple-l:#f3efff;--purple-m:#b090e0;
+  --amber:#b86000;--amber-l:#fff6e8;--amber-m:#f0c070;
+  --grad1:linear-gradient(135deg,#0a1628 0%,#162a55 60%,#0a3355 100%);
+  --card-shadow:0 2px 12px rgba(10,22,40,.08),0 1px 3px rgba(10,22,40,.05);
+  --card-shadow-hover:0 8px 32px rgba(10,22,40,.14),0 2px 8px rgba(10,22,40,.08);
+  --sidebar-w:265px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;font-size:15px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+
+/* ── PRINT ── */
+@page{size:A4;margin:15mm 14mm}
+@media print{
+  .sidebar,.no-print,.sb-toggle-btn,.print-fab{display:none!important}
+  .main{margin-left:0!important;width:100%!important}
+  .section{padding:18px 0;page-break-inside:avoid}
+  .cover{min-height:auto;page-break-after:always}
+  body{font-size:11pt;background:#fff}
+  h1{font-size:20pt}h2{font-size:14pt}
+  .page-break{page-break-before:always}
+  .diagram-svg{max-width:100%}
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);position:fixed;top:0;left:0;height:100vh;
+  background:var(--navy);z-index:200;overflow-y:auto;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),width .3s;
+  display:flex;flex-direction:column;
+}
+.sidebar.collapsed{transform:translateX(calc(-1 * var(--sidebar-w)))}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+.sb-head{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0}
+.sb-logo-row{display:flex;align-items:center;justify-content:space-between}
+.sb-logo-text{}
+.sb-logo-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:.01em;line-height:1.2}
+.sb-logo-sub{font-size:10px;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-top:2px}
+.sb-close{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;padding:4px;border-radius:4px;font-size:18px;line-height:1;transition:color .15s}
+.sb-close:hover{color:rgba(255,255,255,.8)}
+
+.sb-doc-chip{margin-top:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:8px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);line-height:1.8}
+.sb-doc-chip strong{color:rgba(94,212,212,.6)}
+
+.sb-group{padding:16px 20px 5px;font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace}
+.sb-link{display:flex;align-items:center;gap:9px;padding:7px 20px;font-size:12.5px;color:rgba(255,255,255,.38);text-decoration:none;cursor:pointer;border-left:3px solid transparent;transition:all .15s;line-height:1.3}
+.sb-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04);border-left-color:rgba(94,212,212,.4)}
+.sb-link.active{color:#fff;background:rgba(94,212,212,.08);border-left-color:#5ed4d4}
+.sb-n{font-family:'JetBrains Mono',monospace;font-size:9.5px;min-width:22px;color:rgba(255,255,255,.18)}
+.sb-link.active .sb-n{color:rgba(94,212,212,.7)}
+
+/* ── TOGGLE ── */
+.sb-toggle-btn{
+  position:fixed;top:20px;left:20px;z-index:300;
+  width:40px;height:40px;border-radius:10px;
+  background:var(--navy2);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.7);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.sb-toggle-btn:hover{background:var(--navy);color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.sb-toggle-btn.sidebar-open{left:calc(var(--sidebar-w) + 12px)}
+
+/* ── MAIN ── */
+.main{
+  margin-left:var(--sidebar-w);
+  transition:margin-left .3s cubic-bezier(.4,0,.2,1);
+  min-height:100vh;
+}
+.main.expanded{margin-left:0}
+
+/* ── COVER ── */
+.cover{
+  background:var(--grad1);color:#fff;
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:space-between;padding:64px 80px;
+  position:relative;overflow:hidden;
+}
+.cover-noise{position:absolute;inset:0;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events:none}
+.cover-grid-lines{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:72px 72px;pointer-events:none}
+.cover-glow{position:absolute;border-radius:50%;pointer-events:none}
+.cg1{width:900px;height:900px;background:radial-gradient(circle,rgba(14,140,140,.12) 0%,transparent 65%);top:-300px;right:-200px}
+.cg2{width:600px;height:600px;background:radial-gradient(circle,rgba(20,60,160,.15) 0%,transparent 65%);bottom:-200px;left:-100px}
+
+.cover-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start}
+.cover-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(94,212,212,.3);background:rgba(94,212,212,.07);color:rgba(94,212,212,.9);font-size:11.5px;font-weight:600;padding:7px 16px;border-radius:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.cover-phase-meta{text-align:right;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.28);line-height:2}
+
+.cover-body{position:relative;z-index:1;max-width:860px;margin-top:auto}
+.cover-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(94,212,212,.7);letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.cover-kicker::before{content:'';width:32px;height:1px;background:rgba(94,212,212,.5)}
+.cover-h1{font-family:'Playfair Display',serif;font-size:clamp(52px,7vw,88px);font-weight:800;line-height:1.0;letter-spacing:-.03em;color:#fff;margin-bottom:6px}
+.cover-h1 .ital{font-style:italic;color:rgba(94,212,212,.9)}
+.cover-sub{font-size:16px;color:rgba(255,255,255,.45);font-weight:300;line-height:1.8;margin-top:16px;max-width:600px}
+.cover-rule{display:flex;align-items:center;gap:14px;margin:36px 0}
+.cr-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(94,212,212,.4),transparent)}
+.cr-diamond{width:8px;height:8px;background:rgba(94,212,212,.6);transform:rotate(45deg);flex-shrink:0}
+
+.cover-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden}
+.csg-cell{background:rgba(255,255,255,.025);padding:20px 18px;text-align:center}
+.csg-val{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:rgba(94,212,212,.9);line-height:1;margin-bottom:5px}
+.csg-lbl{font-size:11px;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+.cover-bottom{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);padding-top:24px;display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px}
+.cb-l{font-size:12px;color:rgba(255,255,255,.3);line-height:2;font-family:'JetBrains Mono',monospace}
+.cb-l strong{color:rgba(255,255,255,.6)}
+.cb-r{text-align:right;font-size:10px;color:rgba(255,255,255,.2);font-family:'JetBrains Mono',monospace;line-height:2}
+
+/* ── PART HEADER ── */
+.part-header{
+  background:var(--navy2);padding:36px 72px;
+  display:flex;align-items:center;gap:20px;
+  border-bottom:4px solid rgba(94,212,212,.2);
+}
+.ph-accent{width:6px;height:56px;border-radius:3px;flex-shrink:0}
+.ph-text{}
+.ph-doc{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.ph-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.2}
+.ph-sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+.ph-badge{margin-left:auto;flex-shrink:0}
+
+/* ── SECTIONS ── */
+.section{padding:48px 72px;border-bottom:1px solid var(--border);background:var(--surface)}
+.section:nth-child(even){background:var(--surface)}
+.section:nth-child(odd){background:#fcfcff}
+.section:last-child{border-bottom:none}
+
+.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.sec-eyebrow::before{content:'';width:20px;height:2px;background:var(--teal);border-radius:1px}
+.sec-h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--ink2);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px}
+.sec-desc{font-size:15px;color:var(--muted);line-height:1.75;max-width:760px}
+
+h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink2);letter-spacing:-.01em;margin:36px 0 14px;line-height:1.3}
+h3{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--teal);margin:24px 0 10px;letter-spacing:.09em;text-transform:uppercase}
+p{color:var(--ink3);line-height:1.75;margin-bottom:10px;font-size:15px}
+strong{color:var(--ink2);font-weight:700}
+code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--surface2);border:1px solid var(--border);padding:2px 7px;border-radius:4px;color:var(--blue)}
+
+/* ── TABLES ── */
+.tw{overflow-x:auto;margin:16px 0;border-radius:10px;border:1px solid var(--border);box-shadow:var(--card-shadow)}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--navy)}
+thead th{padding:12px 16px;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:left;color:rgba(255,255,255,.6);border-bottom:1px solid rgba(255,255,255,.07);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:var(--surface2)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:nth-child(even){background:#fafbff}
+tbody td{padding:12px 16px;font-size:13.5px;color:var(--ink3);vertical-align:top;line-height:1.55}
+tbody td:first-child{color:var(--ink2);font-weight:600}
+.amt{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--green);text-align:right;white-space:nowrap}
+.amt-sm{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted2);text-align:right}
+.tr-sub td{background:var(--teal-l)!important;font-weight:700;border-top:2px solid var(--teal-m)}
+.tr-sub .amt{font-size:15px;color:var(--teal)}
+.tr-grand td{background:var(--navy)!important;color:#fff!important;font-weight:800}
+.tr-grand td:first-child{color:#fff!important}
+.tr-grand .amt{color:rgba(94,212,212,.9)!important;font-size:18px}
+.tr-sep td{background:var(--surface2);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;padding:8px 16px}
+
+/* ── BADGES ── */
+.tag{display:inline-flex;align-items:center;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:4px;border:1px solid;font-family:'JetBrains Mono',monospace;letter-spacing:.03em;white-space:nowrap}
+.t-req{background:var(--red-l);color:var(--red);border-color:var(--red-m)}
+.t-rec{background:var(--amber-l);color:var(--amber);border-color:var(--amber-m)}
+.t-opt{background:var(--blue-l);color:var(--blue);border-color:var(--blue-m)}
+.t-auto{background:var(--teal-l);color:var(--teal);border-color:var(--teal-m)}
+.t-green{background:var(--green-l);color:var(--green);border-color:var(--green-m)}
+.t-purple{background:var(--purple-l);color:var(--purple);border-color:var(--purple-m)}
+.t-gray{background:var(--surface2);color:var(--muted);border-color:var(--border2)}
+.t-navy{background:var(--navy);color:#fff;border-color:var(--navy2)}
+
+/* ── CALLOUTS ── */
+.callout{border-radius:10px;padding:18px 20px;margin:18px 0;display:flex;gap:14px;border-left:4px solid;border:1px solid;box-shadow:var(--card-shadow)}
+.ci{font-size:22px;flex-shrink:0;line-height:1.4}
+.cb{flex:1}
+.ct{font-size:11px;font-weight:700;margin-bottom:4px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.07em}
+.cx{font-size:14px;line-height:1.7;color:var(--ink3)}
+.c-teal{background:var(--teal-l);border-color:var(--teal)}.c-teal .ct{color:var(--teal)}
+.c-gold{background:var(--gold-l);border-color:var(--gold)}.c-gold .ct{color:var(--gold)}
+.c-red{background:var(--red-l);border-color:var(--red)}.c-red .ct{color:var(--red)}
+.c-green{background:var(--green-l);border-color:var(--green)}.c-green .ct{color:var(--green)}
+.c-blue{background:var(--blue-l);border-color:var(--blue)}.c-blue .ct{color:var(--blue)}
+.c-navy{background:#eef1f8;border-color:var(--navy)}.c-navy .ct{color:var(--navy)}
+.c-purple{background:var(--purple-l);border-color:var(--purple)}.c-purple .ct{color:var(--purple)}
+
+/* ── CARDS ── */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+@media(max-width:900px){.g3,.g4{grid-template-columns:1fr 1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--card-shadow);transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-1px)}
+.card-ey{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px}
+.card-h{font-size:15px;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.card-b{font-size:13.5px;color:var(--muted);line-height:1.65}
+.card-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;line-height:1;color:var(--teal);margin-bottom:4px}
+.card-nl{font-size:11px;color:var(--muted2);font-family:'JetBrains Mono',monospace}
+
+/* ── FEATURE LIST ── */
+.flist{list-style:none;padding:0;display:flex;flex-direction:column}
+.flist li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;color:var(--ink3);padding:8px 0;border-bottom:1px solid var(--border);line-height:1.6}
+.flist li:last-child{border-bottom:none}
+.flist li::before{content:'▸';color:var(--teal);flex-shrink:0;font-size:11px;margin-top:4px;font-weight:700}
+
+/* ── STATUS ITEMS ── */
+.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.si{border-radius:10px;padding:14px 16px;border:1px solid;box-shadow:var(--card-shadow);display:flex;align-items:flex-start;gap:12px}
+.si-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.si-body{}
+.si-title{font-size:13.5px;font-weight:700;margin-bottom:3px}
+.si-desc{font-size:12.5px;color:var(--muted);line-height:1.55}
+.si-green{background:var(--green-l);border-color:var(--green-m)}.si-green .si-title{color:var(--green)}.si-green .si-dot{background:var(--green)}
+.si-amber{background:var(--amber-l);border-color:var(--amber-m)}.si-amber .si-title{color:var(--amber)}.si-amber .si-dot{background:var(--amber)}
+.si-red{background:var(--red-l);border-color:var(--red-m)}.si-red .si-title{color:var(--red)}.si-red .si-dot{background:var(--red)}
+.si-purple{background:var(--purple-l);border-color:var(--purple-m)}.si-purple .si-title{color:var(--purple)}.si-purple .si-dot{background:var(--purple)}
+.si-blue{background:var(--blue-l);border-color:var(--blue-m)}.si-blue .si-title{color:var(--blue)}.si-blue .si-dot{background:var(--blue)}
+.si-gray{background:var(--surface2);border-color:var(--border2)}.si-gray .si-title{color:var(--muted)}.si-gray .si-dot{background:var(--muted2)}
+
+/* ── RBAC ── */
+.rbac-yes{color:var(--green);font-weight:800;font-size:14px}
+.rbac-no{color:var(--muted2);font-size:14px}
+.rbac-pend{font-size:11px;color:var(--amber);font-weight:700;font-family:'JetBrains Mono',monospace;display:block}
+
+/* ── DIAGRAM CONTAINERS ── */
+.diagram-wrap{margin:20px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--card-shadow)}
+.diagram-hd{background:var(--navy2);padding:14px 20px;display:flex;align-items:center;gap:10px}
+.diagram-hd-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.08em;text-transform:uppercase}
+.diagram-hd-dots{display:flex;gap:6px;margin-left:auto}
+.dhd{width:11px;height:11px;border-radius:50%}
+.diagram-body{background:#fff;padding:28px;overflow-x:auto}
+.diagram-svg{width:100%;height:auto;display:block}
+
+/* ── WORKFLOW FLOW ── */
+.flow-step{display:flex;flex-direction:column;align-items:center;gap:0}
+.flow-step-box{background:var(--surface2);border:2px solid var(--border2);border-radius:10px;padding:14px 16px;text-align:center;min-width:130px;transition:all .2s}
+.flow-step-box:hover{border-color:var(--teal);background:var(--teal-l)}
+.flow-step-icon{font-size:22px;margin-bottom:6px}
+.flow-step-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.flow-step-text{font-size:12.5px;font-weight:600;color:var(--ink2)}
+.flow-arrow{color:var(--muted2);font-size:22px;padding:0 8px;align-self:center;flex-shrink:0}
+.flow-row{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;justify-content:center}
+
+/* ── INFRA CARDS ── */
+.infra-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--card-shadow)}
+.infra-card.rec{border:2px solid var(--teal)}
+.ic-hd{padding:16px 20px;border-bottom:1px solid var(--border)}
+.ic-hd.rec-hd{background:linear-gradient(135deg,var(--teal-l),#f0faf8)}
+.ic-name{font-size:17px;font-weight:800;color:var(--ink2);margin-bottom:3px}
+.ic-price{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin-bottom:2px}
+.ic-sub{font-size:11px;color:var(--muted2);font-family:'JetBrains Mono',monospace}
+.ic-row{display:flex;justify-content:space-between;align-items:center;padding:9px 20px;border-bottom:1px solid var(--border);font-size:13.5px}
+.ic-row:last-child{border-bottom:none}
+.ic-row-l{color:var(--ink3)}
+.ic-row-r{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+
+/* ── COST MODULE BLOCK ── */
+.cost-module{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:var(--card-shadow)}
+.cm-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.cm-hd-l{}
+.cm-mod{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.cm-name{font-size:17px;font-weight:800;color:var(--ink2)}
+.cm-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--green)}
+.cm-body{padding:16px 20px}
+.cm-feats{display:flex;flex-wrap:wrap;gap:6px}
+.cm-feat{font-size:11.5px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 10px;color:var(--muted)}
+
+/* ── TOTAL BOX ── */
+.total-final{background:var(--grad1);border-radius:12px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;margin:20px 0;box-shadow:0 8px 40px rgba(10,22,40,.25)}
+.tf-label{font-size:16px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:4px}
+.tf-sub{font-size:11px;color:rgba(255,255,255,.35);font-family:'JetBrains Mono',monospace}
+.tf-val{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:rgba(94,212,212,.95);line-height:1}
+.tf-gst{font-size:11px;color:rgba(255,255,255,.3);text-align:right;font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:32px;margin-top:16px}
+.timeline::before{content:'';position:absolute;left:10px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,var(--teal),var(--border));border-radius:1px}
+.tl{position:relative;margin-bottom:30px}
+.tl-dot{position:absolute;left:-26px;top:5px;width:16px;height:16px;border-radius:50%;background:var(--teal);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--teal)}
+.tl-week{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.tl-title{font-size:16px;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.tl-list{list-style:none;padding:0}
+.tl-list li{font-size:13.5px;color:var(--muted);padding:3px 0 3px 14px;position:relative;line-height:1.55}
+.tl-list li::before{content:'→';position:absolute;left:0;color:var(--muted2);font-size:11px}
+.tl-del{margin-top:10px;background:var(--teal-l);border:1px solid var(--teal-m);border-radius:6px;padding:9px 13px;font-size:12px;color:var(--teal);font-family:'JetBrains Mono',monospace}
+
+/* ── SIG ── */
+.sig-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.sig-box{border:1px solid var(--border);border-radius:12px;padding:24px;background:var(--surface);box-shadow:var(--card-shadow)}
+.sig-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:28px}
+.sig-line{border-top:1.5px solid var(--border2);padding-top:10px}
+.sig-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--ink2)}
+.sig-detail{font-size:12px;color:var(--muted);margin-top:3px;font-family:'JetBrains Mono',monospace;line-height:1.9}
+
+/* ── PRINT FAB ── */
+.print-fab{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  display:flex;align-items:center;gap:10px;
+  background:var(--navy);color:#fff;border:none;
+  padding:13px 22px;border-radius:50px;cursor:pointer;
+  font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;
+  box-shadow:0 8px 32px rgba(10,22,40,.35),0 2px 8px rgba(10,22,40,.2);
+  transition:all .2s;letter-spacing:.01em;
+}
+.print-fab:hover{background:var(--teal);box-shadow:0 12px 40px rgba(10,123,123,.4),0 4px 12px rgba(10,123,123,.3);transform:translateY(-2px)}
+.print-fab-icon{font-size:18px}
+
+/* ── FOOTER ── */
+.doc-footer{background:var(--navy);padding:20px 72px;display:flex;justify-content:space-between;align-items:center}
+.df{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:rgba(255,255,255,.25);line-height:1.9}
+.df em{color:rgba(94,212,212,.55);font-style:normal}
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR TOGGLE ════ -->
+<button class="sb-toggle-btn sidebar-open no-print" id="sidebarToggle" title="Toggle Navigation">☰</button>
+
+<!-- ════ SIDEBAR ════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sb-head">
+    <div class="sb-logo-row">
+      <div class="sb-logo-text">
+        <div class="sb-logo-name">Digital Builders</div>
+        <div class="sb-logo-sub">Ashish Gupta · +91-9087021592</div>
+      </div>
+      <button class="sb-close" id="sidebarClose" title="Close">✕</button>
+    </div>
+    <div class="sb-doc-chip">
+      <strong>GE-P1-2026-001</strong><br>
+      Phase 1 · M1 + M2 Only<br>
+      v1.0 · May 2026 · Confidential
+    </div>
+  </div>
+  <div class="sb-group">Part A — PRD</div>
+  <a class="sb-link active" href="#cover">Cover</a>
+  <a class="sb-link" href="#prd-overview"><span class="sb-n">A1</span>Overview & Vision</a>
+  <a class="sb-link" href="#workflow"><span class="sb-n">A2</span>Workflow Diagram</a>
+  <a class="sb-link" href="#m1-prd"><span class="sb-n">A3</span>Module 1 · Catalog</a>
+  <a class="sb-link" href="#m2-prd"><span class="sb-n">A4</span>Module 2 · Inventory</a>
+  <a class="sb-link" href="#rbac"><span class="sb-n">A5</span>RBAC Matrix</a>
+  <a class="sb-link" href="#scope"><span class="sb-n">A6</span>Scope Boundaries</a>
+  <div class="sb-group">Part B — TRD</div>
+  <a class="sb-link" href="#trd-arch"><span class="sb-n">B1</span>Architecture Diagram</a>
+  <a class="sb-link" href="#data-model"><span class="sb-n">B2</span>Data Model</a>
+  <a class="sb-link" href="#stack"><span class="sb-n">B3</span>Tech Stack</a>
+  <a class="sb-link" href="#api"><span class="sb-n">B4</span>API Endpoints</a>
+  <a class="sb-link" href="#mobile-trd"><span class="sb-n">B5</span>Mobile & Offline</a>
+  <a class="sb-link" href="#security"><span class="sb-n">B6</span>Security</a>
+  <a class="sb-link" href="#perf"><span class="sb-n">B7</span>Performance SLAs</a>
+  <div class="sb-group">Part C — Cost</div>
+  <a class="sb-link" href="#rate-basis"><span class="sb-n">C0</span>Rate Basis</a>
+  <a class="sb-link" href="#cost-m1"><span class="sb-n">C1</span>Module 1 Cost</a>
+  <a class="sb-link" href="#cost-m2"><span class="sb-n">C2</span>Module 2 Cost</a>
+  <a class="sb-link" href="#infra-cost"><span class="sb-n">C3</span>Infrastructure</a>
+  <a class="sb-link" href="#total-cost"><span class="sb-n">C4</span>Total & Payment</a>
+  <a class="sb-link" href="#approval"><span class="sb-n">C5</span>Sign-Off</a>
+</nav>
+
+<main class="main" id="mainContent">
+
+<!-- ════ COVER ════ -->
+<div class="cover" id="cover">
+  <div class="cover-noise"></div>
+  <div class="cover-grid-lines"></div>
+  <div class="cover-glow cg1"></div>
+  <div class="cover-glow cg2"></div>
+
+  <div class="cover-top">
+    <div class="cover-badge">● Phase 1 · Two-Module Build</div>
+    <div class="cover-phase-meta">
+      Document: GE-P1-PRD-TRD-COST-001<br>
+      Version 1.0 · May 2026<br>
+      Status: For Client Review
+    </div>
+  </div>
+
+  <div class="cover-body" style="margin-top:60px">
+    <div class="cover-kicker">Garg Enterprises · Ludhiana · Inventory System Phase 1</div>
+    <div class="cover-h1">Catalog &<br><span class="ital">Inventory</span><br>Management</div>
+    <div class="cover-sub">A focused, production-ready Phase 1 implementation covering <strong style="color:rgba(255,255,255,.75)">Module 1: Catalog & SKU Management</strong> and <strong style="color:rgba(255,255,255,.75)">Module 2: Inventory Management</strong> — delivering complete digital control over 26,000+ products with real-time stock intelligence.</div>
+    <div class="cover-rule"><div class="cr-line"></div><div class="cr-diamond"></div><div class="cr-line" style="background:rgba(255,255,255,.06)"></div></div>
+    <div class="cover-stats-grid">
+      <div class="csg-cell"><div class="csg-val">26K+</div><div class="csg-lbl">SKUs in Database</div></div>
+      <div class="csg-cell"><div class="csg-val">4</div><div class="csg-lbl">User Roles</div></div>
+      <div class="csg-cell"><div class="csg-val">4 Wks</div><div class="csg-lbl">Delivery Timeline</div></div>
+      <div class="csg-cell"><div class="csg-val">₹3L</div><div class="csg-lbl">Investment</div></div>
+    </div>
+  </div>
+
+  <div class="cover-bottom">
+    <div class="cb-l">
+      Prepared for: <strong>Pankaj Garg — Owner, Garg Enterprises</strong><br>
+      Prepared by: <strong>Ashish Gupta · Digital Builders · +91-9087021592</strong>
+    </div>
+    <div class="cb-r">
+      PRD · TRD · Cost Estimation<br>
+      Android + iOS Mobile Application<br>
+      Confidential — Not for Distribution
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PART A — PRD ════════════════ -->
+<div class="part-header page-break" id="prd-start">
+  <div class="ph-accent" style="background:linear-gradient(to bottom,#5ed4d4,#0a7b7b)"></div>
+  <div class="ph-text">
+    <div class="ph-doc" style="color:rgba(94,212,212,.7)">Part A · GE-P1-PRD-001</div>
+    <div class="ph-title">Product Requirements Document</div>
+    <div class="ph-sub">Functional specifications for Module 1 and Module 2 only. All other features are future phases.</div>
+  </div>
+  <div class="ph-badge"><span class="tag t-navy" style="font-size:12px;padding:6px 14px">Phase 1 · 2 Modules</span></div>
+</div>
+
+<!-- A1: OVERVIEW -->
+<div class="section" id="prd-overview">
+  <div class="sec-eyebrow">A1 · Vision</div>
+  <div class="sec-h1">Phase 1 — What Gets Built</div>
+  <div class="sec-desc">Phase 1 is laser-focused on one objective: giving Garg Enterprises complete digital visibility and control over their entire 26,000+ product catalogue and real-time inventory — from a mobile app, for four types of users, with an Owner approval system that ensures data accuracy from Day 1.</div>
+
+  <div class="grid g2" style="margin:28px 0">
+    <div class="card" style="border-top:4px solid var(--navy2)">
+      <div class="card-ey">Module 1</div>
+      <div class="card-h">📦 Catalog & SKU Management</div>
+      <div class="card-b">All 26,000 products in a single, searchable, structured database. Add, edit, delete, and bulk import from Excel. Organised by category, brand, floor, section, and bin location. Full barcode scanning and QR code generation for unlabelled items.</div>
+    </div>
+    <div class="card" style="border-top:4px solid var(--teal)">
+      <div class="card-ey">Module 2</div>
+      <div class="card-h">📊 Inventory Management</div>
+      <div class="card-b">Real-time stock levels across every location. Record every stock movement — in, out, and between sections. Owner approval on all changes. Automated alerts for low stock, out-of-stock, dead stock, and out-of-trend items. Complete movement history.</div>
+    </div>
+  </div>
+
+  <div class="callout c-gold">
+    <div class="ci">🔮</div>
+    <div class="cb">
+      <div class="ct">Future-Proof Architecture Decision</div>
+      <div class="cx">Although Phase 1 covers only 2 modules, the database schema, API design, RBAC system, and mobile app structure are <strong>architected to support all future phases</strong> — POS & Billing, Supplier Management, Customer Khata, eCommerce, Attendance, WhatsApp automation, and the complete Garg BizSuite. Every rupee invested in Phase 1 compounds across every future phase. Phase 2 onwards is an extension, never a rebuild.</div>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-top:24px">
+    <div class="card" style="text-align:center"><div class="card-num">26K+</div><div class="card-nl">Products catalogued</div></div>
+    <div class="card" style="text-align:center"><div class="card-num">4</div><div class="card-nl">User roles · RBAC</div></div>
+    <div class="card" style="text-align:center"><div class="card-num">6</div><div class="card-nl">Stock status types</div></div>
+    <div class="card" style="text-align:center"><div class="card-num">4W</div><div class="card-nl">Delivery timeline</div></div>
+  </div>
+</div>
+
+<!-- A2: WORKFLOW DIAGRAM -->
+<div class="section" id="workflow">
+  <div class="sec-eyebrow">A2 · Process Flow</div>
+  <div class="sec-h1">Complete System Workflow</div>
+  <div class="sec-desc">End-to-end operational workflows showing how all four user roles interact with Module 1 and Module 2 — from product onboarding to stock management and Owner approval.</div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-hd">
+      <div class="diagram-hd-title">Workflow Diagram — Catalog & Inventory System (Phase 1)</div>
+      <div class="diagram-hd-dots"><div class="dhd" style="background:#f87171"></div><div class="dhd" style="background:#fbbf24"></div><div class="dhd" style="background:#34d399"></div></div>
+    </div>
+    <div class="diagram-body" style="padding:32px;background:#f9faff">
+      <svg viewBox="0 0 900 680" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" style="font-family:'JetBrains Mono',sans-serif">
+        <!-- Background lanes -->
+        <rect x="0" y="0" width="900" height="680" fill="#f9faff"/>
+        <!-- Lane headers -->
+        <rect x="0" y="0" width="900" height="40" fill="#0a1628" rx="4"/>
+        <text x="12" y="14" fill="rgba(255,255,255,.5)" font-size="9" font-family="JetBrains Mono">SYSTEM WORKFLOW — PHASE 1 · CATALOG &amp; INVENTORY MANAGEMENT</text>
+
+        <!-- ── FLOW NODES ── -->
+        <!-- Row 1: START -->
+        <rect x="8" y="56" width="134" height="36" rx="8" fill="#0a1628"/>
+        <text x="75" y="79" fill="#5ed4d4" font-size="10" font-weight="700" text-anchor="middle">Owner Setup</text>
+
+        <!-- Owner configures -->
+        <rect x="8" y="108" width="134" height="50" rx="8" fill="white" stroke="#0a1628" stroke-width="1.5"/>
+        <text x="75" y="127" fill="#0a1628" font-size="9.5" text-anchor="middle">Configure</text>
+        <text x="75" y="141" fill="#0a1628" font-size="9.5" text-anchor="middle">Categories &amp; Locations</text>
+        <text x="75" y="155" fill="#6b7a99" font-size="8.5" text-anchor="middle">Floor · Section · Aisle · Bin</text>
+
+        <rect x="8" y="174" width="134" height="50" rx="8" fill="white" stroke="#0a1628" stroke-width="1.5"/>
+        <text x="75" y="192" fill="#0a1628" font-size="9.5" text-anchor="middle">Upload Excel</text>
+        <text x="75" y="206" fill="#0a1628" font-size="9.5" text-anchor="middle">26,000 SKUs</text>
+        <text x="75" y="220" fill="#6b7a99" font-size="8.5" text-anchor="middle">Bulk Import + Validate</text>
+
+        <!-- Arrow down -->
+        <line x1="75" y1="224" x2="75" y2="240" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+        <rect x="8" y="240" width="134" height="50" rx="8" fill="white" stroke="#0a1628" stroke-width="1.5"/>
+        <text x="75" y="259" fill="#0a1628" font-size="9.5" text-anchor="middle">Set Reorder Points</text>
+        <text x="75" y="273" fill="#0a1628" font-size="9.5" text-anchor="middle">&amp; Alert Thresholds</text>
+        <text x="75" y="287" fill="#6b7a99" font-size="8.5" text-anchor="middle">Per SKU or Category</text>
+
+        <!-- ── MANAGER LANE ── -->
+        <rect x="160" y="56" width="174" height="36" rx="8" fill="#0a7b7b"/>
+        <text x="247" y="79" fill="white" font-size="10" font-weight="700" text-anchor="middle">Manager Operations</text>
+
+        <rect x="160" y="108" width="174" height="50" rx="8" fill="white" stroke="#0a7b7b" stroke-width="1.5"/>
+        <text x="247" y="127" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Search &amp; Browse</text>
+        <text x="247" y="141" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Full Catalogue</text>
+        <text x="247" y="155" fill="#6b7a99" font-size="8.5" text-anchor="middle">Text · Barcode · Category</text>
+
+        <rect x="160" y="174" width="174" height="50" rx="8" fill="white" stroke="#0a7b7b" stroke-width="1.5"/>
+        <text x="247" y="192" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Submit New Product</text>
+        <text x="247" y="206" fill="#0a7b7b" font-size="9.5" text-anchor="middle">or Edit Existing</text>
+        <text x="247" y="220" fill="#6b7a99" font-size="8.5" text-anchor="middle">→ Goes to Pending Queue</text>
+
+        <rect x="160" y="240" width="174" height="50" rx="8" fill="white" stroke="#0a7b7b" stroke-width="1.5"/>
+        <text x="247" y="259" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Record Stock Inward</text>
+        <text x="247" y="273" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Outward · Transfer</text>
+        <text x="247" y="287" fill="#6b7a99" font-size="8.5" text-anchor="middle">→ Pending Approval</text>
+
+        <rect x="160" y="306" width="174" height="50" rx="8" fill="white" stroke="#0a7b7b" stroke-width="1.5"/>
+        <text x="247" y="325" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Generate Inventory</text>
+        <text x="247" y="339" fill="#0a7b7b" font-size="9.5" text-anchor="middle">Reports &amp; Export</text>
+        <text x="247" y="353" fill="#6b7a99" font-size="8.5" text-anchor="middle">Excel · Dead Stock · Value</text>
+
+        <!-- ── STAFF LANE ── -->
+        <rect x="352" y="56" width="174" height="36" rx="8" fill="#5218a0"/>
+        <text x="439" y="79" fill="white" font-size="10" font-weight="700" text-anchor="middle">Staff / Floor</text>
+
+        <rect x="352" y="108" width="174" height="50" rx="8" fill="white" stroke="#5218a0" stroke-width="1.5"/>
+        <text x="439" y="127" fill="#5218a0" font-size="9.5" text-anchor="middle">Search Product</text>
+        <text x="439" y="141" fill="#5218a0" font-size="9.5" text-anchor="middle">Scan Barcode / QR</text>
+        <text x="439" y="155" fill="#6b7a99" font-size="8.5" text-anchor="middle">View stock &amp; location</text>
+
+        <rect x="352" y="174" width="174" height="50" rx="8" fill="white" stroke="#5218a0" stroke-width="1.5"/>
+        <text x="439" y="192" fill="#5218a0" font-size="9.5" text-anchor="middle">Browse by</text>
+        <text x="439" y="206" fill="#5218a0" font-size="9.5" text-anchor="middle">Category / Brand</text>
+        <text x="439" y="220" fill="#6b7a99" font-size="8.5" text-anchor="middle">Check availability</text>
+
+        <rect x="352" y="240" width="174" height="50" rx="8" fill="white" stroke="#5218a0" stroke-width="1.5"/>
+        <text x="439" y="259" fill="#5218a0" font-size="9.5" text-anchor="middle">Report Damaged /</text>
+        <text x="439" y="273" fill="#5218a0" font-size="9.5" text-anchor="middle">Missing Item</text>
+        <text x="439" y="287" fill="#6b7a99" font-size="8.5" text-anchor="middle">Photo + description</text>
+
+        <!-- ── GODOWN LANE ── -->
+        <rect x="544" y="56" width="174" height="36" rx="8" fill="#b86000"/>
+        <text x="631" y="79" fill="white" font-size="10" font-weight="700" text-anchor="middle">Godown Staff</text>
+
+        <rect x="544" y="108" width="174" height="50" rx="8" fill="white" stroke="#b86000" stroke-width="1.5"/>
+        <text x="631" y="127" fill="#b86000" font-size="9.5" text-anchor="middle">Scan Inward Delivery</text>
+        <text x="631" y="141" fill="#b86000" font-size="9.5" text-anchor="middle">Barcode by Barcode</text>
+        <text x="631" y="155" fill="#6b7a99" font-size="8.5" text-anchor="middle">Confirm qty received</text>
+
+        <rect x="544" y="174" width="174" height="50" rx="8" fill="white" stroke="#b86000" stroke-width="1.5"/>
+        <text x="631" y="192" fill="#b86000" font-size="9.5" text-anchor="middle">Confirm Bin Placement</text>
+        <text x="631" y="206" fill="#b86000" font-size="9.5" text-anchor="middle">Scan Shelf Label</text>
+        <text x="631" y="220" fill="#6b7a99" font-size="8.5" text-anchor="middle">GF-SA-A3-S2 confirmed</text>
+
+        <rect x="544" y="240" width="174" height="50" rx="8" fill="white" stroke="#b86000" stroke-width="1.5"/>
+        <text x="631" y="259" fill="#b86000" font-size="9.5" text-anchor="middle">Cycle Count Section</text>
+        <text x="631" y="273" fill="#b86000" font-size="9.5" text-anchor="middle">Scan All Items</text>
+        <text x="631" y="287" fill="#6b7a99" font-size="8.5" text-anchor="middle">Variance auto-calculated</text>
+
+        <!-- ── SYSTEM LANE ── -->
+        <rect x="736" y="56" width="156" height="36" rx="8" fill="#126633"/>
+        <text x="814" y="79" fill="white" font-size="10" font-weight="700" text-anchor="middle">System Auto</text>
+
+        <rect x="736" y="108" width="156" height="50" rx="8" fill="white" stroke="#126633" stroke-width="1.5"/>
+        <text x="814" y="127" fill="#126633" font-size="9.5" text-anchor="middle">MeiliSearch Index</text>
+        <text x="814" y="141" fill="#126633" font-size="9.5" text-anchor="middle">All 26K Products</text>
+        <text x="814" y="155" fill="#6b7a99" font-size="8.5" text-anchor="middle">&lt;800ms search SLA</text>
+
+        <rect x="736" y="174" width="156" height="50" rx="8" fill="white" stroke="#126633" stroke-width="1.5"/>
+        <text x="814" y="192" fill="#126633" font-size="9.5" text-anchor="middle">Alert Engine Runs</text>
+        <text x="814" y="206" fill="#126633" font-size="9.5" text-anchor="middle">Daily at 6:00 AM</text>
+        <text x="814" y="220" fill="#6b7a99" font-size="8.5" text-anchor="middle">Low · Out · Dead stock</text>
+
+        <rect x="736" y="240" width="156" height="50" rx="8" fill="white" stroke="#126633" stroke-width="1.5"/>
+        <text x="814" y="259" fill="#126633" font-size="9.5" text-anchor="middle">Push Notifications</text>
+        <text x="814" y="273" fill="#126633" font-size="9.5" text-anchor="middle">Fired to Owner</text>
+        <text x="814" y="287" fill="#6b7a99" font-size="8.5" text-anchor="middle">FCM · Instant delivery</text>
+
+        <!-- ── APPROVAL FLOW (Row 2 shared) ── -->
+        <rect x="0" y="375" width="900" height="50" fill="#fdf4e0" rx="0"/>
+        <text x="450" y="395" fill="#9a6000" font-size="10" font-weight="700" text-anchor="middle">MAKER-CHECKER APPROVAL GATE — All changes from Manager / Staff / Godown go here</text>
+        <text x="450" y="413" fill="#b86000" font-size="9.5" text-anchor="middle">Owner reviews Pending Queue → Approve (stock updates instantly) or Reject (notification sent to submitter with reason)</text>
+
+        <!-- Approval boxes -->
+        <rect x="60" y="440" width="160" height="50" rx="8" fill="white" stroke="#0a1628" stroke-width="2"/>
+        <text x="140" y="460" fill="#0a1628" font-size="10" font-weight="700" text-anchor="middle">👑 Owner Reviews</text>
+        <text x="140" y="477" fill="#6b7a99" font-size="9" text-anchor="middle">Pending Queue</text>
+
+        <rect x="260" y="440" width="140" height="50" rx="8" fill="#e8f7ee" stroke="#126633" stroke-width="1.5"/>
+        <text x="330" y="460" fill="#126633" font-size="10" font-weight="700" text-anchor="middle">✅ Approve</text>
+        <text x="330" y="477" fill="#6b7a99" font-size="9" text-anchor="middle">Stock updates live</text>
+
+        <rect x="440" y="440" width="140" height="50" rx="8" fill="#fdf0f0" stroke="#a81c1c" stroke-width="1.5"/>
+        <text x="510" y="460" fill="#a81c1c" font-size="10" font-weight="700" text-anchor="middle">❌ Reject</text>
+        <text x="510" y="477" fill="#6b7a99" font-size="9" text-anchor="middle">Push notification sent</text>
+
+        <rect x="620" y="440" width="160" height="50" rx="8" fill="white" stroke="#0a7b7b" stroke-width="1.5"/>
+        <text x="700" y="460" fill="#0a7b7b" font-size="10" font-weight="700" text-anchor="middle">📊 Audit Logged</text>
+        <text x="700" y="477" fill="#6b7a99" font-size="9" text-anchor="middle">Who · What · When</text>
+
+        <!-- Approval arrows -->
+        <line x1="220" y1="465" x2="260" y2="465" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="400" y1="465" x2="440" y2="465" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="580" y1="465" x2="620" y2="465" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ── DASHBOARD ROW ── -->
+        <rect x="60" y="516" width="780" height="50" rx="8" fill="white" stroke="#0a1628" stroke-width="2"/>
+        <text x="450" y="536" fill="#0a1628" font-size="11" font-weight="700" text-anchor="middle">📱 Owner Dashboard</text>
+        <text x="450" y="553" fill="#6b7a99" font-size="9.5" text-anchor="middle">Pending Count · Out-of-Stock List · Low Stock · Dead Stock Value ₹ · Inventory by Category · Movement History · Export Reports</text>
+
+        <!-- Legend -->
+        <rect x="60" y="584" width="780" height="80" rx="8" fill="#f0f2f9" stroke="#dde1ef"/>
+        <text x="90" y="604" fill="#3d4f70" font-size="9.5" font-weight="700">LEGEND</text>
+        <rect x="90" y="614" width="12" height="12" rx="2" fill="#0a1628"/><text x="108" y="624" fill="#3d4f70" font-size="9">Owner Direct (immediate)</text>
+        <rect x="230" y="614" width="12" height="12" rx="2" fill="#0a7b7b"/><text x="248" y="624" fill="#3d4f70" font-size="9">Manager (pending approval)</text>
+        <rect x="400" y="614" width="12" height="12" rx="2" fill="#5218a0"/><text x="418" y="624" fill="#3d4f70" font-size="9">Staff (view + report only)</text>
+        <rect x="555" y="614" width="12" height="12" rx="2" fill="#b86000"/><text x="573" y="624" fill="#3d4f70" font-size="9">Godown (scan + pending)</text>
+        <rect x="700" y="614" width="12" height="12" rx="2" fill="#126633"/><text x="718" y="624" fill="#3d4f70" font-size="9">System Auto</text>
+        <text x="90" y="652" fill="#6b7a99" font-size="8.5">All changes (⚡ Pending) wait in Owner approval queue before affecting live inventory. Owner-initiated changes (✓ Direct) take effect immediately.</text>
+
+        <!-- Arrow marker -->
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#0a1628"/>
+          </marker>
+        </defs>
+
+        <!-- Flow down arrows in each lane -->
+        <line x1="75" y1="92" x2="75" y2="108" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="75" y1="158" x2="75" y2="174" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <line x1="247" y1="92" x2="247" y2="108" stroke="#0a7b7b" stroke-width="1.5" marker-end="url(#arrteal)"/>
+        <line x1="247" y1="158" x2="247" y2="174" stroke="#0a7b7b" stroke-width="1.5" marker-end="url(#arrteal)"/>
+        <line x1="247" y1="224" x2="247" y2="240" stroke="#0a7b7b" stroke-width="1.5" marker-end="url(#arrteal)"/>
+        <line x1="247" y1="290" x2="247" y2="306" stroke="#0a7b7b" stroke-width="1.5" marker-end="url(#arrteal)"/>
+
+        <line x1="439" y1="92" x2="439" y2="108" stroke="#5218a0" stroke-width="1.5" marker-end="url(#arrpurple)"/>
+        <line x1="439" y1="158" x2="439" y2="174" stroke="#5218a0" stroke-width="1.5" marker-end="url(#arrpurple)"/>
+        <line x1="439" y1="224" x2="439" y2="240" stroke="#5218a0" stroke-width="1.5" marker-end="url(#arrpurple)"/>
+
+        <line x1="631" y1="92" x2="631" y2="108" stroke="#b86000" stroke-width="1.5" marker-end="url(#arramber)"/>
+        <line x1="631" y1="158" x2="631" y2="174" stroke="#b86000" stroke-width="1.5" marker-end="url(#arramber)"/>
+        <line x1="631" y1="224" x2="631" y2="240" stroke="#b86000" stroke-width="1.5" marker-end="url(#arramber)"/>
+
+        <!-- Submission arrows to approval -->
+        <line x1="247" y1="356" x2="247" y2="375" stroke="#9a6000" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrgold)"/>
+        <line x1="439" y1="290" x2="439" y2="375" stroke="#9a6000" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrgold)"/>
+        <line x1="631" y1="290" x2="631" y2="375" stroke="#9a6000" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrgold)"/>
+
+        <!-- Approval to dashboard -->
+        <line x1="450" y1="490" x2="450" y2="516" stroke="#0a1628" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <defs>
+          <marker id="arrteal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#0a7b7b"/></marker>
+          <marker id="arrpurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5218a0"/></marker>
+          <marker id="arramber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b86000"/></marker>
+          <marker id="arrgold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9a6000"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- A3: MODULE 1 -->
+<div class="section" id="m1-prd">
+  <div class="sec-eyebrow">A3 · Module 1</div>
+  <div class="sec-h1">Catalog & SKU Management</div>
+  <div class="sec-desc">A single, searchable master database of every product Garg Enterprises stocks, built on a structured hierarchy from super-category down to individual bin/shelf location — making any of the 26,000 products findable in under 5 seconds.</div>
+
+  <h2>Product Organisation Hierarchy</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Level</th><th>Examples</th><th>Est. Count</th><th>Configured By</th></tr></thead>
+      <tbody>
+        <tr><td>Super Category</td><td>Hardware · Kitchen · Security · Accessories · Plumbing</td><td>5–8</td><td>Owner (one-time)</td></tr>
+        <tr><td>Category</td><td>Locks · Handles · Hinges · Drawer Systems · Lift-Ups</td><td>25–35</td><td>Owner</td></tr>
+        <tr><td>Sub-Category</td><td>Digital Locks · Biometric Locks · Mortice · Smart Locks</td><td>80–120</td><td>Owner</td></tr>
+        <tr><td>Brand</td><td>Hafele · Blum · Hettich · Yale · Godrej · Bosch</td><td>27</td><td>Owner</td></tr>
+        <tr><td>Floor</td><td>Ground Floor · First Floor · Godown / Basement</td><td>3–5</td><td>Owner</td></tr>
+        <tr><td>Section</td><td>Section A — Locks · Section B — Kitchen · Section C — Handles</td><td>10–20</td><td>Owner</td></tr>
+        <tr><td>Aisle / Unit</td><td>A-01 · A-02 · B-12 (Aisle within section)</td><td>50–200</td><td>Owner/Staff</td></tr>
+        <tr><td>Bin / Shelf</td><td>A-03-S2 (Section A · Aisle 3 · Shelf 2)</td><td>500–2,000</td><td>Auto + Staff</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Per-SKU Data Fields</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Field</th><th>Example</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>SKU Code</td><td>GE-HDL-HAF-0042 (auto-generated if not provided)</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Barcode (EAN-13 / EAN-8 / QR)</td><td>4007233340960 · QR auto-generated if no barcode</td><td><span class="tag t-rec">If Available</span></td></tr>
+        <tr><td>Product Name (Full)</td><td>Hafele Cabinet Handle 128mm Matte Black Zinc</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Product Name (Short)</td><td>Hafele Handle 128mm Black</td><td><span class="tag t-rec">Recommended</span></td></tr>
+        <tr><td>Brand</td><td>Hafele</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Category Path</td><td>Hardware → Handles → Cabinet Handles</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>HSN Code</td><td>8302 (reserved for Phase 2 GST)</td><td><span class="tag t-rec">Recommended</span></td></tr>
+        <tr><td>Model Number</td><td>HAF-128-MB</td><td><span class="tag t-opt">Optional</span></td></tr>
+        <tr><td>Colour / Finish</td><td>Matte Black · Chrome · Gold · Rose Gold</td><td><span class="tag t-opt">If Applicable</span></td></tr>
+        <tr><td>Material</td><td>Zinc Alloy · SS304 · Aluminium · PVC</td><td><span class="tag t-opt">If Applicable</span></td></tr>
+        <tr><td>Dimensions (mm)</td><td>128mm centre-to-centre · 148mm total length</td><td><span class="tag t-opt">If Applicable</span></td></tr>
+        <tr><td>Base Unit of Measure</td><td>pcs · box · metre · roll · set · kg</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Purchase UoM + Conversion</td><td>1 Box = 50 pcs (for bulk-purchased items)</td><td><span class="tag t-rec">If Different</span></td></tr>
+        <tr><td>Physical Location</td><td>Ground Floor → Section A → Aisle 3 → Shelf 2</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Reorder Point</td><td>Alert Owner when quantity falls below 20 pcs</td><td><span class="tag t-req">Required</span></td></tr>
+        <tr><td>Reorder Quantity</td><td>Suggested reorder: 200 pcs</td><td><span class="tag t-rec">Recommended</span></td></tr>
+        <tr><td>Product Photos</td><td>Up to 5 photos per SKU (captured via mobile camera)</td><td><span class="tag t-rec">Recommended</span></td></tr>
+        <tr><td>Tags</td><td>main-door · hotel · office · premium · trending</td><td><span class="tag t-opt">Optional</span></td></tr>
+        <tr><td>Status</td><td>Active · Inactive · Discontinued · Out-of-Trend</td><td><span class="tag t-auto">System + Owner</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Module 1 — Core Feature Specifications</h2>
+  <ul class="flist">
+    <li><strong>Add Product</strong> — Owner adds directly (immediate). Manager submits (goes to Pending Approval queue). Full field form with barcode scan-to-fill, camera photo capture, UoM conversion builder, location picker (drill-down tree).</li>
+    <li><strong>Edit Product</strong> — Update any field on any existing product. Owner edits take effect immediately. Manager edits are queued. Complete edit history maintained with before/after values in the audit log.</li>
+    <li><strong>Deactivate / Discontinue</strong> — Products are never hard-deleted. Owner can deactivate (hides from search, preserves all movement history) or mark as Discontinued. Both states are reversible.</li>
+    <li><strong>Bulk Import from Excel</strong> — Owner uploads Excel file. System runs 28 validation rules (duplicate barcodes, missing required fields, invalid category paths, UoM mismatch, etc.). Returns a validation report with error row numbers. Clean rows imported in batches of 1,000. Full 26,000 SKU load completes within 3 minutes via background queue.</li>
+    <li><strong>Barcode Scan Search</strong> — Any user opens the scanner screen, points the camera at any barcode or QR code, and instantly sees the product record with current stock level, location, and photo. Response under 300ms online, under 150ms offline (WatermelonDB).</li>
+    <li><strong>Full-Text Search</strong> — Type-ahead search across product name, SKU code, barcode, model number, brand, and tags. MeiliSearch powers sub-800ms results across 26K SKUs with typo tolerance ("hafle handl blk" finds "Hafele Handle Black").</li>
+    <li><strong>Category & Brand Browse</strong> — Drill down through the category tree (4 levels). Tap any brand to see all products for that brand with stock status badges. Filter any view by floor, section, or stock status.</li>
+    <li><strong>Location Browse</strong> — Navigate by physical location: Floor → Section → Aisle → view all products at that exact location. Godown staff use this during cycle counts.</li>
+    <li><strong>QR Label Generation</strong> — For products without manufacturer barcodes, the system generates a printable QR code label (contains SKU code, product name, location). Supports individual and batch label generation for unlabelled items.</li>
+  </ul>
+</div>
+
+<!-- A4: MODULE 2 -->
+<div class="section" id="m2-prd">
+  <div class="sec-eyebrow">A4 · Module 2</div>
+  <div class="sec-h1">Inventory Management</div>
+  <div class="sec-desc">Real-time stock tracking across every location, with a complete movement audit trail, an Owner approval gate on all changes, and automated intelligence that surfaces critical stock situations before they become business problems.</div>
+
+  <h2>Stock Movement Types</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Type</th><th>When Used</th><th>Who Submits</th><th>Approval</th></tr></thead>
+      <tbody>
+        <tr><td>📥 Stock Inward</td><td>New goods arrive from a supplier or purchase</td><td>Manager or Godown Staff</td><td><span class="tag t-rec">Owner Approves</span></td></tr>
+        <tr><td>📤 Stock Outward</td><td>Goods dispatched or issued (manual Phase 1; auto in POS Phase 2)</td><td>Manager</td><td><span class="tag t-rec">Owner Approves</span></td></tr>
+        <tr><td>🔄 Location Transfer</td><td>Moving product from one section/floor to another</td><td>Manager or Godown Staff</td><td><span class="tag t-rec">Owner Approves</span></td></tr>
+        <tr><td>🔧 Manual Adjustment</td><td>Correcting stock count after physical verification</td><td>Owner only</td><td><span class="tag t-req">Owner Direct</span></td></tr>
+        <tr><td>🗑️ Write-Off</td><td>Damaged, expired, or lost stock permanently removed</td><td>Owner only</td><td><span class="tag t-req">Owner Direct</span></td></tr>
+        <tr><td>📋 Cycle Count</td><td>Physical scan of a section to verify records vs reality</td><td>Manager or Godown Staff</td><td><span class="tag t-rec">Owner Approves Variance</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Six Stock Status Flags — Automatic Intelligence</h2>
+  <div class="status-grid">
+    <div class="si si-green"><div class="si-dot"></div><div class="si-body"><div class="si-title">✅ In Stock — Adequate</div><div class="si-desc">Quantity is above the configured reorder point. No action needed. Green badge on product card and dashboard.</div></div></div>
+    <div class="si si-red"><div class="si-dot"></div><div class="si-body"><div class="si-title">❌ Out of Stock — Zero Units</div><div class="si-desc">Quantity is 0. Immediate push notification to Owner. Appears at the top of the Out-of-Stock list on the dashboard.</div></div></div>
+    <div class="si si-amber"><div class="si-dot"></div><div class="si-body"><div class="si-title">⚠️ Low Stock — Below Reorder Point</div><div class="si-desc">Quantity has dropped below the Owner-configured reorder point. Amber alert on dashboard. Owner marks "Reorder Initiated" to silence.</div></div></div>
+    <div class="si si-purple"><div class="si-dot"></div><div class="si-body"><div class="si-title">💤 Dead Stock — No Movement 90+ Days</div><div class="si-desc">Stock exists but zero movements (inward or outward) for 90 days (configurable). Owner sees total ₹ value locked in dead stock.</div></div></div>
+    <div class="si si-blue"><div class="si-dot"></div><div class="si-body"><div class="si-title">📉 Out of Trend — Owner Flagged</div><div class="si-desc">Owner manually marks a SKU as out of market trend. Shown separately for clearance planning. New stock should not be ordered.</div></div></div>
+    <div class="si si-gray"><div class="si-dot"></div><div class="si-body"><div class="si-title">🐌 Slow Moving — Low Turnover</div><div class="si-desc">Selling, but slower than category peers. System flags for Owner review — price adjustment, promotion, or investigation.</div></div></div>
+  </div>
+</div>
+
+<!-- A5: RBAC -->
+<div class="section" id="rbac">
+  <div class="sec-eyebrow">A5 · Access Control</div>
+  <div class="sec-h1">User Roles & Permission Matrix</div>
+
+  <div class="callout c-red">
+    <div class="ci">🔐</div>
+    <div class="cb">
+      <div class="ct">The Maker-Checker Rule — Core Security Principle</div>
+      <div class="cx">Every stock quantity change, new product submission, or movement record initiated by a Sales Manager, Floor Staff, or Godown Staff is held in a <strong>"Pending Approval"</strong> queue. It does NOT affect live inventory levels until the Owner explicitly reviews it and approves. Owner-initiated changes take effect immediately. This ensures <strong>the Owner has seen and validated every piece of inventory data in the system from Day 1.</strong></div>
+    </div>
+  </div>
+
+  <div class="tw" style="margin-top:20px">
+    <table>
+      <thead><tr><th>Permission</th><th>👑 Owner</th><th>🧑‍💼 Sales Mgr</th><th>🧾 Staff</th><th>🏭 Godown</th></tr></thead>
+      <tbody>
+        <tr><td colspan="5" class="tr-sep">— Catalogue (Module 1) —</td></tr>
+        <tr><td>View full product catalogue</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td></tr>
+        <tr><td>Search, scan, browse all products</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td></tr>
+        <tr><td>Add new product / SKU</td><td class="rbac-yes">✓ Direct</td><td class="rbac-pend">⚡ Pending</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Edit product details</td><td class="rbac-yes">✓ Direct</td><td class="rbac-pend">⚡ Pending</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Delete / Deactivate product</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Bulk import from Excel</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Configure categories & locations</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td colspan="5" class="tr-sep">— Inventory (Module 2) —</td></tr>
+        <tr><td>View stock levels (all locations)</td><td class="rbac-yes">✓ All</td><td class="rbac-yes">✓ All</td><td class="rbac-yes">✓ View</td><td class="rbac-yes">✓ Own area</td></tr>
+        <tr><td>Record stock inward</td><td class="rbac-yes">✓ Direct</td><td class="rbac-pend">⚡ Pending</td><td class="rbac-no">✗</td><td class="rbac-pend">⚡ Pending</td></tr>
+        <tr><td>Record stock outward</td><td class="rbac-yes">✓ Direct</td><td class="rbac-pend">⚡ Pending</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Record stock transfer</td><td class="rbac-yes">✓ Direct</td><td class="rbac-pend">⚡ Pending</td><td class="rbac-no">✗</td><td class="rbac-pend">⚡ Pending</td></tr>
+        <tr><td>Manual stock adjustment</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Approve / reject pending changes</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Set reorder points & alert thresholds</td><td class="rbac-yes">✓ Only</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Report damaged / missing item</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td></tr>
+        <tr><td colspan="5" class="tr-sep">— Dashboard & Reports —</td></tr>
+        <tr><td>Owner dashboard (alerts + pending count)</td><td class="rbac-yes">✓ Full</td><td class="rbac-pend">Limited</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>Export inventory reports to Excel</td><td class="rbac-yes">✓</td><td class="rbac-yes">✓</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+        <tr><td>View full activity audit log</td><td class="rbac-yes">✓ All</td><td class="rbac-pend">Own entries</td><td class="rbac-no">✗</td><td class="rbac-no">✗</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--muted2);margin-top:8px;font-family:'JetBrains Mono',monospace">✓ Direct = change takes effect immediately · ⚡ Pending = held in Owner approval queue · ✗ = not permitted at any time</p>
+</div>
+
+<!-- A6: SCOPE -->
+<div class="section" id="scope">
+  <div class="sec-eyebrow">A6 · Boundaries</div>
+  <div class="sec-h1">Scope — What Is and Is Not in Phase 1</div>
+  <div class="grid g2" style="margin:20px 0">
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-ey" style="color:var(--green)">✅ In Scope — Phase 1</div>
+      <ul class="flist" style="margin-top:8px">
+        <li>Full 26,000+ SKU catalogue database</li>
+        <li>Add, edit, deactivate, bulk import products</li>
+        <li>4-level category and brand hierarchy</li>
+        <li>Physical location tree (floor/section/aisle/bin)</li>
+        <li>Barcode scanning &amp; QR label generation</li>
+        <li>Product photos (up to 5 per SKU)</li>
+        <li>Real-time stock levels (all locations)</li>
+        <li>Stock inward, outward, transfer, write-off</li>
+        <li>Owner approval / maker-checker workflow</li>
+        <li>6 smart stock status flags + auto-detection</li>
+        <li>Cycle count with variance report</li>
+        <li>Push notifications to Owner</li>
+        <li>Inventory reports &amp; Excel export</li>
+        <li>Android + iOS mobile app (4 user roles)</li>
+        <li>Owner web dashboard (large screen)</li>
+        <li>Offline functionality (browse, scan, queue)</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid var(--muted3)">
+      <div class="card-ey" style="color:var(--muted)">⛔ Out of Scope — Future Phases</div>
+      <ul class="flist" style="margin-top:8px">
+        <li>POS / Billing / Invoice generation (Phase 2)</li>
+        <li>Customer management &amp; Khata (Phase 2)</li>
+        <li>GST calculation &amp; GSTR exports (Phase 2)</li>
+        <li>Supplier management &amp; Purchase Orders (Phase 2)</li>
+        <li>WhatsApp automation (Phase 2)</li>
+        <li>Payment recording — cash, UPI, etc. (Phase 2)</li>
+        <li>Damaged stock full lifecycle (Phase 2)</li>
+        <li>Ecommerce / online store (Phase 3)</li>
+        <li>Vendor / dealer collaboration portal (Phase 3)</li>
+        <li>Architect / contractor trade portal (Phase 3)</li>
+        <li>AI voice placement engine (Phase 2)</li>
+        <li>Attendance &amp; HR system (Phase 3)</li>
+        <li>Advanced business intelligence / P&amp;L (Phase 2)</li>
+        <li>Tally / accounting software sync (Phase 2)</li>
+        <li>Multi-company / franchise (Phase 4)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ PART B — TRD ════════════════ -->
+<div class="part-header page-break" id="trd-start">
+  <div class="ph-accent" style="background:linear-gradient(to bottom,#5ed4d4,#0a4a88)"></div>
+  <div class="ph-text">
+    <div class="ph-doc" style="color:rgba(94,212,212,.7)">Part B · GE-P1-TRD-001</div>
+    <div class="ph-title">Technical Requirements Document</div>
+    <div class="ph-sub">System architecture, data model, technology stack, API design, security, and performance SLAs.</div>
+  </div>
+  <div class="ph-badge"><span class="tag t-navy" style="font-size:12px;padding:6px 14px">Engineering Spec</span></div>
+</div>
+
+<!-- B1: ARCHITECTURE DIAGRAM -->
+<div class="section" id="trd-arch">
+  <div class="sec-eyebrow">B1 · System Design</div>
+  <div class="sec-h1">Architecture Diagram</div>
+  <div class="sec-desc">API-first, mobile-native, offline-capable architecture. A single Laravel API serves both the React Native mobile app and the Vue.js Owner web panel — all future phases add new API modules without touching existing code.</div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-hd">
+      <div class="diagram-hd-title">System Architecture — Phase 1 · Garg Inventory System</div>
+      <div class="diagram-hd-dots"><div class="dhd" style="background:#f87171"></div><div class="dhd" style="background:#fbbf24"></div><div class="dhd" style="background:#34d399"></div></div>
+    </div>
+    <div class="diagram-body" style="background:#f5f7ff;padding:32px">
+      <svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" class="diagram-svg">
+        <!-- Background -->
+        <rect x="0" y="0" width="860" height="540" fill="#f5f7ff" rx="8"/>
+
+        <!-- Client Layer -->
+        <rect x="20" y="20" width="820" height="100" rx="8" fill="white" stroke="#dde1ef" stroke-width="1.5"/>
+        <text x="30" y="38" fill="#6b7a99" font-size="9.5" font-weight="700" font-family="JetBrains Mono" letter-spacing="1">CLIENT LAYER</text>
+        <!-- Android -->
+        <rect x="40" y="45" width="150" height="60" rx="6" fill="#e8f7ee" stroke="#6fd099" stroke-width="1.5"/>
+        <text x="115" y="66" fill="#126633" font-size="10" font-weight="700" text-anchor="middle">📱 Android App</text>
+        <text x="115" y="80" fill="#3d4f70" font-size="8.5" text-anchor="middle">React Native 0.74</text>
+        <text x="115" y="93" fill="#6b7a99" font-size="8" text-anchor="middle">4 Role-specific UIs</text>
+        <!-- iOS -->
+        <rect x="210" y="45" width="150" height="60" rx="6" fill="#eef3ff" stroke="#90aff0" stroke-width="1.5"/>
+        <text x="285" y="66" fill="#1940b0" font-size="10" font-weight="700" text-anchor="middle">📱 iOS App</text>
+        <text x="285" y="80" fill="#3d4f70" font-size="8.5" text-anchor="middle">React Native 0.74</text>
+        <text x="285" y="93" fill="#6b7a99" font-size="8" text-anchor="middle">Owner + Manager</text>
+        <!-- Web Panel -->
+        <rect x="380" y="45" width="200" height="60" rx="6" fill="#fdf4e0" stroke="#f0cc70" stroke-width="1.5"/>
+        <text x="480" y="66" fill="#9a6000" font-size="10" font-weight="700" text-anchor="middle">🖥️ Owner Web Panel</text>
+        <text x="480" y="80" fill="#3d4f70" font-size="8.5" text-anchor="middle">Vue.js 3 + Inertia.js</text>
+        <text x="480" y="93" fill="#6b7a99" font-size="8" text-anchor="middle">Large-screen analytics</text>
+        <!-- WatermelonDB note -->
+        <rect x="600" y="45" width="220" height="60" rx="6" fill="#f3efff" stroke="#b090e0" stroke-width="1.5"/>
+        <text x="710" y="66" fill="#5218a0" font-size="10" font-weight="700" text-anchor="middle">💾 WatermelonDB</text>
+        <text x="710" y="80" fill="#3d4f70" font-size="8.5" text-anchor="middle">Local SQLite cache</text>
+        <text x="710" y="93" fill="#6b7a99" font-size="8" text-anchor="middle">26K products offline</text>
+
+        <!-- Arrow down -->
+        <line x1="430" y1="120" x2="430" y2="148" stroke="#0a7b7b" stroke-width="2" marker-end="url(#a1)" stroke-dasharray="6,3"/>
+        <text x="450" y="140" fill="#0a7b7b" font-size="8.5" font-family="JetBrains Mono">HTTPS / TLS 1.3</text>
+
+        <!-- API Gateway Layer -->
+        <rect x="20" y="150" width="820" height="60" rx="8" fill="white" stroke="#dde1ef" stroke-width="1.5"/>
+        <text x="30" y="168" fill="#6b7a99" font-size="9.5" font-weight="700" font-family="JetBrains Mono" letter-spacing="1">GATEWAY LAYER</text>
+        <rect x="40" y="172" width="230" height="28" rx="5" fill="#0a1628"/>
+        <text x="155" y="191" fill="rgba(255,255,255,.8)" font-size="9.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">NGINX · Reverse Proxy · Rate Limiting · SSL Termination</text>
+        <rect x="290" y="172" width="180" height="28" rx="5" fill="#162a55"/>
+        <text x="380" y="191" fill="rgba(94,212,212,.8)" font-size="9.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">Cloudflare · CDN · DDoS · WAF</text>
+        <rect x="490" y="172" width="180" height="28" rx="5" fill="#162a55"/>
+        <text x="580" y="191" fill="rgba(255,255,255,.6)" font-size="9.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">JWT Auth · RBAC Enforcement</text>
+
+        <!-- Arrow down -->
+        <line x1="430" y1="210" x2="430" y2="238" stroke="#0a7b7b" stroke-width="2" marker-end="url(#a1)"/>
+
+        <!-- Application Layer -->
+        <rect x="20" y="240" width="820" height="120" rx="8" fill="white" stroke="#dde1ef" stroke-width="1.5"/>
+        <text x="30" y="258" fill="#6b7a99" font-size="9.5" font-weight="700" font-family="JetBrains Mono" letter-spacing="1">APPLICATION LAYER · LARAVEL 12 MODULAR MONOLITH</text>
+        <!-- Domains -->
+        <rect x="40" y="263" width="150" height="82" rx="6" fill="#e5f4f4" stroke="#7ec8c8" stroke-width="1.5"/>
+        <text x="115" y="282" fill="#0a7b7b" font-size="10" font-weight="700" text-anchor="middle">Catalog Domain</text>
+        <text x="115" y="296" fill="#3d4f70" font-size="8.5" text-anchor="middle">Product CRUD</text>
+        <text x="115" y="309" fill="#3d4f70" font-size="8.5" text-anchor="middle">Category/Location</text>
+        <text x="115" y="322" fill="#3d4f70" font-size="8.5" text-anchor="middle">Bulk Import Queue</text>
+        <text x="115" y="335" fill="#3d4f70" font-size="8.5" text-anchor="middle">MeiliSearch Sync</text>
+
+        <rect x="210" y="263" width="150" height="82" rx="6" fill="#e5f4f4" stroke="#7ec8c8" stroke-width="1.5"/>
+        <text x="285" y="282" fill="#0a7b7b" font-size="10" font-weight="700" text-anchor="middle">Inventory Domain</text>
+        <text x="285" y="296" fill="#3d4f70" font-size="8.5" text-anchor="middle">Stock Movements</text>
+        <text x="285" y="309" fill="#3d4f70" font-size="8.5" text-anchor="middle">Approval Workflow</text>
+        <text x="285" y="322" fill="#3d4f70" font-size="8.5" text-anchor="middle">Alert Engine</text>
+        <text x="285" y="335" fill="#3d4f70" font-size="8.5" text-anchor="middle">Reports + Export</text>
+
+        <rect x="380" y="263" width="150" height="82" rx="6" fill="#eef1f8" stroke="#c8cedf" stroke-width="1.5"/>
+        <text x="455" y="282" fill="#1e2d4f" font-size="10" font-weight="700" text-anchor="middle">Identity / RBAC</text>
+        <text x="455" y="296" fill="#3d4f70" font-size="8.5" text-anchor="middle">JWT Auth</text>
+        <text x="455" y="309" fill="#3d4f70" font-size="8.5" text-anchor="middle">4 Role Policies</text>
+        <text x="455" y="322" fill="#3d4f70" font-size="8.5" text-anchor="middle">Device Binding</text>
+        <text x="455" y="335" fill="#3d4f70" font-size="8.5" text-anchor="middle">Session Mgmt</text>
+
+        <rect x="550" y="263" width="140" height="82" rx="6" fill="#f3efff" stroke="#b090e0" stroke-width="1.5"/>
+        <text x="620" y="282" fill="#5218a0" font-size="10" font-weight="700" text-anchor="middle">Notifications</text>
+        <text x="620" y="296" fill="#3d4f70" font-size="8.5" text-anchor="middle">FCM Push</text>
+        <text x="620" y="309" fill="#3d4f70" font-size="8.5" text-anchor="middle">Alert Queue</text>
+        <text x="620" y="322" fill="#3d4f70" font-size="8.5" text-anchor="middle">In-App Inbox</text>
+        <text x="620" y="335" fill="#3d4f70" font-size="8.5" text-anchor="middle">Notification Log</text>
+
+        <rect x="710" y="263" width="110" height="82" rx="6" fill="#fff6e8" stroke="#f0c070" stroke-width="1.5"/>
+        <text x="765" y="282" fill="#9a6000" font-size="10" font-weight="700" text-anchor="middle">Audit Domain</text>
+        <text x="765" y="296" fill="#3d4f70" font-size="8.5" text-anchor="middle">Activity Log</text>
+        <text x="765" y="309" fill="#3d4f70" font-size="8.5" text-anchor="middle">Append-only</text>
+        <text x="765" y="322" fill="#3d4f70" font-size="8.5" text-anchor="middle">Who/What/When</text>
+        <text x="765" y="335" fill="#3d4f70" font-size="8.5" text-anchor="middle">Immutable</text>
+
+        <!-- Arrow down -->
+        <line x1="430" y1="360" x2="430" y2="388" stroke="#0a7b7b" stroke-width="2" marker-end="url(#a1)"/>
+
+        <!-- Data Layer -->
+        <rect x="20" y="390" width="820" height="80" rx="8" fill="white" stroke="#dde1ef" stroke-width="1.5"/>
+        <text x="30" y="408" fill="#6b7a99" font-size="9.5" font-weight="700" font-family="JetBrains Mono" letter-spacing="1">DATA LAYER</text>
+
+        <rect x="40" y="413" width="200" height="48" rx="6" fill="#0a1628"/>
+        <text x="140" y="432" fill="rgba(94,212,212,.9)" font-size="10" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">PostgreSQL 16</text>
+        <text x="140" y="447" fill="rgba(255,255,255,.45)" font-size="8.5" text-anchor="middle" font-family="JetBrains Mono">Primary DB · DO Managed</text>
+
+        <rect x="260" y="413" width="170" height="48" rx="6" fill="#162a55"/>
+        <text x="345" y="432" fill="rgba(255,165,60,.9)" font-size="10" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">Redis 7</text>
+        <text x="345" y="447" fill="rgba(255,255,255,.45)" font-size="8.5" text-anchor="middle" font-family="JetBrains Mono">Cache · Sessions · Queues</text>
+
+        <rect x="450" y="413" width="200" height="48" rx="6" fill="#162a55"/>
+        <text x="550" y="432" fill="rgba(94,212,212,.8)" font-size="10" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">MeiliSearch 1.7</text>
+        <text x="550" y="447" fill="rgba(255,255,255,.45)" font-size="8.5" text-anchor="middle" font-family="JetBrains Mono">Product Search · &lt;50ms</text>
+
+        <rect x="670" y="413" width="160" height="48" rx="6" fill="#162a55"/>
+        <text x="750" y="432" fill="rgba(255,220,100,.8)" font-size="10" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">DO Spaces</text>
+        <text x="750" y="447" fill="rgba(255,255,255,.45)" font-size="8.5" text-anchor="middle" font-family="JetBrains Mono">Files · Photos · Exports</text>
+
+        <!-- Third party row -->
+        <rect x="20" y="485" width="820" height="40" rx="8" fill="#f0f2f9" stroke="#dde1ef" stroke-width="1"/>
+        <text x="30" y="503" fill="#6b7a99" font-size="9.5" font-weight="700" font-family="JetBrains Mono" letter-spacing="1">THIRD PARTY</text>
+        <rect x="150" y="491" width="120" height="24" rx="4" fill="#0a1628"/>
+        <text x="210" y="507" fill="#5ed4d4" font-size="8.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">Firebase FCM</text>
+        <rect x="290" y="491" width="140" height="24" rx="4" fill="#0a1628"/>
+        <text x="360" y="507" fill="#5ed4d4" font-size="8.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">Google Speech STT</text>
+        <rect x="450" y="491" width="130" height="24" rx="4" fill="#0a1628"/>
+        <text x="515" y="507" fill="#5ed4d4" font-size="8.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">Cloudflare CDN</text>
+        <rect x="600" y="491" width="120" height="24" rx="4" fill="#0a1628"/>
+        <text x="660" y="507" fill="#5ed4d4" font-size="8.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">GitHub Actions</text>
+
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0 0L10 5L0 10z" fill="#0a7b7b"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="callout c-blue">
+    <div class="ci">🏗️</div>
+    <div class="cb">
+      <div class="ct">Pattern: API-First · Modular Monolith · DDD</div>
+      <div class="cx">A single Laravel 12 backend API serves both the React Native mobile app and the Vue.js web panel. All business logic lives in the API — divided into clean Domain-Driven bounded contexts (Catalog, Inventory, Identity, Notifications, Audit). Future phases (POS, Supplier, eCommerce) add new domains without touching the Phase 1 code. The entire system runs on DigitalOcean Bangalore for low latency from Ludhiana at half the cost of AWS.</div>
+    </div>
+  </div>
+</div>
+
+<!-- B2: DATA MODEL -->
+<div class="section" id="data-model">
+  <div class="sec-eyebrow">B2 · Database Design</div>
+  <div class="sec-h1">Data Model — Entity Relationship Diagram</div>
+  <div class="sec-desc">Complete PostgreSQL schema for Phase 1. All tables are designed to support future phases without structural changes — HSN codes for GST, customer_id foreign keys for billing, supplier_id for PO management are stubbed now.</div>
+
+  <div class="diagram-wrap">
+    <div class="diagram-hd">
+      <div class="diagram-hd-title">Entity Relationship Diagram — Phase 1 Database Schema</div>
+      <div class="diagram-hd-dots"><div class="dhd" style="background:#f87171"></div><div class="dhd" style="background:#fbbf24"></div><div class="dhd" style="background:#34d399"></div></div>
+    </div>
+    <div class="diagram-body" style="background:#fafbff;padding:28px">
+      <svg viewBox="0 0 860 620" xmlns="http://www.w3.org/2000/svg" class="diagram-svg">
+        <rect x="0" y="0" width="860" height="620" fill="#fafbff" rx="8"/>
+
+        <!-- BRANDS -->
+        <rect x="20" y="20" width="180" height="130" rx="8" fill="white" stroke="#0a7b7b" stroke-width="2"/>
+        <rect x="20" y="20" width="180" height="32" rx="8" fill="#0a7b7b"/>
+        <rect x="20" y="44" width="180" height="8" fill="#0a7b7b"/>
+        <text x="110" y="41" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">brands</text>
+        <text x="30" y="70" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="30" y="84" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">name VARCHAR(100)</text>
+        <text x="30" y="97" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">slug VARCHAR(100)</text>
+        <text x="30" y="110" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">logo_url TEXT</text>
+        <text x="30" y="123" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">is_authorised BOOLEAN</text>
+        <text x="30" y="136" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">created_at TIMESTAMPTZ</text>
+
+        <!-- CATEGORIES -->
+        <rect x="220" y="20" width="190" height="145" rx="8" fill="white" stroke="#0a7b7b" stroke-width="2"/>
+        <rect x="220" y="20" width="190" height="32" rx="8" fill="#0a7b7b"/>
+        <rect x="220" y="44" width="190" height="8" fill="#0a7b7b"/>
+        <text x="315" y="41" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">categories</text>
+        <text x="230" y="70" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="230" y="83" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 parent_id FK (self)</text>
+        <text x="230" y="96" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">name VARCHAR(150)</text>
+        <text x="230" y="109" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">slug VARCHAR(150)</text>
+        <text x="230" y="122" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">level SMALLINT (1–4)</text>
+        <text x="230" y="135" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">path LTREE (indexed)</text>
+        <text x="230" y="148" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">sort_order INT</text>
+
+        <!-- LOCATIONS -->
+        <rect x="430" y="20" width="195" height="145" rx="8" fill="white" stroke="#9a6000" stroke-width="2"/>
+        <rect x="430" y="20" width="195" height="32" rx="8" fill="#9a6000"/>
+        <rect x="430" y="44" width="195" height="8" fill="#9a6000"/>
+        <text x="527" y="41" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">locations</text>
+        <text x="440" y="70" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="440" y="83" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 parent_id FK (self)</text>
+        <text x="440" y="96" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">name VARCHAR(100)</text>
+        <text x="440" y="109" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">code VARCHAR(30) UNIQUE</text>
+        <text x="440" y="122" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">type ENUM(floor/sect/aisle/bin)</text>
+        <text x="440" y="135" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">capacity_units INT</text>
+        <text x="440" y="148" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">is_active BOOLEAN</text>
+
+        <!-- USERS -->
+        <rect x="645" y="20" width="200" height="145" rx="8" fill="white" stroke="#5218a0" stroke-width="2"/>
+        <rect x="645" y="20" width="200" height="32" rx="8" fill="#5218a0"/>
+        <rect x="645" y="44" width="200" height="8" fill="#5218a0"/>
+        <text x="745" y="41" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">users</text>
+        <text x="655" y="70" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="655" y="83" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">name VARCHAR(150)</text>
+        <text x="655" y="96" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">phone VARCHAR(20) UNIQUE</text>
+        <text x="655" y="109" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">pin_hash VARCHAR</text>
+        <text x="655" y="122" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">role ENUM</text>
+        <text x="655" y="135" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">device_ids JSONB[]</text>
+        <text x="655" y="148" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">status active/inactive</text>
+
+        <!-- PRODUCTS (central) -->
+        <rect x="240" y="200" width="220" height="200" rx="8" fill="white" stroke="#0a1628" stroke-width="3"/>
+        <rect x="240" y="200" width="220" height="32" rx="8" fill="#0a1628"/>
+        <rect x="240" y="224" width="220" height="8" fill="#0a1628"/>
+        <text x="350" y="221" fill="white" font-size="12" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">products ⭐</text>
+        <text x="250" y="249" fill="#0a7b7b" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="250" y="262" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">sku_code VARCHAR UNIQUE</text>
+        <text x="250" y="275" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">barcode VARCHAR UNIQUE</text>
+        <text x="250" y="288" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">product_name VARCHAR(255)</text>
+        <text x="250" y="301" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">🔗 brand_id FK</text>
+        <text x="250" y="314" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">🔗 category_id FK</text>
+        <text x="250" y="327" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">uom_base VARCHAR</text>
+        <text x="250" y="340" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">uom_conversion NUMERIC</text>
+        <text x="250" y="353" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">reorder_point NUMERIC</text>
+        <text x="250" y="366" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">metadata JSONB</text>
+        <text x="250" y="379" fill="#3d4f70" font-size="9" font-family="JetBrains Mono">status ENUM · hsn_code</text>
+
+        <!-- INVENTORY_STOCK -->
+        <rect x="490" y="200" width="200" height="130" rx="8" fill="white" stroke="#0a7b7b" stroke-width="2"/>
+        <rect x="490" y="200" width="200" height="32" rx="8" fill="#0a7b7b"/>
+        <rect x="490" y="224" width="200" height="8" fill="#0a7b7b"/>
+        <text x="590" y="221" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">inventory_stock</text>
+        <text x="500" y="249" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 product_id FK (PK)</text>
+        <text x="500" y="262" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 location_id FK (PK)</text>
+        <text x="500" y="275" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">qty_on_hand NUMERIC</text>
+        <text x="500" y="288" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">qty_reserved NUMERIC</text>
+        <text x="500" y="301" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">status_flag ENUM</text>
+        <text x="500" y="314" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">last_movement_at TSTZ</text>
+
+        <!-- STOCK_MOVEMENTS -->
+        <rect x="20" y="200" width="200" height="175" rx="8" fill="white" stroke="#9a6000" stroke-width="2"/>
+        <rect x="20" y="200" width="200" height="32" rx="8" fill="#9a6000"/>
+        <rect x="20" y="224" width="200" height="8" fill="#9a6000"/>
+        <text x="120" y="221" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">stock_movements</text>
+        <text x="30" y="249" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="30" y="262" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 product_id FK</text>
+        <text x="30" y="275" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 from_location_id FK</text>
+        <text x="30" y="288" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 to_location_id FK</text>
+        <text x="30" y="301" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">qty NUMERIC</text>
+        <text x="30" y="314" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">movement_type ENUM</text>
+        <text x="30" y="327" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">status pending/approved</text>
+        <text x="30" y="340" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 submitted_by FK</text>
+        <text x="30" y="353" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 approved_by FK</text>
+        <text x="30" y="366" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">photo_url TEXT</text>
+
+        <!-- PRODUCT_PHOTOS -->
+        <rect x="20" y="420" width="180" height="110" rx="8" fill="white" stroke="#1940b0" stroke-width="2"/>
+        <rect x="20" y="420" width="180" height="32" rx="8" fill="#1940b0"/>
+        <rect x="20" y="444" width="180" height="8" fill="#1940b0"/>
+        <text x="110" y="441" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">product_photos</text>
+        <text x="30" y="466" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="30" y="479" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 product_id FK</text>
+        <text x="30" y="492" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">storage_url TEXT</text>
+        <text x="30" y="505" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">thumb_url TEXT</text>
+        <text x="30" y="518" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">is_primary BOOLEAN</text>
+
+        <!-- ACTIVITY_LOG -->
+        <rect x="490" y="370" width="200" height="140" rx="8" fill="white" stroke="#126633" stroke-width="2"/>
+        <rect x="490" y="370" width="200" height="32" rx="8" fill="#126633"/>
+        <rect x="490" y="394" width="200" height="8" fill="#126633"/>
+        <text x="590" y="391" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">activity_log</text>
+        <text x="500" y="419" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="500" y="432" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 user_id FK</text>
+        <text x="500" y="445" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">action VARCHAR</text>
+        <text x="500" y="458" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">entity_type VARCHAR</text>
+        <text x="500" y="471" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">old_value JSONB</text>
+        <text x="500" y="484" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">new_value JSONB</text>
+        <text x="500" y="497" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">created_at TIMESTAMPTZ</text>
+        <text x="500" y="510" fill="#b86000" font-size="8.5" font-family="JetBrains Mono">⚠ APPEND-ONLY · NO DELETE</text>
+
+        <!-- NOTIFICATIONS -->
+        <rect x="250" y="440" width="200" height="130" rx="8" fill="white" stroke="#5218a0" stroke-width="2"/>
+        <rect x="250" y="440" width="200" height="32" rx="8" fill="#5218a0"/>
+        <rect x="250" y="464" width="200" height="8" fill="#5218a0"/>
+        <text x="350" y="461" fill="white" font-size="11" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">notifications</text>
+        <text x="260" y="489" fill="#3d4f70" font-size="9.5" font-family="JetBrains Mono">🔑 id BIGSERIAL PK</text>
+        <text x="260" y="502" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">🔗 user_id FK</text>
+        <text x="260" y="515" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">type · title · body</text>
+        <text x="260" y="528" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">payload JSONB</text>
+        <text x="260" y="541" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">read_at TIMESTAMPTZ</text>
+        <text x="260" y="554" fill="#6b7a99" font-size="9" font-family="JetBrains Mono">created_at TIMESTAMPTZ</text>
+
+        <!-- Relationship lines -->
+        <!-- brands → products -->
+        <line x1="200" y1="85" x2="280" y2="240" stroke="#0a7b7b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="205" y="170" fill="#0a7b7b" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- categories → products -->
+        <line x1="350" y1="165" x2="350" y2="200" stroke="#0a7b7b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="356" y="188" fill="#0a7b7b" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- locations → inventory_stock -->
+        <line x1="527" y1="165" x2="560" y2="200" stroke="#9a6000" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="535" y="188" fill="#9a6000" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- products → inventory_stock -->
+        <line x1="460" y1="285" x2="490" y2="285" stroke="#0a1628" stroke-width="1.5" marker-end="url(#am)"/>
+        <text x="465" y="278" fill="#0a1628" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- products → stock_movements -->
+        <line x1="240" y1="310" x2="220" y2="310" stroke="#9a6000" stroke-width="1.5" marker-end="url(#am2)"/>
+        <text x="222" y="303" fill="#9a6000" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- products → product_photos -->
+        <line x1="280" y1="400" x2="160" y2="420" stroke="#1940b0" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="182" y="414" fill="#1940b0" font-size="8" font-family="JetBrains Mono">1:N</text>
+        <!-- users → stock_movements -->
+        <line x1="645" y1="130" x2="220" y2="340" stroke="#5218a0" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+        <!-- users → activity_log -->
+        <line x1="700" y1="165" x2="590" y2="370" stroke="#126633" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <!-- products → notifications -->
+        <line x1="350" y1="400" x2="350" y2="440" stroke="#5218a0" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+        <!-- Legend -->
+        <rect x="700" y="380" width="150" height="80" rx="6" fill="white" stroke="#dde1ef"/>
+        <text x="775" y="398" fill="#3d4f70" font-size="9.5" font-weight="700" text-anchor="middle" font-family="JetBrains Mono">LEGEND</text>
+        <line x1="715" y1="410" x2="750" y2="410" stroke="#0a7b7b" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="755" y="413" fill="#3d4f70" font-size="8.5" font-family="JetBrains Mono">FK relation</text>
+        <line x1="715" y1="425" x2="750" y2="425" stroke="#0a1628" stroke-width="1.5" marker-end="url(#am)"/>
+        <text x="755" y="428" fill="#3d4f70" font-size="8.5" font-family="JetBrains Mono">Depends on</text>
+        <rect x="715" y="436" width="10" height="10" rx="2" fill="#0a1628"/>
+        <text x="730" y="445" fill="#3d4f70" font-size="8.5" font-family="JetBrains Mono">Central entity</text>
+
+        <defs>
+          <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#0a1628"/></marker>
+          <marker id="am2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#9a6000"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <h2>Table Specifications</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Table</th><th>Purpose</th><th>Est. Rows</th><th>Key Indexes</th></tr></thead>
+      <tbody>
+        <tr><td>products</td><td>Master record for all 26K+ SKUs. Central table referenced by all others.</td><td>26,000</td><td>UNIQUE(sku_code), UNIQUE(barcode), brand_id+category_id composite, GIN full-text</td></tr>
+        <tr><td>categories</td><td>4-level self-referential category tree using LTREE path for fast traversal.</td><td>150–250</td><td>UNIQUE(slug), GiST(path)</td></tr>
+        <tr><td>brands</td><td>27+ brand master. Each brand linked to many products.</td><td>30–50</td><td>UNIQUE(slug)</td></tr>
+        <tr><td>locations</td><td>Full physical location tree: Floor → Section → Aisle → Bin. Self-referential.</td><td>500–3,000</td><td>UNIQUE(code), type+parent_id composite</td></tr>
+        <tr><td>inventory_stock</td><td>Composite PK (product_id, location_id). Live stock level per product per location.</td><td>26K × locations</td><td>Partial index: qty_on_hand ≤ reorder_point for alert queries</td></tr>
+        <tr><td>stock_movements</td><td>Every stock change. Pending movements await Owner approval. Immutable once approved.</td><td>500–3K/month</td><td>status+submitted_at DESC (pending queue), product_id+submitted_at</td></tr>
+        <tr><td>users</td><td>All app users. Phone number is the unique login identifier.</td><td>5–20</td><td>UNIQUE(phone)</td></tr>
+        <tr><td>product_photos</td><td>Up to 5 photos per SKU stored on DigitalOcean Spaces.</td><td>Up to 130K</td><td>product_id, is_primary</td></tr>
+        <tr><td>notifications</td><td>In-app notification records. Push dispatch via FCM on creation.</td><td>200–1K/month</td><td>user_id+read_at, created_at DESC</td></tr>
+        <tr><td>activity_log</td><td>Append-only audit trail. No UPDATE or DELETE grants on this table. Ever.</td><td>5K–30K/month</td><td>user_id+created_at, entity_type+entity_id</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- B3: STACK -->
+<div class="section" id="stack">
+  <div class="sec-eyebrow">B3 · Engineering Choices</div>
+  <div class="sec-h1">Technology Stack — Rationale</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Technology</th><th>Version</th><th>Role</th><th>Why This Choice</th></tr></thead>
+      <tbody>
+        <tr><td>React Native (Expo bare)</td><td>RN 0.74+</td><td>Mobile App</td><td>Single codebase for Android + iOS. Native camera access for barcode scanning. Offline-capable with WatermelonDB. Largest Indian mobile ERP developer community.</td></tr>
+        <tr><td>WatermelonDB</td><td>0.27+</td><td>Local DB</td><td>Handles 100K+ records on 2GB RAM Android. Lazy loading prevents memory overload. SQLite under the hood — ideal for the 26K offline product cache.</td></tr>
+        <tr><td>Laravel 12 (PHP)</td><td>12.x</td><td>Backend API</td><td>Rapid API development. Built-in Policy RBAC. Queue jobs for bulk import. Eloquent ORM. Strong Indian developer ecosystem for future team expansion.</td></tr>
+        <tr><td>Laravel Sanctum (JWT)</td><td>4.x</td><td>Auth</td><td>Mobile token auth with per-device tracking. Staff can be force-logged-out remotely. Device-bound tokens prevent credential sharing between phones.</td></tr>
+        <tr><td>PostgreSQL 16</td><td>16.x</td><td>Primary DB</td><td>JSONB for flexible product metadata. LTREE for category hierarchies. Partial indexes for low-stock alert queries. ACID compliance for inventory integrity.</td></tr>
+        <tr><td>MeiliSearch</td><td>1.7+</td><td>Search Engine</td><td>Open-source, self-hosted (zero monthly SaaS cost). Sub-50ms full-text search. Typo-tolerant. 26K products indexed in under 10 seconds.</td></tr>
+        <tr><td>Redis 7</td><td>7.x</td><td>Cache + Queues</td><td>Session store, API response cache (category trees change rarely), rate limiting counters, background job queues for bulk import and alert engine.</td></tr>
+        <tr><td>Vue.js 3 + Inertia.js</td><td>Vue 3.4</td><td>Web Panel</td><td>SPA-feel owner dashboard without a separate build pipeline. Shares all Laravel routes and controllers — no duplicate API effort.</td></tr>
+        <tr><td>DigitalOcean (BLR1)</td><td>—</td><td>Cloud Host</td><td>Bangalore data centre — ~40ms latency from Ludhiana. Managed PostgreSQL with automated daily backups. Half the cost and 5× simpler setup vs AWS for Phase 1 scale.</td></tr>
+        <tr><td>Firebase FCM</td><td>Latest</td><td>Push Notifications</td><td>Free for up to 500K notifications/month. Reliable Android + iOS delivery. Native React Native integration via @react-native-firebase.</td></tr>
+        <tr><td>Cloudflare (Free tier)</td><td>—</td><td>CDN + SSL</td><td>Free edge caching, DDoS protection, SSL termination, and bot filtering. No cost. Reduces server load by caching static assets.</td></tr>
+        <tr><td>GitHub Actions</td><td>—</td><td>CI/CD</td><td>Auto-test on every pull request. Auto-deploy to staging on merge to develop. Manual gate for production promotion.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- B4: API -->
+<div class="section" id="api">
+  <div class="sec-eyebrow">B4 · API Reference</div>
+  <div class="sec-h1">Key API Endpoints</div>
+
+  <div class="callout c-navy">
+    <div class="ci">⚙️</div>
+    <div class="cb">
+      <div class="ct">API Conventions</div>
+      <div class="cx"><strong>Base URL:</strong> <code>https://api.gargenterprises.in/v1/</code> · <strong>Auth:</strong> <code>Authorization: Bearer {jwt}</code> · <strong>Format:</strong> JSON · All responses use <code>{success, data, meta, timestamp}</code>. All errors use <code>{success:false, error:{code, message, http_status}}</code>. RBAC enforced at Laravel Policy layer — not just UI.</div>
+    </div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Access</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4" class="tr-sep">Authentication</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/auth/login</code></td><td>Public</td><td>Phone + 6-digit PIN. Returns JWT + refresh token + role.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/auth/refresh</code></td><td>Refresh token</td><td>Exchange refresh token for new JWT before expiry.</td></tr>
+        <tr><td><span class="tag t-req">POST</span></td><td><code>/auth/logout</code></td><td>Authenticated</td><td>Revokes current JWT. Device removed from trusted list.</td></tr>
+        <tr><td colspan="4" class="tr-sep">Module 1 — Catalog</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/products?page&filter&sort</code></td><td>All roles</td><td>Paginated product list. Filters: brand_id, category_id, location_id, status_flag.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/products/search?q={query}</code></td><td>All roles</td><td>MeiliSearch full-text. Top 20 results, sorted by relevance. SLA: &lt;800ms E2E.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/products/barcode/{code}</code></td><td>All roles</td><td>Exact barcode/QR lookup. SLA: &lt;200ms online, &lt;150ms offline.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/products/{id}</code></td><td>All roles</td><td>Full product detail, all photos, stock per location, movement history.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/products</code></td><td>Owner direct / Manager pending</td><td>Create new product. Role determines immediate vs queued status.</td></tr>
+        <tr><td><span class="tag t-rec">PUT</span></td><td><code>/products/{id}</code></td><td>Owner direct / Manager pending</td><td>Update product fields. Partial updates supported.</td></tr>
+        <tr><td><span class="tag t-req">DELETE</span></td><td><code>/products/{id}/deactivate</code></td><td>Owner only</td><td>Soft-deactivate. Never hard deletes — preserves all history.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/products/import</code></td><td>Owner only</td><td>Excel/CSV upload. Returns job_id. Poll <code>/import/{job_id}/status</code>.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/categories/tree</code></td><td>All roles</td><td>Full category hierarchy as nested JSON.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/locations/tree</code></td><td>All roles</td><td>Full physical location tree (floor/section/aisle/bin).</td></tr>
+        <tr><td colspan="4" class="tr-sep">Module 2 — Inventory</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/inventory/stock</code></td><td>All roles</td><td>Stock levels. Filter by product_id, location_id, status_flag.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/inventory/movements</code></td><td>Owner direct / Others pending</td><td>Submit inward, outward, transfer, or write-off movement.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/inventory/movements/pending</code></td><td>Owner only</td><td>All movements awaiting approval. Newest first.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/inventory/movements/{id}/approve</code></td><td>Owner only</td><td>Approve movement. Stock updates in atomic DB transaction.</td></tr>
+        <tr><td><span class="tag t-green">POST</span></td><td><code>/inventory/movements/{id}/reject</code></td><td>Owner only</td><td>Reject with reason. Push notification sent to submitter.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/inventory/alerts</code></td><td>Owner, Manager</td><td>All active alerts: out-of-stock, low-stock, dead stock, pending count.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/inventory/reports/{type}</code></td><td>Owner, Manager</td><td>Types: dead-stock · low-stock · valuation · movement-history. JSON + Excel download.</td></tr>
+        <tr><td><span class="tag t-opt">GET</span></td><td><code>/dashboard/owner</code></td><td>Owner only</td><td>Real-time dashboard: pending count, alerts, stock value by category.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- B5: MOBILE -->
+<div class="section" id="mobile-trd">
+  <div class="sec-eyebrow">B5 · Mobile Engineering</div>
+  <div class="sec-h1">Mobile App & Offline Architecture</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Feature</th><th>Offline?</th><th>Sync Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>Browse full 26K product catalogue</td><td><span class="tag t-green">✅ Full</span></td><td>WatermelonDB cache. Updated on app foreground. Background sync every 10 min when online.</td></tr>
+        <tr><td>Barcode/QR scan → product lookup</td><td><span class="tag t-green">✅ Full</span></td><td>Local barcode index in WatermelonDB. Instant lookup, zero network call.</td></tr>
+        <tr><td>Browse by category / brand / location</td><td><span class="tag t-green">✅ Full</span></td><td>All trees cached locally during initial sync.</td></tr>
+        <tr><td>Submit stock movement</td><td><span class="tag t-green">✅ Queued</span></td><td>Stored in local queue with UUID. Uploaded and submitted on reconnect.</td></tr>
+        <tr><td>View current stock levels</td><td><span class="tag t-rec">Last sync only</span></td><td>Shows last-synced with "Updated X min ago" warning. Stale data clearly indicated.</td></tr>
+        <tr><td>Owner approval actions</td><td><span class="tag t-req">❌ Online only</span></td><td>Approval triggers atomic DB transaction — cannot be safely queued.</td></tr>
+        <tr><td>Push notifications</td><td><span class="tag t-req">❌ Online only</span></td><td>FCM queues and delivers when device reconnects to internet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- B6: SECURITY -->
+<div class="section" id="security">
+  <div class="sec-eyebrow">B6 · Security</div>
+  <div class="sec-h1">Security Requirements</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Requirement</th><th>Implementation</th></tr></thead>
+      <tbody>
+        <tr><td>Transport Encryption</td><td>TLS 1.3 on all API calls. Cloudflare handles SSL. HTTP strictly redirects to HTTPS.</td></tr>
+        <tr><td>Authentication</td><td>Phone number + 6-digit PIN. JWT via Laravel Sanctum. Biometric re-auth (fingerprint/Face ID) within active session.</td></tr>
+        <tr><td>Token Expiry</td><td>Owner: 24 hours. All other roles: 10 hours. Refresh tokens: 30 days. Auto-refresh in background while session is active.</td></tr>
+        <tr><td>Device Binding</td><td>Max 2 registered devices per user account. Fingerprint = Device ID + app install UUID (SHA-256). New device requires Owner approval.</td></tr>
+        <tr><td>RBAC Enforcement</td><td>Every API endpoint checks role via Laravel Policies at the controller level. Staff cannot call owner endpoints via Postman or any tool.</td></tr>
+        <tr><td>Inventory Integrity</td><td>Stock level updates wrapped in PostgreSQL transactions. All-or-nothing — no partial movement records possible.</td></tr>
+        <tr><td>Immutable Audit Trail</td><td>All actions written to activity_log. Table has no UPDATE/DELETE grants for any application database user.</td></tr>
+        <tr><td>Brute Force</td><td>5 failed PINs → 30-minute lockout. Owner push notification sent on lockout. 200 API requests/token/minute rate limit via Redis.</td></tr>
+        <tr><td>Root Detection</td><td>App refuses to run on rooted Android (RootBeer) or jailbroken iOS (DTTJailbreakDetection).</td></tr>
+        <tr><td>Auto-Lock</td><td>App locks after 5 minutes of inactivity. PIN or biometric required to unlock.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- B7: PERFORMANCE -->
+<div class="section" id="perf">
+  <div class="sec-eyebrow">B7 · SLAs</div>
+  <div class="sec-h1">Performance Service Level Agreements</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Operation</th><th>SLA Target</th><th>How Achieved</th></tr></thead>
+      <tbody>
+        <tr><td>Barcode scan → product (online)</td><td><span class="tag t-green">&lt; 300ms</span></td><td>Direct PostgreSQL UNIQUE index. No search engine overhead.</td></tr>
+        <tr><td>Barcode scan → product (offline)</td><td><span class="tag t-green">&lt; 150ms</span></td><td>WatermelonDB local SQLite barcode index.</td></tr>
+        <tr><td>Product text search (26K SKUs)</td><td><span class="tag t-green">&lt; 800ms E2E</span></td><td>MeiliSearch &lt;50ms server + network + render.</td></tr>
+        <tr><td>Category / brand browse load</td><td><span class="tag t-green">&lt; 400ms</span></td><td>Redis-cached response. Invalidated only on category change.</td></tr>
+        <tr><td>Stock level view (all locations)</td><td><span class="tag t-green">&lt; 800ms</span></td><td>Composite index on inventory_stock(product_id, location_id).</td></tr>
+        <tr><td>Owner approval action</td><td><span class="tag t-green">&lt; 500ms</span></td><td>Atomic PostgreSQL transaction + async FCM push queued.</td></tr>
+        <tr><td>App cold start to interactive</td><td><span class="tag t-rec">&lt; 3 seconds</span></td><td>Hermes JS engine, split bundles, WatermelonDB lazy init.</td></tr>
+        <tr><td>Bulk import 26,000 rows</td><td><span class="tag t-rec">&lt; 3 minutes</span></td><td>Laravel Queue, batches of 1,000 rows per job.</td></tr>
+        <tr><td>MeiliSearch re-index on update</td><td><span class="tag t-green">&lt; 5 seconds</span></td><td>Async queue job. Product update returns instantly.</td></tr>
+        <tr><td>API uptime SLA</td><td><span class="tag t-green">99.5% monthly</span></td><td>DigitalOcean Managed DB + Cloudflare failover + UptimeRobot alerts.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════ PART C — COST ════════════════ -->
+<div class="part-header page-break" id="cost-start">
+  <div class="ph-accent" style="background:linear-gradient(to bottom,#f0cc70,#9a6000)"></div>
+  <div class="ph-text">
+    <div class="ph-doc" style="color:rgba(240,204,112,.8)">Part C · GE-P1-COST-001</div>
+    <div class="ph-title">Cost Estimation — Module Wise</div>
+    <div class="ph-sub">Every feature broken out with hours and cost at ₹1,500/hr. Infrastructure guide. DigitalOcean vs AWS. Payment schedule.</div>
+  </div>
+  <div class="ph-badge"><span class="tag" style="background:var(--gold-l);color:var(--gold);border-color:var(--gold-m);font-size:12px;padding:6px 14px">₹1,500 / Hour</span></div>
+</div>
+
+<!-- C0: RATE BASIS -->
+<div class="section" id="rate-basis">
+
+  <div class="callout c-gold">
+    <div class="ci">💡</div>
+    <div class="cb">
+      <div class="ct">Rate Basis — ₹1,500 per hour</div>
+      <div class="cx">All development is billed at a flat rate of <strong>₹1,500 per hour</strong>. This is the all-in rate — covering backend development (Laravel API), mobile development (React Native Android + iOS), web panel development (Vue.js), database design, DevOps setup (DigitalOcean + Docker + CI/CD), UI/UX design, code review, testing, and project management. No hidden extras. No separate rates for different tasks. The client pays for hours worked, with every feature and its estimated hours shown below for full transparency.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- C1: MODULE 1 COST -->
+<div class="section" id="cost-m1">
+  <div class="sec-eyebrow">C1 · Module 1 Breakdown</div>
+  <div class="sec-h1">Module 1 — Catalog & SKU Management</div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Feature / Component</th><th>What It Covers</th><th style="text-align:right">Hours</th><th style="text-align:right">Cost (₹1,500/hr)</th></tr></thead>
+      <tbody>
+        <tr><td colspan="5" class="tr-sep">Foundation — Shared Across Both Modules (charged once)</td></tr>
+        <tr><td>F-01</td><td>Server Setup & DevOps</td><td>DigitalOcean Droplet + Managed PG + Docker containers (App, MeiliSearch, Nginx), GitHub Actions CI/CD pipeline, staging + production environments, domain setup, SSL via Cloudflare, environment configuration</td><td class="amt-sm">22</td><td class="amt">₹33,000</td></tr>
+        <tr><td>F-02</td><td>Database Schema Design</td><td>Full PostgreSQL schema (all 10 tables), migration files, indexes, seed scripts for categories, brands, and sample locations. LTREE extension setup.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>F-03</td><td>Authentication & 4-Role RBAC</td><td>Phone + PIN login, JWT via Sanctum, 4 role definitions, Laravel Policy classes, device binding (max 2 per user), biometric app auth, session management, auto-lock, force-logout from Owner panel</td><td class="amt-sm">22</td><td class="amt">₹33,000</td></tr>
+        <tr><td>F-04</td><td>React Native App Core</td><td>Project scaffold, role-specific navigation structures (4 different home screens on login), design system, theme, login screens, biometric unlock, offline detection status bar, app version gate</td><td class="amt-sm">20</td><td class="amt">₹30,000</td></tr>
+        <tr class="tr-sub"><td colspan="3"><strong>Foundation Subtotal</strong></td><td class="amt-sm">78 hrs</td><td class="amt">₹1,17,000</td></tr>
+
+        <tr><td colspan="5" class="tr-sep">Catalog Backend — Laravel API</td></tr>
+        <tr><td>M1-01</td><td>Product Master CRUD API</td><td>Create, read, update, soft-delete endpoints. Full input validation (28 rules). Maker-checker: Manager submissions → pending status. Automatic MeiliSearch re-index on every change. Audit log on every mutation.</td><td class="amt-sm">18</td><td class="amt">₹27,000</td></tr>
+        <tr><td>M1-02</td><td>Category & Location Hierarchy API</td><td>Self-referential category tree CRUD (4 levels, LTREE traversal). Physical location tree CRUD (floor/section/aisle/bin). Owner web panel management screens. Recursive tree API endpoint.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M1-03</td><td>MeiliSearch Integration & Pipeline</td><td>MeiliSearch server config, product index settings (searchable, filterable, typo-tolerance, pagination), initial 26K product bulk index, incremental sync via Queue Observer on every product update.</td><td class="amt-sm">16</td><td class="amt">₹24,000</td></tr>
+        <tr><td>M1-04</td><td>Bulk Excel/CSV Import System</td><td>Excel import template design + documentation, file upload API, 28-rule row-level validation, detailed error report (row number + field + reason), background Queue job processing batches of 1,000, staging → owner review → publish flow, import progress polling endpoint.</td><td class="amt-sm">20</td><td class="amt">₹30,000</td></tr>
+        <tr><td>M1-05</td><td>Product Photos API & Storage</td><td>Camera capture in mobile, multi-file upload API (up to 5 per SKU), auto-resize (original + thumbnail), upload to DigitalOcean Spaces, CDN URL generation, primary photo selection, delete photo.</td><td class="amt-sm">10</td><td class="amt">₹15,000</td></tr>
+        <tr><td>M1-06</td><td>Brand Master API</td><td>Brand CRUD, logo upload, authorised-dealer flag, brand ↔ product relationship, brand-filtered product list endpoint.</td><td class="amt-sm">6</td><td class="amt">₹9,000</td></tr>
+        <tr><td>M1-07</td><td>QR Code Generation for Unlabelled Items</td><td>Auto-generate QR codes for products without manufacturer barcodes. QR payload spec, rendering library, storage, single + batch printable PDF label generation (40mm and 58mm label sizes).</td><td class="amt-sm">8</td><td class="amt">₹12,000</td></tr>
+
+        <tr><td colspan="5" class="tr-sep">Catalog Mobile App — React Native Screens</td></tr>
+        <tr><td>M1-08</td><td>Product List, Search & Filter Screens</td><td>Search bar with real-time MeiliSearch results, category tree navigation (expandable), brand filter, location filter, stock status filter, sort options (A-Z, stock level, recently added). Product card design with status badge and photo thumbnail.</td><td class="amt-sm">16</td><td class="amt">₹24,000</td></tr>
+        <tr><td>M1-09</td><td>Barcode Scanner Screen</td><td>Camera viewfinder with crosshair overlay, ML Kit barcode detection, multi-format support (EAN-13, EAN-8, QR, Code 128, Data Matrix, Code 39), scan success animation, vibration feedback, result routing to product detail or "not found" state.</td><td class="amt-sm">12</td><td class="amt">₹18,000</td></tr>
+        <tr><td>M1-10</td><td>Product Detail Screen</td><td>Full product info with all fields, swipeable photo gallery (5 images), stock level breakdown per location, location map text, recent movement history tab, edit button (role-gated), share product info.</td><td class="amt-sm">12</td><td class="amt">₹18,000</td></tr>
+        <tr><td>M1-11</td><td>Add / Edit Product Form Screen</td><td>Full form with all fields, hierarchical category picker, location drill-down picker, UoM fields + conversion calculator, photo capture/upload carousel, role-gated submit (Owner = direct, Manager = pending confirmation UI).</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M1-12</td><td>Offline Catalogue Cache (WatermelonDB)</td><td>WatermelonDB schema design (products, categories, brands, locations), initial full sync of 26K products, incremental background sync, conflict resolution strategy, offline action queue for pending submissions, "X items queued" status indicator.</td><td class="amt-sm">20</td><td class="amt">₹30,000</td></tr>
+        <tr><td>M1-13</td><td>Owner Web Panel — Catalog Module</td><td>Vue.js + Inertia product management table (sortable, filterable, paginated bulk edit), Excel import flow UI with progress tracking, category tree editor (drag-drop reorder), location tree editor, brand management, QR batch label print.</td><td class="amt-sm">20</td><td class="amt">₹30,000</td></tr>
+
+        <tr class="tr-sub"><td colspan="3"><strong>Module 1 Total (incl. Foundation)</strong></td><td class="amt-sm"><strong>234 hrs</strong></td><td class="amt">₹3,51,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- C2: MODULE 2 COST -->
+<div class="section" id="cost-m2">
+  <div class="sec-eyebrow">C2 · Module 2 Breakdown</div>
+  <div class="sec-h1">Module 2 — Inventory Management</div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>Feature / Component</th><th>What It Covers</th><th style="text-align:right">Hours</th><th style="text-align:right">Cost (₹1,500/hr)</th></tr></thead>
+      <tbody>
+        <tr><td colspan="5" class="tr-sep">Inventory Backend — Laravel API</td></tr>
+        <tr><td>M2-01</td><td>Stock Level Table & Multi-Location Tracking</td><td>inventory_stock table design, composite PK (product_id + location_id), qty_on_hand, qty_reserved, qty_available computed column, status_flag ENUM, atomic update stored procedure.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M2-02</td><td>Stock Movement API & Approval Workflow</td><td>POST /movements for all 6 types, role-based status assignment (direct vs pending), atomic stock update on approval (wrapped in DB transaction), rollback on failure, reject-with-reason endpoint + FCM notification trigger, movement immutability enforcement after approval.</td><td class="amt-sm">22</td><td class="amt">₹33,000</td></tr>
+        <tr><td>M2-03</td><td>Approval Queue API & Batch Operations</td><td>GET pending movements (paginated, newest first), approve single, reject single (with reason), batch-approve selected, approval decision history log, filter by movement type or submitter.</td><td class="amt-sm">10</td><td class="amt">₹15,000</td></tr>
+        <tr><td>M2-04</td><td>Cycle Count Module</td><td>Initiate count for a section, lock stock during count (prevents concurrent movements), scan-to-count API, expected vs counted variance calculation, submit variance for Owner approval, count history log, cycle count report.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M2-05</td><td>Automated Alert Engine</td><td>Laravel scheduled job (daily 6 AM): detects out-of-stock SKUs, below-reorder-point SKUs, dead stock (zero movement in configurable N days), slow-movers, out-of-trend items. Updates status_flags on inventory_stock. Dispatches FCM batch push to Owner. Alert deduplication (no repeat alerts for same condition).</td><td class="amt-sm">12</td><td class="amt">₹18,000</td></tr>
+        <tr><td>M2-06</td><td>Inventory Reports & Excel Export</td><td>4 report types: dead-stock, low-stock, stock valuation (by category/brand/location), full movement history. JSON response for web panel charts + downloadable Excel file (PhpSpreadsheet). Date range filters, category/brand filters.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+
+        <tr><td colspan="5" class="tr-sep">Inventory Mobile App — React Native Screens</td></tr>
+        <tr><td>M2-07</td><td>Stock Level View Screen</td><td>Per-product stock breakdown across all locations, status badge (colour-coded), last movement timestamp, reorder point progress indicator, quick-action buttons (record inward, flag issue, view history).</td><td class="amt-sm">10</td><td class="amt">₹15,000</td></tr>
+        <tr><td>M2-08</td><td>Record Movement Screen</td><td>Unified form for all 6 movement types. Product picker (search + barcode scan). Location picker (drill-down tree). Quantity input with UoM conversion. Notes field. Optional photo attachment. Role-aware submit with pending confirmation dialog.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M2-09</td><td>Owner Approval Queue Screen</td><td>Pending movements list with summary cards. Full detail view (product, qty, submitter, notes, attached photo). One-tap Approve / Reject actions. Reject reason input sheet. Batch selection with batch-approve. Approved/rejected history tab. Empty state illustration.</td><td class="amt-sm">16</td><td class="amt">₹24,000</td></tr>
+        <tr><td>M2-10</td><td>Owner Dashboard Screen</td><td>At-a-glance metric cards (pending approvals, out-of-stock count, low-stock count, dead-stock ₹ value). Tappable alert list with navigation to detail. Pull-to-refresh. Last sync timestamp. Quick batch-approve from dashboard card.</td><td class="amt-sm">14</td><td class="amt">₹21,000</td></tr>
+        <tr><td>M2-11</td><td>Push Notifications Integration</td><td>Firebase FCM setup (Android + iOS configurations), notification payload schema, background notification handling, in-app notification centre screen (list + read/unread state), deep-link from notification to relevant screen (approval queue, specific product).</td><td class="amt-sm">10</td><td class="amt">₹15,000</td></tr>
+        <tr><td>M2-12</td><td>Owner Web Panel — Inventory Module</td><td>Vue.js inventory dashboard with Recharts charts (stock value trend, category breakdown, alert timeline), movement approval table (same functionality as mobile, large-screen layout), report viewer with chart + download button, bulk approve UI with checkboxes, cycle count management screen.</td><td class="amt-sm">18</td><td class="amt">₹27,000</td></tr>
+
+        <tr><td colspan="5" class="tr-sep">Quality Assurance, Migration & Launch</td></tr>
+        <tr><td>QA-01</td><td>Testing (Unit + Integration + E2E)</td><td>PHPUnit backend tests (≥80% coverage target), React Native Jest component tests, manual E2E flows on Android + iOS devices (all 4 role journeys), RBAC security verification (staff cannot call owner API endpoints), performance test (26K SKU search under SLA), offline mode test (full workflow without Wi-Fi).</td><td class="amt-sm">22</td><td class="amt">₹33,000</td></tr>
+        <tr><td>QA-02</td><td>Data Migration Support</td><td>Provide Excel import template to client, walkthrough session with client team, validate submitted data, run bulk import, verify all 26K products seeded correctly, spot-check 100 random SKUs with client sign-off, fix any import errors.</td><td class="amt-sm">12</td><td class="amt">₹18,000</td></tr>
+        <tr><td>QA-03</td><td>Training, Documentation & Go-Live</td><td>Role-specific training: Owner (1.5 hrs), Manager (1 hr), Staff (45 min), Godown (45 min). Operations manual PDF (4 role-specific user guides). 30-day warranty support period. Go-live parallel run support.</td><td class="amt-sm">12</td><td class="amt">₹18,000</td></tr>
+
+        <tr class="tr-sub"><td colspan="3"><strong>Module 2 Total (incl. QA & Launch)</strong></td><td class="amt-sm"><strong>204 hrs</strong></td><td class="amt">₹3,06,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INFRASTRUCTURE -->
+<div class="section" id="infra-cost">
+  <div class="sec-eyebrow">C3 · Infrastructure</div>
+  <div class="sec-h1">Infrastructure — DigitalOcean vs AWS</div>
+
+  <div class="callout c-green">
+    <div class="ci">✅</div>
+    <div class="cb">
+      <div class="ct">Recommendation — DigitalOcean Standard for Phase 1 & 2</div>
+      <div class="cx">For an internal app with 5–15 concurrent users and 26K SKUs, DigitalOcean provides everything at less than half the AWS cost. Bangalore data centre gives ~40ms latency from Ludhiana. Managed database with automated daily backups, no ops overhead. Setup is 5× simpler than AWS for a solo developer. <strong>Move to AWS only at Phase 3 (ecommerce with external users).</strong> Docker containers mean migration is a pull-and-push operation — no code changes required to migrate.</div>
+    </div>
+  </div>
+
+  <div class="grid g3" style="margin:20px 0">
+    <div class="infra-card">
+      <div class="ic-hd">
+        <div class="ic-name">Minimal</div>
+        <div><span class="tag t-opt" style="font-size:10px">Phase 1 · 5 users</span></div>
+        <div class="ic-price" style="color:var(--blue)">₹4,800</div>
+        <div class="ic-sub">/ month on DigitalOcean</div>
+      </div>
+      <div class="ic-row"><div class="ic-row-l">Droplet (2vCPU / 4GB)</div><div class="ic-row-r" style="color:var(--blue)">₹2,800</div></div>
+      <div class="ic-row"><div class="ic-row-l">Managed PostgreSQL Basic</div><div class="ic-row-r" style="color:var(--blue)">₹1,300</div></div>
+      <div class="ic-row"><div class="ic-row-l">DO Spaces 250GB</div><div class="ic-row-r" style="color:var(--blue)">₹430</div></div>
+      <div class="ic-row"><div class="ic-row-l">Redis on Droplet (free)</div><div class="ic-row-r" style="color:var(--blue)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">MeiliSearch on Droplet (OSS)</div><div class="ic-row-r" style="color:var(--blue)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">Weekly Snapshots</div><div class="ic-row-r" style="color:var(--blue)">₹280</div></div>
+    </div>
+
+    <div class="infra-card rec">
+      <div class="ic-hd rec-hd">
+        <div class="ic-name" style="color:var(--teal)">Standard ⭐</div>
+        <div><span class="tag t-green" style="font-size:10px">Recommended · Phase 1+2</span></div>
+        <div class="ic-price" style="color:var(--teal)">₹9,190</div>
+        <div class="ic-sub">/ month on DigitalOcean</div>
+      </div>
+      <div class="ic-row"><div class="ic-row-l">Droplet (4vCPU / 8GB)</div><div class="ic-row-r" style="color:var(--teal)">₹5,600</div></div>
+      <div class="ic-row"><div class="ic-row-l">Managed PostgreSQL Standard</div><div class="ic-row-r" style="color:var(--teal)">₹2,600</div></div>
+      <div class="ic-row"><div class="ic-row-l">DO Spaces 250GB</div><div class="ic-row-r" style="color:var(--teal)">₹430</div></div>
+      <div class="ic-row"><div class="ic-row-l">Redis on Droplet (free)</div><div class="ic-row-r" style="color:var(--teal)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">MeiliSearch on Droplet (OSS)</div><div class="ic-row-r" style="color:var(--teal)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">Daily Automated Backups</div><div class="ic-row-r" style="color:var(--teal)">₹480</div></div>
+      <div class="ic-row"><div class="ic-row-l">Cloudflare Free (CDN + SSL)</div><div class="ic-row-r" style="color:var(--teal)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">Firebase FCM (push) free tier</div><div class="ic-row-r" style="color:var(--teal)">₹0</div></div>
+      <div class="ic-row"><div class="ic-row-l">Sentry free (error tracking)</div><div class="ic-row-r" style="color:var(--teal)">₹0</div></div>
+      <div class="ic-row" style="border-top:2px solid var(--teal-m)"><div class="ic-row-l" style="font-weight:700;font-size:15px">Total / Month</div><div class="ic-row-r" style="color:var(--teal);font-size:16px;font-weight:700">₹9,110</div></div>
+    </div>
+
+    <div class="infra-card">
+      <div class="ic-hd">
+        <div class="ic-name">Enterprise</div>
+        <div><span class="tag t-purple" style="font-size:10px">Phase 3+ · eCommerce</span></div>
+        <div class="ic-price" style="color:var(--purple)">₹18,000+</div>
+        <div class="ic-sub">/ month on AWS Mumbai</div>
+      </div>
+      <div class="ic-row"><div class="ic-row-l">EC2 t3.medium</div><div class="ic-row-r" style="color:var(--purple)">₹3,800</div></div>
+      <div class="ic-row"><div class="ic-row-l">RDS PostgreSQL Multi-AZ</div><div class="ic-row-r" style="color:var(--purple)">₹7,200</div></div>
+      <div class="ic-row"><div class="ic-row-l">ElastiCache Redis</div><div class="ic-row-r" style="color:var(--purple)">₹1,800</div></div>
+      <div class="ic-row"><div class="ic-row-l">Cloudflare R2 (files)</div><div class="ic-row-r" style="color:var(--purple)">₹600</div></div>
+      <div class="ic-row"><div class="ic-row-l">ALB + Data transfer</div><div class="ic-row-r" style="color:var(--purple)">₹3,000</div></div>
+      <div class="ic-row"><div class="ic-row-l">Backups + Monitoring</div><div class="ic-row-r" style="color:var(--purple)">₹1,600</div></div>
+      <div class="ic-row" style="border-top:1.5px solid var(--border2)"><div class="ic-row-l" style="font-weight:700">Total / Month</div><div class="ic-row-r" style="color:var(--purple);font-size:15px;font-weight:700">₹18,000</div></div>
+    </div>
+  </div>
+
+
+  <h2>3-Week Delivery Timeline</h2>
+  <div class="timeline">
+    <div class="tl">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Week 1 · Days 1–7</div>
+      <div class="tl-title">Architecture, Setup & Data Migration</div>
+      <ul class="tl-list">
+        <li>Day 1: Sign agreement, receive Kickoff payment (30%), project starts immediately</li>
+        <li>Day 1–2: DigitalOcean server setup, Docker environment, CI/CD pipeline live</li>
+        <li>Day 1–3: Client provides Excel product data (CRITICAL PATH — blocks Module 1 backend)</li>
+        <li>Day 2–3: PostgreSQL schema migrations, MeiliSearch index configuration</li>
+        <li>Day 3–5: Excel data audit + validation report to client. Client corrects errors.</li>
+        <li>Day 5–7: Laravel backend scaffold, RBAC system, JWT auth API complete</li>
+        <li>Day 6–7: React Native app project setup, navigation, login screens for 4 roles</li>
+      </ul>
+      <div class="tl-del">✓ Week 1 Gate: Server live · RBAC working · Data validated · App shell running on Android</div>
+    </div>
+    <div class="tl">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Week 2 · Days 8–14 — Alpha Demo</div>
+      <div class="tl-title">Module 1 Complete + Alpha Demo to Client</div>
+      <ul class="tl-list">
+        <li>Day 8–10: Seed all 26K products into PostgreSQL + MeiliSearch index</li>
+        <li>Day 8–10: Product CRUD API, category tree API, location tree API complete</li>
+        <li>Day 10–12: React Native product browse, search, product detail, and barcode scanner screens</li>
+        <li>Day 11–13: Bulk import UI, photo upload, QR label generation</li>
+        <li>Day 12–14: Owner web panel — product management, category editor, location editor</li>
+        <li>Day 13–14: ALPHA DEMO to client — browse and scan all 26K products on actual device</li>
+        <li>Day 14: Alpha demo feedback. Second milestone payment (35%) due.</li>
+      </ul>
+      <div class="tl-del">✓ Week 2 Gate: Client sees all 26K products on their phone · Barcode scanning live · Search under 800ms · Alpha payment received</div>
+    </div>
+    <div class="tl" style="margin-bottom:0">
+      <div class="tl-dot"></div>
+      <div class="tl-week">Week 3 · Days 15–21 — Go-Live</div>
+      <div class="tl-title">Module 2 Complete + Testing + Production Launch</div>
+      <ul class="tl-list">
+        <li>Day 15–17: Stock movement APIs, approval workflow, owner approval queue</li>
+        <li>Day 17–18: Dead stock alert engine, low-stock alerts, out-of-trend flagging</li>
+        <li>Day 18–19: Owner approval queue mobile screen + web panel dashboard</li>
+        <li>Day 19–20: Push notifications (FCM), cycle count module, inventory reports</li>
+        <li>Day 20: iOS build on TestFlight for Owner. Beta payment (25%) due.</li>
+        <li>Day 20–21: QA — all 4 role flows, RBAC security test, offline mode test, performance test</li>
+        <li>Day 21: Production deployment on DigitalOcean. Staff training sessions.</li>
+        <li>Day 21: Go-Live — app becomes single source of truth. 30-day warranty starts.</li>
+      </ul>
+      <div class="tl-del">✓ Week 3 Gate: Production live · All staff trained · 30-day warranty running · Final payment due at Day 51</div>
+    </div>
+  </div>
+</div>
+
+<!-- APPROVAL -->
+<div class="section" id="approval">
+  <div class="sec-eyebrow">C5 · Acceptance</div>
+  <div class="sec-h1">Document Approval & Sign-Off</div>
+
+  <div class="callout c-navy">
+    <div class="ci">📋</div>
+    <div class="cb">
+      <div class="ct">What Signing This Document Confirms</div>
+      <div class="cx">1. The 2 modules (Catalog + Inventory) in Part A are the complete agreed Phase 1 scope. 2. All features listed as "Out of Scope" in Section A6 require a separate Change Request with revised timeline and cost. 3. The client will provide the product Excel data file within 3 business days of the Kickoff payment. 4. The 4-milestone payment schedule in Section C4 is agreed. 5. DigitalOcean infrastructure costs (₹9,110/month Standard) are paid directly by the client to DigitalOcean — not included in the development fee. 6. Rate basis: ₹1,500/hour for all development work.</div>
+    </div>
+  </div>
+
+  <div class="sig-grid">
+    <div class="sig-box">
+      <div class="sig-role">Client — Owner · Acceptance & Authorisation</div>
+      <div class="sig-line">
+        <div class="sig-name">Pankaj Garg</div>
+        <div class="sig-detail">
+          Owner — Garg Enterprises<br>
+          Shop No. 709/4A/2, Block-28, Punjab Mata Nagar<br>
+          Pakhowal Road, Ludhiana 141003<br>
+          GSTIN: 03ABVPH1510L2ZQ
+        </div>
+        <div style="margin-top:16px;font-size:11.5px;color:var(--muted2);font-family:'JetBrains Mono',monospace">
+          Signature: _______________________________<br><br>
+          Date: ___________________________________<br><br>
+          Selected Package: ₹6,57,000 + 18% GST
+        </div>
+      </div>
+    </div>
+    <div class="sig-box">
+      <div class="sig-role">Developer — Digital Builders</div>
+      <div class="sig-line">
+        <div class="sig-name">Ashish Gupta</div>
+        <div class="sig-detail">
+          Founder — Digital Builders<br>
+          Mobile: +91-9087021592<br>
+          Email: [ashish@digitalbuilders.in]<br>
+          PAN / GSTIN: [Your Details]
+        </div>
+        <div style="margin-top:16px;font-size:11.5px;color:var(--muted2);font-family:'JetBrains Mono',monospace">
+          Signature: _______________________________<br><br>
+          Date: ___________________________________<br><br>
+          Development Start: Upon Kickoff Payment
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;background:var(--grad1);border-radius:12px;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white;margin-bottom:6px">Ready to bring Garg Enterprises fully digital?</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6">Call or WhatsApp to schedule a live walkthrough. I'll demonstrate every screen on your actual phone — before you commit a single rupee.</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:rgba(94,212,212,.9)">+91-9087021592</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px;font-family:'JetBrains Mono',monospace">Ashish Gupta · Digital Builders</div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- PRINT FAB -->
+<button class="print-fab no-print" onclick="window.print()" title="Print this document">
+  <span class="print-fab-icon">🖨️</span> Print Document
+</button>
+
+<!-- FOOTER -->
+<div class="doc-footer">
+  <div class="df"><em>Garg Enterprises · Phase 1</em> · Catalog & Inventory · Doc GE-P1-PRD-TRD-COST-001 · v1.0 · May 2026</div>
+  <div class="df">Prepared by: <em>Ashish Gupta · Digital Builders · +91-9087021592</em> · Confidential</div>
+</div>
+
+<script>
+/* Sidebar toggle */
+const sidebar=document.getElementById('sidebar');
+const mainContent=document.getElementById('mainContent');
+const toggleBtn=document.getElementById('sidebarToggle');
+const closeBtn=document.getElementById('sidebarClose');
+
+function openSidebar(){
+  sidebar.classList.remove('collapsed');
+  mainContent.classList.remove('expanded');
+  toggleBtn.classList.add('sidebar-open');
+  toggleBtn.setAttribute('title','Hide Navigation');
+  toggleBtn.textContent='✕';
+}
+function closeSidebar(){
+  sidebar.classList.add('collapsed');
+  mainContent.classList.add('expanded');
+  toggleBtn.classList.remove('sidebar-open');
+  toggleBtn.style.left='20px';
+  toggleBtn.setAttribute('title','Show Navigation');
+  toggleBtn.textContent='☰';
+}
+toggleBtn.addEventListener('click',()=>{
+  if(sidebar.classList.contains('collapsed')) openSidebar();
+  else closeSidebar();
+});
+closeBtn.addEventListener('click',closeSidebar);
+
+/* Active link on scroll */
+const sections=document.querySelectorAll('.section[id],.part-header[id],.cover[id]');
+const links=document.querySelectorAll('.sb-link');
+const ob=new IntersectionObserver(e=>{
+  e.forEach(x=>{
+    if(x.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const a=document.querySelector(`.sb-link[href="#${x.target.id}"]`);
+      if(a){a.classList.add('active');a.scrollIntoView({block:'nearest',behavior:'smooth'})}
+    }
+  })
+},{rootMargin:'-30% 0px -60% 0px'});
+sections.forEach(s=>ob.observe(s));
+
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}
+  })
+});
+</script>
+</body>
+</html>

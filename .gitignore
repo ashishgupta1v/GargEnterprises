@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+/mobile/node_modules/
+/backend/vendor/
+
+# Environment configurations (protect sensitive API tokens)
+.env
+.env.*
+/backend/.env
+/mobile/.env
+
+# Local caches & IDEs
+.expo/
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Laravel framework generated files
+/backend/bootstrap/cache/*
+/backend/storage/framework/cache/data/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/testing/*
+/backend/storage/framework/views/*
+/backend/storage/logs/*.log
+/backend/storage/*.key

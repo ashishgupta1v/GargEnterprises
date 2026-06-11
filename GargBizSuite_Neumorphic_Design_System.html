@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GargEnterprises — Neumorphic Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   NEUMORPHIC DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  /* ── Base Surface ── */
+  --base:    #EEF0F5;   /* the ONE background everything shares */
+  --base-lt: #F8F9FC;   /* slightly lighter */
+  --base-dk: #E4E6ED;   /* slightly darker */
+
+  /* ── Neumorphic Shadows (THE core) ── */
+  --nm-raise:  6px 6px 16px #D1D4DE, -6px -6px 16px #FFFFFF;
+  --nm-raise-sm: 3px 3px 8px #D1D4DE, -3px -3px 8px #FFFFFF;
+  --nm-raise-lg: 12px 12px 30px #C8CBDA, -12px -12px 30px #FFFFFF;
+  --nm-inset:  inset 4px 4px 10px #D1D4DE, inset -4px -4px 10px #FFFFFF;
+  --nm-inset-sm: inset 2px 2px 6px #D1D4DE, inset -2px -2px 6px #FFFFFF;
+  --nm-flat:   2px 2px 5px #D1D4DE, -2px -2px 5px #FFFFFF;
+
+  /* ── Brand Gradient Colors ── */
+  --g-blue1: #4F7BF7;   --g-blue2: #667EEA;
+  --g-teal1: #38B2AC;   --g-teal2: #4FD1C5;
+  --g-green1:#38A169;   --g-green2:#68D391;
+  --g-amber1:#D69E2E;   --g-amber2:#F6C90E;
+  --g-red1:  #E53E3E;   --g-red2:  #FC8181;
+  --g-purple1:#805AD5;  --g-purple2:#B794F4;
+  --g-slate1:#4A5568;   --g-slate2:#718096;
+
+  /* ── Text ── */
+  --t1: #1A202C;  /* primary */
+  --t2: #2D3748;  /* secondary */
+  --t3: #4A5568;  /* muted */
+  --t4: #718096;  /* subtle */
+  --t5: #A0AEC0;  /* placeholder */
+
+  /* ── Soft Gradient Surfaces ── */
+  --grd-primary: linear-gradient(135deg, #4F7BF7 0%, #667EEA 100%);
+  --grd-success: linear-gradient(135deg, #38A169 0%, #68D391 100%);
+  --grd-warning: linear-gradient(135deg, #D69E2E 0%, #F6C90E 100%);
+  --grd-danger:  linear-gradient(135deg, #E53E3E 0%, #FC8181 100%);
+  --grd-cool:    linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  --grd-warm:    linear-gradient(135deg, #F093FB 0%, #F5576C 100%);
+  --grd-ocean:   linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%);
+  --grd-mint:    linear-gradient(135deg, #43E97B 0%, #38F9D7 100%);
+  --grd-gold:    linear-gradient(135deg, #F6D365 0%, #FDA085 100%);
+  --grd-peach:   linear-gradient(135deg, #FCCB90 0%, #D57EEB 100%);
+
+  /* ── Border Radius ── */
+  --r-xs: 6px;  --r-sm: 10px;  --r-md: 16px;
+  --r-lg: 20px; --r-xl: 28px;  --r-full: 999px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box }
+html, body {
+  background: var(--base);
+  color: var(--t2);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 5px }
+::-webkit-scrollbar-track { background: var(--base) }
+::-webkit-scrollbar-thumb { background: #C8CBDA; border-radius: 3px }
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: var(--base);
+  padding: 72px 40px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 700px 400px at 20% 50%, rgba(79,123,247,.07), transparent),
+    radial-gradient(ellipse 500px 300px at 80% 30%, rgba(102,126,234,.06), transparent),
+    radial-gradient(ellipse 400px 400px at 50% 100%, rgba(56,178,172,.05), transparent);
+  pointer-events: none;
+}
+.ph-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border-radius: var(--r-full);
+  padding: 5px 14px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--g-blue1);
+  margin-bottom: 24px;
+}
+.ph-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 48px; font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.ph-title .grd-text {
+  background: var(--grd-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.ph-sub { font-size: 16px; color: var(--t4); max-width: 520px; margin: 0 auto 32px; font-weight: 400 }
+.ph-stats {
+  display: inline-flex; gap: 0;
+  background: var(--base);
+  box-shadow: var(--nm-raise);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.ph-stat {
+  padding: 14px 28px;
+  text-align: center;
+  border-right: 1px solid rgba(79,123,247,.1);
+}
+.ph-stat:last-child { border-right: none }
+.ph-stat .val { font-size: 20px; font-weight: 800; color: var(--t1) }
+.ph-stat .lbl { font-size: 11px; color: var(--t4); font-weight: 500; margin-top: 2px }
+
+/* ── WRAPPER ── */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 48px 36px }
+
+/* ── SECTION ── */
+.section { margin-bottom: 60px }
+.s-head {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 28px;
+}
+.s-num {
+  width: 40px; height: 40px;
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800;
+  background: var(--grd-primary);
+  color: #fff;
+  flex-shrink: 0;
+}
+.s-info h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 22px; font-weight: 800;
+  color: var(--t1); letter-spacing: -.5px;
+  margin-bottom: 3px;
+}
+.s-info p { font-size: 13px; color: var(--t4) }
+
+/* ── NM CARD ── */
+.nm-card {
+  background: var(--base);
+  box-shadow: var(--nm-raise);
+  border-radius: var(--r-lg);
+  padding: 24px;
+}
+.nm-card-sm {
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border-radius: var(--r-md);
+  padding: 16px;
+}
+.nm-inset {
+  background: var(--base);
+  box-shadow: var(--nm-inset);
+  border-radius: var(--r-md);
+  padding: 16px;
+}
+
+/* ── GRIDS ── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px }
+.g5 { display:grid; grid-template-columns:repeat(5,1fr); gap:10px }
+
+/* ── PROMPT BLOCK ── */
+.prompt-wrap {
+  background: var(--base);
+  box-shadow: var(--nm-inset-sm);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  position: relative;
+}
+.pb-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--t5); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.pb-label::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--grd-primary);
+  border-radius: 50%;
+}
+.prompt-wrap pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px; color: var(--t2);
+  white-space: pre-wrap; line-height: 1.9;
+}
+.prompt-wrap pre .hl { color: #4F7BF7; font-weight: 700 }
+.prompt-wrap pre .cm { color: var(--t5) }
+.prompt-wrap pre .kw { color: #38A169; font-weight: 600 }
+.prompt-wrap pre .vl { color: #D69E2E; font-weight: 600 }
+.copy-btn {
+  position: absolute; top: 20px; right: 20px;
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border: none; border-radius: var(--r-sm);
+  color: var(--t4); font-size: 12px; font-weight: 600;
+  padding: 7px 14px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all .2s;
+}
+.copy-btn:hover { color: var(--g-blue1) }
+.copy-btn:active { box-shadow: var(--nm-inset-sm) }
+
+/* ── COLOR SWATCHES ── */
+.swatch {
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.sw-color { height: 80px; position: relative }
+.sw-color::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.15) 0%, transparent 100%);
+}
+.sw-info { padding: 10px 12px }
+.sw-name { font-size: 12px; font-weight: 700; color: var(--t2) }
+.sw-hex { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--t5); margin-top: 2px }
+.sw-role { font-size: 11px; color: var(--t4); margin-top: 3px }
+
+/* ── TYPOGRAPHY SAMPLES ── */
+.type-row {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(79,123,247,.08);
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+}
+.type-row:last-child { border-bottom: none }
+.type-meta { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--t5); white-space: nowrap; flex-shrink: 0 }
+
+/* ── SPACING VIZ ── */
+.sp-row { display: flex; align-items: center; gap: 14px; padding: 8px 0; border-bottom: 1px solid rgba(79,123,247,.06) }
+.sp-row:last-child { border-bottom: none }
+.sp-box { background: linear-gradient(135deg, rgba(79,123,247,.18), rgba(102,126,234,.1)); border-radius: 4px; height: 20px; flex-shrink: 0 }
+.sp-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--g-blue1); font-weight: 600; width: 90px; flex-shrink: 0 }
+.sp-desc { font-size: 12px; color: var(--t4) }
+
+/* ── COMPONENT PREVIEWS ── */
+/* NM Button Primary */
+.nm-btn-p {
+  background: var(--grd-primary);
+  border: none; border-radius: var(--r-sm);
+  color: #fff; font-size: 14px; font-weight: 600;
+  padding: 12px 24px; cursor: pointer;
+  box-shadow: 4px 4px 12px rgba(79,123,247,.35), -2px -2px 6px rgba(255,255,255,.8);
+  font-family: 'Inter', sans-serif;
+  transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.nm-btn-p:active { box-shadow: inset 2px 2px 6px rgba(0,0,0,.2) }
+
+/* NM Button Secondary */
+.nm-btn-s {
+  background: var(--base);
+  border: none; border-radius: var(--r-sm);
+  color: var(--t2); font-size: 14px; font-weight: 600;
+  padding: 12px 24px; cursor: pointer;
+  box-shadow: var(--nm-raise-sm);
+  font-family: 'Inter', sans-serif;
+  transition: all .2s;
+}
+.nm-btn-s:active { box-shadow: var(--nm-inset-sm) }
+
+/* NM Button Ghost */
+.nm-btn-g {
+  background: transparent;
+  border: none; border-radius: var(--r-sm);
+  color: var(--g-blue1); font-size: 14px; font-weight: 600;
+  padding: 12px 24px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all .2s;
+}
+
+/* NM Input */
+.nm-inp {
+  background: var(--base);
+  box-shadow: var(--nm-inset-sm);
+  border: none; border-radius: var(--r-sm);
+  padding: 11px 14px; font-size: 14px;
+  color: var(--t1); font-family: 'Inter', sans-serif;
+  outline: none; width: 100%;
+  transition: box-shadow .2s;
+}
+.nm-inp:focus { box-shadow: inset 3px 3px 8px #C8CBDA, inset -3px -3px 8px #FFFFFF, 0 0 0 2.5px rgba(79,123,247,.3) }
+.nm-inp::placeholder { color: var(--t5) }
+.inp-label { font-size: 11px; font-weight: 700; color: var(--t4); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; display: block }
+
+/* NM Toggle */
+.nm-toggle {
+  position: relative; width: 52px; height: 28px;
+  background: var(--base);
+  box-shadow: var(--nm-inset-sm);
+  border-radius: var(--r-full);
+  cursor: pointer;
+}
+.nm-toggle.on { background: var(--grd-primary); box-shadow: inset 2px 2px 6px rgba(0,0,0,.2) }
+.nm-toggle .knob {
+  position: absolute; top: 4px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--base-lt);
+  box-shadow: 2px 2px 6px rgba(0,0,0,.15);
+  transition: left .25s;
+  left: 4px;
+}
+.nm-toggle.on .knob { left: 28px; background: #fff }
+
+/* NM Badge */
+.nm-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: var(--r-full);
+  background: var(--base);
+  box-shadow: var(--nm-flat);
+}
+
+/* NM Status Badge (gradient) */
+.nm-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: var(--r-full);
+  color: #fff;
+}
+.nm-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.7); display: block }
+
+/* KPI CARD */
+.kpi-card {
+  background: var(--base);
+  box-shadow: var(--nm-raise);
+  border-radius: var(--r-lg);
+  padding: 20px;
+}
+.kpi-icon-wrap {
+  width: 48px; height: 48px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 14px;
+  box-shadow: var(--nm-raise-sm);
+}
+.kpi-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 26px; font-weight: 800;
+  color: var(--t1); line-height: 1; margin-bottom: 4px;
+}
+.kpi-lbl {
+  font-size: 11px; font-weight: 600;
+  color: var(--t4); text-transform: uppercase; letter-spacing: .8px;
+}
+.kpi-trend { font-size: 12px; font-weight: 600; margin-top: 10px; display: flex; align-items: center; gap: 4px }
+
+/* PRODUCT ROW */
+.prod-row {
+  background: var(--base);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  box-shadow: var(--nm-raise-sm);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 14px;
+  transition: box-shadow .2s;
+}
+.prod-row:hover { box-shadow: var(--nm-raise) }
+.prod-row:active { box-shadow: var(--nm-inset-sm) }
+
+/* NAV ITEM */
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: var(--r-md);
+  font-size: 13.5px; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+  color: var(--t4);
+}
+.nav-item.active {
+  background: var(--base);
+  box-shadow: var(--nm-inset-sm);
+  color: var(--g-blue1); font-weight: 700;
+}
+
+/* PROGRESS BAR NM */
+.prog-track {
+  height: 8px;
+  background: var(--base);
+  box-shadow: var(--nm-inset-sm);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%; border-radius: var(--r-full);
+  position: relative;
+}
+.prog-fill::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+/* SEARCH BAR */
+.nm-search {
+  background: var(--base);
+  box-shadow: var(--nm-inset);
+  border-radius: var(--r-full);
+  padding: 11px 18px 11px 44px;
+  border: none; width: 100%;
+  font-size: 14px; font-family: 'Inter', sans-serif;
+  color: var(--t1); outline: none;
+}
+.nm-search::placeholder { color: var(--t5) }
+
+/* TAG/CHIP */
+.chip {
+  background: var(--base);
+  box-shadow: var(--nm-flat);
+  border-radius: var(--r-full);
+  padding: 6px 14px;
+  font-size: 12px; font-weight: 600;
+  color: var(--t3); cursor: pointer;
+  transition: all .2s;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+.chip.active {
+  background: var(--grd-primary);
+  box-shadow: 3px 3px 8px rgba(79,123,247,.3), -1px -1px 4px rgba(255,255,255,.8);
+  color: #fff;
+}
+
+/* ICON WRAP */
+.icon-nm {
+  width: 44px; height: 44px;
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+
+/* SECTION DIVIDER */
+.sdiv {
+  border: none; border-top: 1px solid rgba(79,123,247,.08);
+  margin: 16px 0;
+}
+
+/* GRADIENT PREVIEWS */
+.grd-pill {
+  height: 48px; border-radius: var(--r-md);
+  box-shadow: var(--nm-raise-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 12px; font-weight: 700;
+  letter-spacing: .3px;
+}
+
+/* TABLE OF CONTENTS */
+.toc {
+  background: var(--base);
+  box-shadow: var(--nm-raise-lg);
+  border-radius: var(--r-xl);
+  padding: 28px 32px;
+  margin: 0 0 52px;
+}
+.toc-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px; font-weight: 800;
+  color: var(--t1); margin-bottom: 18px;
+  display: flex; align-items: center; gap: 8px;
+}
+.toc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 28px }
+.toc a {
+  font-size: 13px; color: var(--t3); text-decoration: none;
+  font-weight: 500; padding: 5px 0;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(79,123,247,.06);
+  transition: color .2s;
+}
+.toc a:hover { color: var(--g-blue1) }
+.toc a .num { color: var(--t5); font-size: 11px; font-family:'JetBrains Mono',monospace; width: 20px }
+
+/* CALLOUT */
+.callout {
+  background: var(--base);
+  box-shadow: inset 3px 3px 8px rgba(79,123,247,.08), inset -3px -3px 8px rgba(255,255,255,.9), 0 0 0 1px rgba(79,123,247,.12);
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 13px; color: var(--t3); line-height: 1.6;
+}
+.callout strong { color: var(--g-blue1) }
+
+/* SCREEN MOCKUP CARD */
+.screen-mockup {
+  background: var(--base);
+  box-shadow: var(--nm-raise-lg);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.mock-bar {
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--base);
+  box-shadow: 0 1px 0 rgba(79,123,247,.08);
+}
+.mock-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--base-dk); box-shadow: var(--nm-flat) }
+
+/* BORDER-RADIUS VIZ */
+.rad-item {
+  background: var(--base);
+  box-shadow: var(--nm-raise-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--t4);
+  height: 56px; font-family: 'JetBrains Mono', monospace;
+}
+
+/* FOOTER */
+.page-footer {
+  text-align: center;
+  padding: 40px;
+  background: var(--base);
+  border-top: 1px solid rgba(79,123,247,.08);
+  margin-top: 40px;
+}
+
+@media(max-width:800px) {
+  .g2,.g3,.g4,.g5,.toc-grid{grid-template-columns:1fr}
+  .ph-title{font-size:32px}
+  .ph-stats{flex-direction:column;border-radius:var(--r-lg)}
+  .ph-stat{border-right:none;border-bottom:1px solid rgba(79,123,247,.1)}
+  .ph-stat:last-child{border-bottom:none}
+  .wrap{padding:32px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="ph-pill">✦ Design System v2.0</div>
+  <h1 class="ph-title">GargEnterprises<br><span class="grd-text">Neumorphic</span> Design Language</h1>
+  <p class="ph-sub">Complete UI/UX specification — Light mode, Neumorphic, Inter + DM Sans typography, Soft Gradients. Ready for Google Stitch.</p>
+  <div class="ph-stats">
+    <div class="ph-stat"><div class="val">12</div><div class="lbl">Sections</div></div>
+    <div class="ph-stat"><div class="val">Inter</div><div class="lbl">Primary Font</div></div>
+    <div class="ph-stat"><div class="val">Neuro</div><div class="lbl">Design Style</div></div>
+    <div class="ph-stat"><div class="val">Light</div><div class="lbl">Theme</div></div>
+    <div class="ph-stat"><div class="val">10</div><div class="lbl">Screens</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">📋 Document Index</div>
+  <div class="toc-grid">
+    <a href="#s1"><span class="num">01</span> Master Google Stitch Prompt</a>
+    <a href="#s7"><span class="num">07</span> Components — Buttons & Inputs</a>
+    <a href="#s2"><span class="num">02</span> Neumorphism Principles</a>
+    <a href="#s8"><span class="num">08</span> Components — Badges & Status</a>
+    <a href="#s3"><span class="num">03</span> Color & Gradient System</a>
+    <a href="#s9"><span class="num">09</span> Navigation Architecture</a>
+    <a href="#s4"><span class="num">04</span> Typography Scale</a>
+    <a href="#s10"><span class="num">10</span> Screen-by-Screen UX Specs</a>
+    <a href="#s5"><span class="num">05</span> Spacing & Layout Grid</a>
+    <a href="#s11"><span class="num">11</span> Motion & Micro-interactions</a>
+    <a href="#s6"><span class="num">06</span> Shadow Tokens</a>
+    <a href="#s12"><span class="num">12</span> Accessibility & Guardrails</a>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 1 — MASTER STITCH PROMPT ═══════ -->
+<div class="section" id="s1">
+  <div class="s-head">
+    <div class="s-num">01</div>
+    <div class="s-info">
+      <h2>Master Google Stitch Prompt</h2>
+      <p>Complete copy-paste design brief for generating all 10 app screens</p>
+    </div>
+  </div>
+
+  <div class="callout"><strong>How to use:</strong> Copy the block below → paste into Google Stitch → select "Mobile App (React Native)" → click Generate. For individual screens, use the per-screen specs in Section 10.</div>
+
+  <div class="prompt-wrap">
+    <div class="pb-label">GOOGLE STITCH — COMPLETE DESIGN PROMPT</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy All</button>
+    <pre>
+<span class="hl">APP:</span>           GargEnterprises — Inventory & Catalog Management
+<span class="hl">CLIENT:</span>        Garg Enterprises, Ludhiana (Hardware & Modular Kitchen)
+<span class="hl">PLATFORM:</span>      Mobile App · iOS + Android · React Native
+<span class="hl">PHASE:</span>         Phase 1 — SKU Catalog + Inventory Movements
+<span class="hl">DESIGN STYLE:</span>  Neumorphism · Light Mode Only · Minimal · Professional
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">DESIGN STYLE DEFINITION — NEUMORPHISM:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+Neumorphism (soft UI) uses ONE background color for all surfaces.
+Elements appear to extrude FROM or be pressed INTO the background
+using dual shadows — one light (top-left) and one dark (bottom-right).
+
+Rules:
+- ALL elements share the same base background: #EEF0F5
+- Raised elements: box-shadow: 6px 6px 16px #D1D4DE, -6px -6px 16px #FFFFFF
+- Pressed/Active: box-shadow: inset 4px 4px 10px #D1D4DE, inset -4px -4px 10px #FFFFFF
+- NO hard borders. NO background colors different from base.
+- Gradients used ONLY for: primary CTA buttons, status badges, icon fills, brand highlights
+- Small shadow for small elements. Large shadow for large cards. Proportional.
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">BASE COLORS:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="kw">Background (the ONE color everything is built on):</span>
+  App Background:        #EEF0F5   ← CRITICAL: use this everywhere
+  Lighter variant:       #F8F9FC   (for inner highlights)
+  Darker variant:        #E4E6ED   (for shadow-dark variant)
+
+<span class="kw">Shadow Tokens:</span>
+  --nm-raise:     6px 6px 16px #D1D4DE, -6px -6px 16px #FFFFFF
+  --nm-raise-sm:  3px 3px 8px #D1D4DE, -3px -3px 8px #FFFFFF
+  --nm-raise-lg:  12px 12px 30px #C8CBDA, -12px -12px 30px #FFFFFF
+  --nm-inset:     inset 4px 4px 10px #D1D4DE, inset -4px -4px 10px #FFFFFF
+  --nm-inset-sm:  inset 2px 2px 6px #D1D4DE, inset -2px -2px 6px #FFFFFF
+  --nm-flat:      2px 2px 5px #D1D4DE, -2px -2px 5px #FFFFFF
+
+<span class="kw">Text Colors:</span>
+  Primary Text:          #1A202C   (headings, important values)
+  Secondary Text:        #2D3748   (body, labels)
+  Muted Text:            #4A5568   (descriptions, hints)
+  Subtle Text:           #718096   (timestamps, metadata)
+  Placeholder:           #A0AEC0
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">GRADIENT SYSTEM (accent / functional use only):</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Primary / CTA:      linear-gradient(135deg, #4F7BF7 0%, #667EEA 100%)
+  Success / In Stock: linear-gradient(135deg, #38A169 0%, #68D391 100%)
+  Warning / Low:      linear-gradient(135deg, #D69E2E 0%, #F6C90E 100%)
+  Danger / Out:       linear-gradient(135deg, #E53E3E 0%, #FC8181 100%)
+  Info / Transfer:    linear-gradient(135deg, #4FACFE 0%, #00F2FE 100%)
+  Brand Gold:         linear-gradient(135deg, #F6D365 0%, #FDA085 100%)
+
+  Use gradients for:
+  ✓ Primary action buttons
+  ✓ Status badge backgrounds (pill badges on product cards)
+  ✓ Icon container fills (48×48 rounded squares)
+  ✓ KPI card accent strip (left border or top-strip)
+  ✓ Bottom navigation active indicator dot
+  ✗ Never for card backgrounds, list rows, or app background
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">TYPOGRAPHY:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="kw">Font Families:</span>
+  Headings / Display:   "Inter"         (weight 700–900, tight tracking)
+  Body / UI Labels:     "Inter"         (weight 400–600, normal tracking)
+  Data / SKU Codes:     "JetBrains Mono" (weight 400–600)
+
+  Note: Use Inter for EVERYTHING. Use JetBrains Mono only for:
+  SKU codes, prices, quantities, reference numbers, timestamps.
+
+<span class="kw">Mobile Type Scale:</span>
+  Display (Screen Hero):  28pt · Inter · 800 · tracking -0.5pt · #1A202C
+  Title Large (Nav bar):  18pt · Inter · 700 · tracking -0.2pt · #1A202C
+  Title (Cards):          16pt · Inter · 700 · tracking -0.1pt · #1A202C
+  Title Small:            14pt · Inter · 600 · tracking 0       · #2D3748
+  Body Large:             15pt · Inter · 400 · line-height 1.65  · #2D3748
+  Body:                   14pt · Inter · 400 · line-height 1.6   · #2D3748
+  Caption:                12pt · Inter · 400 · line-height 1.5   · #718096
+  Label / Tag:            11pt · Inter · 700 · tracking 0.3pt   · varies
+  Overline:               10pt · Inter · 700 · tracking 1.2pt   · #A0AEC0 · ALL CAPS
+  Mono Data:              13pt · JetBrains Mono · 500 · #2D3748
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">SPACING SYSTEM (4pt base grid):</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  4pt   — icon to text gap, badge internal
+  8pt   — within component (icon + label in button)
+  12pt  — between related items in a group
+  16pt  — card internal padding, list row horizontal
+  20pt  — screen horizontal padding, section spacing
+  24pt  — between card groups
+  32pt  — major sections within a screen
+  48pt  — top of screen, hero area
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">BORDER RADIUS:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  Micro (badges, chips): 6pt
+  Small (buttons, inputs): 10pt
+  Medium (cards, modals): 16pt
+  Large (bottom sheets, feature cards): 20pt
+  XL (hero cards, main panels): 28pt
+  Full (avatar, toggle, search pill): 999pt
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">COMPONENT SPECIFICATIONS:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="vl">PRIMARY BUTTON:</span>
+  Height: 52pt | Border-radius: 10pt
+  Background: linear-gradient(135deg, #4F7BF7, #667EEA)
+  Shadow: 4px 4px 12px rgba(79,123,247,.35), -2px -2px 6px rgba(255,255,255,.8)
+  Text: 15pt / Inter / 600 / White
+  Pressed: inset 2px 2px 6px rgba(0,0,0,.2)
+  Icon (optional): 18pt, left, 8pt gap
+
+<span class="vl">SECONDARY BUTTON:</span>
+  Height: 52pt | Background: #EEF0F5
+  Shadow: 3px 3px 8px #D1D4DE, -3px -3px 8px #FFFFFF
+  Text: 15pt / Inter / 600 / #2D3748
+  Pressed: inset 2px 2px 6px #D1D4DE, inset -2px -2px 6px #FFFFFF
+
+<span class="vl">DESTRUCTIVE BUTTON:</span>
+  Same as secondary but text color #E53E3E
+  
+<span class="vl">TEXT BUTTON:</span>
+  No shadow. Color: #4F7BF7. 14pt/600/Inter. No background.
+
+<span class="vl">INPUT FIELD:</span>
+  Height: 52pt | Background: #EEF0F5
+  Shadow: inset 2px 2px 6px #D1D4DE, inset -2px -2px 6px #FFFFFF
+  Border-radius: 10pt | Text: 14pt / Inter / #1A202C
+  Placeholder: 14pt / #A0AEC0
+  Focus: inset shadow + outer glow ring 2.5pt rgba(79,123,247,.3)
+  Label above: 11pt / Inter / 700 / #718096 / ALL CAPS / 6pt gap
+
+<span class="vl">SEARCH BAR:</span>
+  Height: 48pt | Background: #EEF0F5
+  Shadow: inset 3px 3px 8px #D1D4DE, inset -3px -3px 8px #FFFFFF
+  Border-radius: 999pt (full pill)
+  MagnifyingGlass icon left at 16pt
+  Font: 14pt / Inter / #A0AEC0 placeholder → #1A202C active
+
+<span class="vl">CARD (Standard):</span>
+  Background: #EEF0F5
+  Shadow: 6px 6px 16px #D1D4DE, -6px -6px 16px #FFFFFF
+  Border-radius: 16pt | Padding: 20pt
+  No border. No background color change.
+  Subtle inner padding divider: 1pt rgba(79,123,247,.05)
+
+<span class="vl">LIST ROW:</span>
+  Background: #EEF0F5
+  Shadow: 3px 3px 8px #D1D4DE, -3px -3px 8px #FFFFFF
+  Border-radius: 12pt | Padding: 14pt 16pt
+  Margin-bottom: 10pt (cards float independently, not in a list divider)
+  Pressed: inset shadow
+  Title: 14pt / Inter / 600 / #1A202C
+  Subtitle: 12pt / Inter / 400 / #718096
+  SKU: 11pt / JetBrains Mono / #A0AEC0
+  Trailing: gradient badge OR price in JetBrains Mono
+
+<span class="vl">STATUS BADGE (pill):</span>
+  Height: 24pt | Padding: 0 10pt | Border-radius: 999pt
+  Font: 11pt / Inter / 700 / White
+  In Stock:   linear-gradient(135deg, #38A169, #68D391)
+  Low Stock:  linear-gradient(135deg, #D69E2E, #F6C90E)
+  Out:        linear-gradient(135deg, #E53E3E, #FC8181)
+  Pending:    linear-gradient(135deg, #4F7BF7, #667EEA)
+  Approved:   linear-gradient(135deg, #38A169, #68D391)
+  Rejected:   linear-gradient(135deg, #E53E3E, #FC8181)
+  Leading dot: 6pt circle, rgba(255,255,255,0.7)
+  Shadow: 2px 2px 5px #D1D4DE, -2px -2px 5px #FFFFFF
+
+<span class="vl">KPI CARD:</span>
+  Background: #EEF0F5 | Shadow: nm-raise-lg
+  Border-radius: 20pt | Padding: 20pt
+  Top gradient accent strip: 4pt height, full width, gradient matches meaning
+  Icon container: 48pt × 48pt, 14pt radius, gradient bg
+  Value: 26pt / Inter / 800 / #1A202C
+  Label: 11pt / Inter / 600 / #718096 / ALL CAPS / 0.8pt tracking
+
+<span class="vl">TOGGLE SWITCH:</span>
+  Track: 52pt × 28pt | Border-radius: 999pt
+  Off: #EEF0F5 + inset shadow (pressed in)
+  On: Primary gradient + inset shadow
+  Knob: 20pt circle | #F8F9FC | box-shadow: 2px 2px 6px rgba(0,0,0,.15)
+  Animation: 250ms cubic-bezier(.4,0,.2,1)
+
+<span class="vl">BOTTOM NAVIGATION:</span>
+  Height: 72pt + safe area | Background: #EEF0F5
+  Shadow: 0 -4px 20px rgba(0,0,0,.06)
+  No top border. Elevated feel via shadow.
+  5 items. Center item = FAB.
+  FAB: 56pt circle | Gradient primary | Shadow: 4px 4px 16px rgba(79,123,247,.4)
+  Active item: icon in gradient color + 3pt gradient dot below
+  Inactive: 22pt icon #A0AEC0
+
+<span class="vl">TOP NAVIGATION BAR:</span>
+  Height: 60pt + safe area | Background: #EEF0F5
+  Shadow: 0 4px 12px rgba(0,0,0,.06)
+  Title: 17pt / Inter / 700 / #1A202C (centered or left)
+  Back: ChevronLeft 24pt + "Back" 15pt (left)
+  Actions: 24pt neumorphic icon buttons (raised circles) right side
+
+<span class="vl">BOTTOM SHEET:</span>
+  Background: #EEF0F5
+  Shadow: 0 -20px 60px rgba(0,0,0,.15)
+  Border-radius: 28pt top | Handle: 36pt × 4pt / #D1D4DE / centered
+  Content padding: 24pt
+
+<span class="vl">STOCK LEVEL BAR:</span>
+  Track height: 8pt | Background: inset shadow (#EEF0F5)
+  Shadow on track: inset 2px 2px 5px #D1D4DE, inset -2px -2px 5px #FFFFFF
+  Fill: Gradient (green/amber/red based on level)
+  Border-radius: 999pt | Shimmer animation on fill
+
+<span class="vl">CHIP / FILTER TAG:</span>
+  Background: #EEF0F5 | Shadow: nm-flat
+  Border-radius: 999pt | Padding: 6pt 14pt
+  Font: 12pt / Inter / 600 / #4A5568
+  Active: Primary gradient bg + colored shadow
+
+<span class="vl">TOAST NOTIFICATION:</span>
+  Background: #2D3748 (dark — always, for contrast)
+  Border-radius: 14pt | Padding: 14pt 18pt
+  Shadow: 0 8pt 32pt rgba(0,0,0,.2)
+  Text: 14pt / Inter / 500 / White
+  Leading icon circle: gradient background, 36pt
+
+<span class="vl">EMPTY STATE:</span>
+  Centered. Large neumorphic icon container (80pt) with gradient icon.
+  Title: 18pt / Inter / 700 | Body: 14pt / #718096 | CTA button below.
+
+<span class="vl">AVATAR (User initials):</span>
+  48pt circle | Gradient background (based on user role)
+  Text: 16pt / Inter / 800 / White
+  Shadow: nm-raise-sm
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">SCREENS TO GENERATE (10 total):</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+<span class="vl">1. LOGIN / ROLE SELECT:</span>
+   Background: #EEF0F5. Logo centered (Inter 800 + gradient "GargEnterprises").
+   Subtitle: "Smart Inventory. Simplified." 15pt muted.
+   4 role cards in 2×2 grid. Each card: nm-raise, 90pt height, gradient icon top-left,
+   role name 14pt/700, description 12pt/muted, role tag pill.
+   Owner = blue gradient · Manager = teal · Staff = green · Godown = orange.
+   "Select your role to continue" hint below.
+
+<span class="vl">2. DASHBOARD (Owner):</span>
+   Top bar: user avatar left, title center, bell right.
+   Greeting card (nm-raise-lg): "Good Morning, Pankaj 👋" + date.
+   KPI grid: 2×2, each card with gradient top strip + icon + big number.
+   "Today's Movements" section: floating list rows (nm-raise-sm each).
+   "Stock Alerts" section: compact rows with severity gradient dot.
+
+<span class="vl">3. PRODUCT CATALOG:</span>
+   Search pill (nm-inset, full pill). Filter chips row (scrollable).
+   Results count caption. Floating product cards (nm-raise-sm).
+   Each card: brand gradient pill, product name, SKU mono, stock bar, price + badge.
+
+<span class="vl">4. PRODUCT DETAIL:</span>
+   Top hero card (nm-raise-lg): product name large, brand chip, category.
+   Stats row: 3 neumorphic stat pods (Price / Unit / Location).
+   Stock card: large quantity number + stock bar (8pt, gradient fill).
+   Specifications section: nm-inset card with labeled rows.
+   Sticky bottom: Primary gradient CTA + secondary nm-btn.
+
+<span class="vl">5. STOCK BOARD:</span>
+   3 summary pods at top (in-stock/low/out) — each nm-raise with gradient accent.
+   Search bar. Floating list rows for all SKUs.
+   Stock column: colored number + compact 6pt bar below.
+
+<span class="vl">6. RECORD MOVEMENT:</span>
+   Segmented control (nm-inset track, raised active segment).
+   Form in nm-raise card: fields, inline mini-table for items.
+   Scan button: secondary nm-btn with camera icon.
+   Bottom sticky: gradient primary CTA full-width.
+
+<span class="vl">7. BARCODE SCANNER:</span>
+   Full-screen dark camera view.
+   Neumorphic overlay frame (corner brackets, gradient color).
+   Scan beam gradient animation.
+   Bottom result card slides up: nm-raise-lg, product info + "Add" CTA.
+
+<span class="vl">8. APPROVAL QUEUE:</span>
+   Counter pill at top: gradient bg, "3 Pending".
+   Filter tabs: nm-inset track, raised active tab.
+   Approval cards (nm-raise): type badge, product, detail rows, approve/reject btns.
+   Approve btn: success gradient. Reject btn: danger gradient.
+
+<span class="vl">9. REPORTS:</span>
+   Tab bar (nm-inset style). Active = raised.
+   Charts: neumorphic containers (nm-inset for chart area).
+   Bar chart: gradient bars with soft glow.
+   Donut chart: gradient stroke, center stat.
+   Summary table: floating row cards, not traditional table lines.
+
+<span class="vl">10. PROFILE / SETTINGS:</span>
+    Large gradient avatar card at top (nm-raise-lg).
+    Stacked settings rows (nm-raise-sm each, spaced independently).
+    Toggle switches. Chevron-right trailing.
+    Logout row: danger gradient text, no bg.
+
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="hl">DESIGN GUARDRAILS — WHAT NOT TO DO:</span>
+<span class="cm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+
+  ❌ No dark mode. No dark backgrounds anywhere except toasts.
+  ❌ No pure white (#FFFFFF) backgrounds — only #EEF0F5 as base.
+  ❌ No hard borders (1pt solid lines on cards).
+  ❌ No flat colored card backgrounds (no blue card, no green card).
+  ❌ No heavy drop shadows (always balanced light + dark twin shadow).
+  ❌ No gradients on backgrounds or card fills.
+  ❌ No mixed border radii on the same card.
+  ❌ No colored sidebars or headers.
+  ❌ No emoji as functional icons.
+  ❌ No purple gradients — use blue primary only.
+  ❌ No white (#FFFFFF) card background on #EEF0F5 page (no visible depth).
+  ❌ No more than 2 gradient elements visible on screen at once.
+  ❌ No sharp corners (minimum 6pt radius everywhere).
+  ❌ No text smaller than 10pt.
+  ❌ No clashing gradient colors side by side (harmonious palette only).
+</pre>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 2 ═══════ -->
+<div class="section" id="s2">
+  <div class="s-head">
+    <div class="s-num">02</div>
+    <div class="s-info">
+      <h2>Neumorphism — Core Principles</h2>
+      <p>The design paradigm explained with live examples</p>
+    </div>
+  </div>
+  <div class="g3" style="margin-bottom:20px">
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Raised (Protruding)</div>
+      <div class="nm-card" style="display:flex;align-items:center;justify-content:center;height:80px">
+        <span style="font-size:13px;font-weight:600;color:var(--t3)">Resting card element</span>
+      </div>
+      <div style="font-size:11px;color:var(--t5);margin-top:8px;font-family:'JetBrains Mono',monospace">shadow: 6px 6px 16px #D1D4DE,<br>-6px -6px 16px #FFFFFF</div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Inset (Pressed In)</div>
+      <div class="nm-inset" style="display:flex;align-items:center;justify-content:center;height:80px">
+        <span style="font-size:13px;font-weight:600;color:var(--t3)">Input or active state</span>
+      </div>
+      <div style="font-size:11px;color:var(--t5);margin-top:8px;font-family:'JetBrains Mono',monospace">shadow: inset 4px 4px 10px #D1D4DE,<br>inset -4px -4px 10px #FFFFFF</div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Gradient Accent</div>
+      <div style="height:80px;border-radius:16px;background:var(--grd-primary);box-shadow:4px 4px 12px rgba(79,123,247,.35),-2px -2px 6px rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center">
+        <span style="font-size:13px;font-weight:700;color:#fff">CTA button or badge</span>
+      </div>
+      <div style="font-size:11px;color:var(--t5);margin-top:8px;font-family:'JetBrains Mono',monospace">gradient + colored shadow<br>for emphasis only</div>
+    </div>
+  </div>
+  <div class="callout"><strong>Key Rule:</strong> The background (#EEF0F5) is the same for ALL elements. Depth comes entirely from shadows, never from color contrast between surface and background. This creates the "extruded from one piece" feeling.</div>
+</div>
+
+<!-- ═══════ SECTION 3 ═══════ -->
+<div class="section" id="s3">
+  <div class="s-head">
+    <div class="s-num">03</div>
+    <div class="s-info">
+      <h2>Color & Gradient System</h2>
+      <p>One base surface + semantic gradients</p>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Surface Palette (All elements use these)</div>
+  <div class="g4" style="margin-bottom:24px">
+    <div class="swatch"><div class="sw-color" style="background:#EEF0F5"></div><div class="sw-info"><div class="sw-name">Base Surface</div><div class="sw-hex">#EEF0F5</div><div class="sw-role">All backgrounds</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#F8F9FC"></div><div class="sw-info"><div class="sw-name">Light Highlight</div><div class="sw-hex">#F8F9FC</div><div class="sw-role">Shadow light side</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#D1D4DE"></div><div class="sw-info"><div class="sw-name">Shadow Dark</div><div class="sw-hex">#D1D4DE</div><div class="sw-role">Shadow dark side</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#E4E6ED"></div><div class="sw-info"><div class="sw-name">Base Darker</div><div class="sw-hex">#E4E6ED</div><div class="sw-role">Subtle inset areas</div></div></div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Text Scale</div>
+  <div class="g4" style="margin-bottom:24px">
+    <div class="swatch"><div class="sw-color" style="background:#1A202C"></div><div class="sw-info"><div class="sw-name">Text Primary</div><div class="sw-hex">#1A202C</div><div class="sw-role">Headings, values</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#2D3748"></div><div class="sw-info"><div class="sw-name">Text Secondary</div><div class="sw-hex">#2D3748</div><div class="sw-role">Body, labels</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#718096"></div><div class="sw-info"><div class="sw-name">Text Muted</div><div class="sw-hex">#718096</div><div class="sw-role">Meta, captions</div></div></div>
+    <div class="swatch"><div class="sw-color" style="background:#A0AEC0"></div><div class="sw-info"><div class="sw-name">Text Placeholder</div><div class="sw-hex">#A0AEC0</div><div class="sw-role">Input hints</div></div></div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Semantic Gradients</div>
+  <div class="g3">
+    <div class="grd-pill" style="background:var(--grd-primary)">Primary · #4F7BF7→#667EEA</div>
+    <div class="grd-pill" style="background:var(--grd-success)">Success · #38A169→#68D391</div>
+    <div class="grd-pill" style="background:var(--grd-warning);color:#1A202C">Warning · #D69E2E→#F6C90E</div>
+    <div class="grd-pill" style="background:var(--grd-danger)">Danger · #E53E3E→#FC8181</div>
+    <div class="grd-pill" style="background:var(--grd-ocean)">Info · #4FACFE→#00F2FE;color:#1A202C">Info · #4FACFE→#00F2FE</div>
+    <div class="grd-pill" style="background:var(--grd-gold);color:#1A202C">Brand Gold · #F6D365→#FDA085</div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 4 ═══════ -->
+<div class="section" id="s4">
+  <div class="s-head">
+    <div class="s-num">04</div>
+    <div class="s-info">
+      <h2>Typography Scale</h2>
+      <p>Inter for all UI · JetBrains Mono for data</p>
+    </div>
+  </div>
+  <div class="nm-card">
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:28px;font-weight:800;color:var(--t1);letter-spacing:-.5px">Display · 28pt · Inter 800</div>
+      <div class="type-meta">Screen hero titles</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:var(--t1)">Title Large · 18pt · Inter 700</div>
+      <div class="type-meta">Navigation bar title</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:var(--t1)">Title · 16pt · Inter 700</div>
+      <div class="type-meta">Card headings</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--t2)">Title Small · 14pt · Inter 600</div>
+      <div class="type-meta">List row primary text</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:var(--t2)">Body · 14pt · Inter 400 — Standard readable content for descriptions, labels, and body copy throughout the application.</div>
+      <div class="type-meta">Standard body</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:var(--t4)">Caption · 12pt · Inter 400 · Timestamps, metadata, helper text, secondary info</div>
+      <div class="type-meta">Supporting info</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:var(--t5);letter-spacing:1.2px;text-transform:uppercase">OVERLINE · 10PT · INTER 700 · ALL CAPS · 1.2PT TRACKING</div>
+      <div class="type-meta">Section labels</div>
+    </div>
+    <div class="type-row">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--t2)">HF-CH-110-SS · ₹2,84,12,400 · GRN #2847 · 09:14 AM</div>
+      <div class="type-meta">Data · 13pt Mono 500</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 5 ═══════ -->
+<div class="section" id="s5">
+  <div class="s-head">
+    <div class="s-num">05</div>
+    <div class="s-info">
+      <h2>Spacing System</h2>
+      <p>4pt base grid applied everywhere</p>
+    </div>
+  </div>
+  <div class="nm-card">
+    <div class="sp-row"><div class="sp-box" style="width:4px"></div><div class="sp-code">4pt · sp-1</div><div class="sp-desc">Micro gap — icon-to-label, badge padding</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:8px"></div><div class="sp-code">8pt · sp-2</div><div class="sp-desc">Tight — between icon and text within a button</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:12px"></div><div class="sp-code">12pt · sp-3</div><div class="sp-desc">Small — between sibling items in a row</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:16px"></div><div class="sp-code">16pt · sp-4</div><div class="sp-desc">Medium — card internal padding, list row sides</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:20px"></div><div class="sp-code">20pt · sp-5</div><div class="sp-desc">Base — screen horizontal margin, section gaps</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:24px"></div><div class="sp-code">24pt · sp-6</div><div class="sp-desc">Between card groups on same screen</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:32px"></div><div class="sp-code">32pt · sp-7</div><div class="sp-desc">Major sections — between Dashboard sections</div></div>
+    <div class="sp-row"><div class="sp-box" style="width:48px"></div><div class="sp-code">48pt · sp-8</div><div class="sp-desc">XL — top-of-screen, hero area, empty states</div></div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 6 ═══════ -->
+<div class="section" id="s6">
+  <div class="s-head">
+    <div class="s-num">06</div>
+    <div class="s-info">
+      <h2>Shadow Token System</h2>
+      <p>The exact CSS shadows that make neumorphism work</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="nm-card">
+      <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px">All Shadow Tokens</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:12px">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-raise-sm</div>
+          <div style="color:var(--t4)">3px 3px 8px #D1D4DE, -3px -3px 8px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Buttons, chips, small cards</div>
+        </div>
+        <hr class="sdiv">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-raise (standard)</div>
+          <div style="color:var(--t4)">6px 6px 16px #D1D4DE, -6px -6px 16px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Standard cards, modals, list rows</div>
+        </div>
+        <hr class="sdiv">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-raise-lg</div>
+          <div style="color:var(--t4)">12px 12px 30px #C8CBDA, -12px -12px 30px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Hero cards, KPI cards, feature sections</div>
+        </div>
+        <hr class="sdiv">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-inset-sm</div>
+          <div style="color:var(--t4)">inset 2px 2px 6px #D1D4DE, inset -2px -2px 6px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Input fields, search bars, pressed buttons</div>
+        </div>
+        <hr class="sdiv">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-inset</div>
+          <div style="color:var(--t4)">inset 4px 4px 10px #D1D4DE, inset -4px -4px 10px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Active states, toggled elements</div>
+        </div>
+        <hr class="sdiv">
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--g-blue1);margin-bottom:3px">--nm-flat</div>
+          <div style="color:var(--t4)">2px 2px 5px #D1D4DE, -2px -2px 5px #FFFFFF</div>
+          <div style="font-size:11px;color:var(--t5);margin-top:2px">Tags, badges, very small elements</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Live Shadow Preview</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="height:52px;background:var(--base);box-shadow:var(--nm-raise-sm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t4)">nm-raise-sm</div>
+        <div style="height:52px;background:var(--base);box-shadow:var(--nm-raise);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t4)">nm-raise (standard)</div>
+        <div style="height:52px;background:var(--base);box-shadow:var(--nm-raise-lg);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t4)">nm-raise-lg</div>
+        <div style="height:52px;background:var(--base);box-shadow:var(--nm-inset-sm);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t4)">nm-inset-sm (input)</div>
+        <div style="height:52px;background:var(--base);box-shadow:var(--nm-inset);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--t4)">nm-inset (active)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 7 ═══════ -->
+<div class="section" id="s7">
+  <div class="s-head">
+    <div class="s-num">07</div>
+    <div class="s-info">
+      <h2>Components — Buttons & Inputs</h2>
+      <p>All interactive controls with neumorphic treatment</p>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Button Variants</div>
+  <div class="nm-card" style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px">
+    <button class="nm-btn-p">Submit for Approval</button>
+    <button class="nm-btn-p" style="background:var(--grd-success);box-shadow:4px 4px 12px rgba(56,161,105,.35),-2px -2px 6px rgba(255,255,255,.8)">✓ Approve</button>
+    <button class="nm-btn-p" style="background:var(--grd-danger);box-shadow:4px 4px 12px rgba(229,62,62,.35),-2px -2px 6px rgba(255,255,255,.8)">✕ Reject</button>
+    <button class="nm-btn-s">Secondary Action</button>
+    <button class="nm-btn-s" style="color:var(--g-red1)">Delete</button>
+    <button class="nm-btn-g">See All →</button>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Input Fields</div>
+  <div class="g2 mb" style="margin-bottom:16px">
+    <div>
+      <label class="inp-label">Supplier Name</label>
+      <input class="nm-inp" placeholder="e.g. Hafele India Pvt Ltd" value="Hafele India Pvt Ltd">
+    </div>
+    <div>
+      <label class="inp-label">Invoice Number</label>
+      <input class="nm-inp" placeholder="Invoice no…">
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Search Bar</div>
+  <div class="nm-card" style="position:relative;margin-bottom:16px">
+    <span style="position:absolute;left:30px;top:50%;transform:translateY(-50%);color:var(--t5);font-size:18px">🔍</span>
+    <input class="nm-search" placeholder="Search products, SKU, brand…">
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Toggle Switches</div>
+  <div class="nm-card" style="display:flex;align-items:center;gap:20px">
+    <div>
+      <div class="nm-toggle"><div class="knob"></div></div>
+      <div style="font-size:11px;color:var(--t5);margin-top:6px;text-align:center">Off</div>
+    </div>
+    <div>
+      <div class="nm-toggle on"><div class="knob"></div></div>
+      <div style="font-size:11px;color:var(--g-blue1);margin-top:6px;text-align:center;font-weight:600">On</div>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;color:var(--t2)">Push Notifications</div>
+      <div style="font-size:12px;color:var(--t4)">Receive low stock alerts</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 8 ═══════ -->
+<div class="section" id="s8">
+  <div class="s-head">
+    <div class="s-num">08</div>
+    <div class="s-info">
+      <h2>Components — Badges, Cards & Lists</h2>
+      <p>Status indicators, KPI cards, product list rows</p>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Status Badges (Gradient Pills)</div>
+  <div class="nm-card" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center">
+    <span class="nm-status" style="background:var(--grd-success)">In Stock</span>
+    <span class="nm-status" style="background:var(--grd-warning);color:#1A202C">Low Stock</span>
+    <span class="nm-status" style="background:var(--grd-danger)">Out of Stock</span>
+    <span class="nm-status" style="background:var(--grd-primary)">Pending</span>
+    <span class="nm-status" style="background:var(--grd-success)">Approved</span>
+    <span class="nm-status" style="background:var(--grd-danger)">Rejected</span>
+    <span class="nm-status" style="background:linear-gradient(135deg,#065F46,#38A169);font-size:10px;letter-spacing:.5px">INWARD</span>
+    <span class="nm-status" style="background:linear-gradient(135deg,#7F1D1D,#E53E3E);font-size:10px;letter-spacing:.5px">OUTWARD</span>
+    <span class="nm-status" style="background:var(--grd-ocean);color:#1A202C;font-size:10px;letter-spacing:.5px">TRANSFER</span>
+    <span class="nm-status" style="background:var(--grd-warning);color:#1A202C;font-size:10px;letter-spacing:.5px">ADJUSTMENT</span>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">KPI Cards (2-column grid)</div>
+  <div class="g2" style="margin-bottom:16px">
+    <div class="kpi-card">
+      <div style="width:100%;height:4px;border-radius:4px;background:var(--grd-primary);margin-bottom:16px;box-shadow:0 2px 8px rgba(79,123,247,.3)"></div>
+      <div class="kpi-icon-wrap" style="background:var(--grd-primary);box-shadow:4px 4px 10px rgba(79,123,247,.3),-2px -2px 6px rgba(255,255,255,.8)"><span>📦</span></div>
+      <div class="kpi-val">26,412</div>
+      <div class="kpi-lbl">Total SKUs</div>
+      <div class="kpi-trend" style="color:#38A169">▲ 144 <span style="color:var(--t4);font-weight:400;font-size:11px">this week</span></div>
+    </div>
+    <div class="kpi-card">
+      <div style="width:100%;height:4px;border-radius:4px;background:var(--grd-danger);margin-bottom:16px;box-shadow:0 2px 8px rgba(229,62,62,.3)"></div>
+      <div class="kpi-icon-wrap" style="background:var(--grd-danger);box-shadow:4px 4px 10px rgba(229,62,62,.3),-2px -2px 6px rgba(255,255,255,.8)"><span>⚠️</span></div>
+      <div class="kpi-val" style="color:#E53E3E">312</div>
+      <div class="kpi-lbl">Low Stock Alerts</div>
+      <div class="kpi-trend" style="color:#E53E3E">▲ 18 <span style="color:var(--t4);font-weight:400;font-size:11px">since yesterday</span></div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px">Product List Rows (Floating cards, nm-raise-sm)</div>
+  <div>
+    <div class="prod-row">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="nm-status" style="background:var(--grd-primary);font-size:9px;letter-spacing:.5px">BLUM</span>
+          <span style="font-size:14px;font-weight:600;color:var(--t1)">TANDEM Box Drawer 500mm</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5);margin-bottom:8px">BL-TBX-500</div>
+        <div class="prog-track" style="width:120px"><div class="prog-fill" style="width:72%;background:var(--grd-success)"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px">₹3,800</div>
+        <span class="nm-status" style="background:var(--grd-success);font-size:10px">In Stock</span>
+      </div>
+    </div>
+    <div class="prod-row">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="nm-status" style="background:var(--grd-gold);color:#1A202C;font-size:9px;letter-spacing:.5px">HAFELE</span>
+          <span style="font-size:14px;font-weight:600;color:var(--t1)">Cabinet Hinge 110° Stainless</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5);margin-bottom:8px">HF-CH-110-SS</div>
+        <div class="prog-track" style="width:120px"><div class="prog-fill" style="width:16%;background:var(--grd-danger)"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px">₹285</div>
+        <span class="nm-status" style="background:var(--grd-warning);color:#1A202C;font-size:10px">Low Stock</span>
+      </div>
+    </div>
+    <div class="prod-row">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span class="nm-status" style="background:var(--grd-success);font-size:9px;letter-spacing:.5px">YALE</span>
+          <span style="font-size:14px;font-weight:600;color:var(--t1)">Smart Lock YDM3168 Black</span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5);margin-bottom:8px">YL-YDM3168-BK</div>
+        <div class="prog-track" style="width:120px"><div class="prog-fill" style="width:60%;background:var(--grd-warning)"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--t1);margin-bottom:6px">₹12,500</div>
+        <span class="nm-status" style="background:var(--grd-warning);color:#1A202C;font-size:10px">Low Stock</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 9 ═══════ -->
+<div class="section" id="s9">
+  <div class="s-head">
+    <div class="s-num">09</div>
+    <div class="s-info">
+      <h2>Navigation Architecture</h2>
+      <p>Bottom nav, sidebar, screen flow</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Bottom Navigation (5 Tabs)</div>
+      <div style="background:var(--base);box-shadow:0 -4px 20px rgba(0,0,0,.06);border-radius:20px 20px 0 0;padding:14px 8px 10px;display:flex;justify-content:space-around;align-items:flex-end">
+        <div style="text-align:center">
+          <div class="icon-nm" style="margin:0 auto 4px;box-shadow:var(--nm-inset-sm)">🏠</div>
+          <div style="font-size:10px;font-weight:700;color:var(--g-blue1)">Home</div>
+          <div style="width:4px;height:4px;background:var(--grd-primary);border-radius:50%;margin:4px auto 0;box-shadow:0 0 6px rgba(79,123,247,.5)"></div>
+        </div>
+        <div style="text-align:center">
+          <div class="icon-nm" style="margin:0 auto 4px">📋</div>
+          <div style="font-size:10px;font-weight:500;color:var(--t5)">Catalog</div>
+        </div>
+        <div style="text-align:center">
+          <div style="width:52px;height:52px;background:var(--grd-primary);border-radius:50%;box-shadow:4px 4px 16px rgba(79,123,247,.4),-2px -2px 8px rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;margin:0 auto -8px;font-size:22px">➕</div>
+        </div>
+        <div style="text-align:center">
+          <div class="icon-nm" style="margin:0 auto 4px">✅</div>
+          <div style="font-size:10px;font-weight:500;color:var(--t5)">Approve</div>
+        </div>
+        <div style="text-align:center">
+          <div class="icon-nm" style="margin:0 auto 4px">📊</div>
+          <div style="font-size:10px;font-weight:500;color:var(--t5)">Reports</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--t5);margin-top:12px">Center FAB: opens Record Movement bottom sheet</div>
+    </div>
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Nav Items (Sidebar / Drawer)</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="nav-item active"><span style="font-size:18px">🏠</span> Dashboard</div>
+        <div class="nav-item"><span style="font-size:18px">📋</span> Product Catalog</div>
+        <div class="nav-item"><span style="font-size:18px">📦</span> Stock Board</div>
+        <div class="nav-item"><span style="font-size:18px">🔄</span> Record Movement</div>
+        <div class="nav-item"><span style="font-size:18px">✅</span> Approvals <span style="margin-left:auto;background:var(--grd-danger);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">3</span></div>
+        <div class="nav-item"><span style="font-size:18px">📊</span> Reports</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 10 ═══════ -->
+<div class="section" id="s10">
+  <div class="s-head">
+    <div class="s-num">10</div>
+    <div class="s-info">
+      <h2>Screen-by-Screen UX Specs</h2>
+      <p>Stitch-ready specs for each screen — copy per screen</p>
+    </div>
+  </div>
+
+  <div class="prompt-wrap" style="margin-bottom:16px">
+    <div class="pb-label">SCREEN SPEC — DASHBOARD (Owner View)</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>
+<span class="hl">BACKGROUND:</span> #EEF0F5 (full screen, no variation)
+
+<span class="hl">TOP BAR (60pt + safe area):</span>
+  - nm-raise shadow (0 4px 12px rgba(0,0,0,.06))
+  - Left: User avatar (44pt circle, gradient = role color)
+  - Center: "GargEnterprises" wordmark (16pt/Inter/700)
+  - Right: Bell icon (44pt nm-raise circle button)
+  
+<span class="hl">GREETING CARD (nm-raise-lg, r=20pt, padding 20pt):</span>
+  - "Good Morning, Pankaj 👋" — 22pt/Inter/800/#1A202C
+  - Date chip (nm-inset-sm pill): "Fri, 29 May 2026" — 12pt/Mono
+  - Background: same #EEF0F5, no fill
+
+<span class="hl">KPI GRID (2×2, 12pt gap):</span>
+  - Each card: nm-raise-lg, r=20pt, 4pt gradient top strip
+  - Row 1: "Total SKUs" (blue strip) + "In-Stock" (green strip)
+  - Row 2: "Alerts" (red strip) + "Inv. Value" (gold strip)
+  - Icon: 44pt nm-raise circle, gradient fill, emoji/icon inside
+
+<span class="hl">MOVEMENTS SECTION:</span>
+  - Overline: "TODAY'S MOVEMENTS" + "See All" link right
+  - 4 floating rows (nm-raise-sm each, 10pt gap between)
+  - Each row: type-badge (gradient pill), product name, qty, time
+
+<span class="hl">ALERTS SECTION:</span>
+  - Overline: "STOCK ALERTS" + badge count pill (gradient red)
+  - 3 compact rows: colored circle (severity) + name + qty info
+  - "View All 312 Alerts" — secondary nm-btn, full-width
+</pre>
+  </div>
+
+  <div class="prompt-wrap" style="margin-bottom:16px">
+    <div class="pb-label">SCREEN SPEC — PRODUCT CATALOG</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>
+<span class="hl">TOP BAR:</span> "Product Catalog" / Grid-List toggle (nm-raise-sm pill toggle)
+
+<span class="hl">SEARCH BAR:</span>
+  - Full-width pill (r=999pt), nm-inset
+  - MagnifyingGlass icon left (20pt, #A0AEC0)
+  - 16pt horizontal margin
+
+<span class="hl">FILTER CHIPS (horizontal scroll, 8pt gap):</span>
+  - "All" chip (active = gradient primary)
+  - Brand chips: "Hafele" / "Blum" / "Hettich" / "Yale" / "Godrej" / "Bosch"
+  - Inactive: nm-flat shadow, muted text
+  - Active: brand gradient, white text, colored shadow
+
+<span class="hl">RESULTS COUNT:</span> "26,412 products" — 12pt/Inter/400/#A0AEC0
+
+<span class="hl">PRODUCT CARDS (floating rows, nm-raise-sm, 10pt gap):</span>
+  - Brand pill (gradient badge — brand color per brand)
+  - Product name: 14pt/Inter/600/#1A202C
+  - SKU: 11pt/JetBrains Mono/#A0AEC0
+  - Stock bar: 6pt, nm-inset track, gradient fill
+  - Right trailing: Price (15pt/Mono/700) + Status badge (gradient pill)
+  - On tap: push to Product Detail screen (iOS standard)
+</pre>
+  </div>
+
+  <div class="prompt-wrap">
+    <div class="pb-label">SCREEN SPEC — APPROVAL QUEUE</div>
+    <button class="copy-btn" onclick="copyBlock(this)">Copy</button>
+    <pre>
+<span class="hl">TOP BAR:</span> "Approvals" + pending count pill (gradient danger)
+
+<span class="hl">FILTER TABS (nm-inset track, raised active tab):</span>
+  - Track: full-width, nm-inset, r=10pt, 4pt padding
+  - Active tab: nm-raise-sm, gradient text, r=8pt
+  - Tabs: "Pending" | "Approved" | "Rejected"
+
+<span class="hl">APPROVAL CARDS (nm-raise, r=20pt, padding 20pt, 14pt gap):</span>
+  - Top row: type-badge (gradient) + ref number (mono) + time (mono/muted)
+  - Product name: 15pt/Inter/700
+  - SKU: 12pt/Mono/muted
+  - Detail pod (nm-inset-sm, r=12pt, padding 12pt):
+    - Qty change / Submitted by / Reason text
+  - Action row: 2 buttons side-by-side
+    - Approve: success gradient btn (shadow: rgba(56,161,105,.35))
+    - Reject: danger gradient btn (shadow: rgba(229,62,62,.35))
+  - Approved state: success gradient status pill + checkmark
+  - Rejected state: danger gradient status pill + X
+</pre>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 11 ═══════ -->
+<div class="section" id="s11">
+  <div class="s-head">
+    <div class="s-num">11</div>
+    <div class="s-info">
+      <h2>Motion & Micro-interactions</h2>
+      <p>Timing, easing, and neumorphic press states</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Timing Tokens</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">Button press</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">100ms ease-out · scale 0.96</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">Shadow → inset</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">150ms ease-in-out</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">Screen push</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">320ms ease-out</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">Bottom sheet open</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">380ms spring</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">Toast appear</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">260ms ease-out</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Progress fill (enter)</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--g-blue1)">600ms ease-out</span></div>
+      </div>
+    </div>
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Neumorphic State Changes</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--t3)">
+        <div style="padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><strong style="color:var(--t1)">Resting →</strong> nm-raise shadow</div>
+        <div style="padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><strong style="color:var(--t1)">Pressed →</strong> nm-inset shadow (button "sinks in")</div>
+        <div style="padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><strong style="color:var(--t1)">Active/On →</strong> nm-inset + gradient overlay</div>
+        <div style="padding-bottom:8px;border-bottom:1px solid rgba(79,123,247,.08)"><strong style="color:var(--t1)">Focused input →</strong> nm-inset + blue glow ring</div>
+        <div><strong style="color:var(--t1)">Disabled →</strong> nm-flat (very subtle), 50% opacity text</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SECTION 12 ═══════ -->
+<div class="section" id="s12">
+  <div class="s-head">
+    <div class="s-num">12</div>
+    <div class="s-info">
+      <h2>Accessibility & Design Guardrails</h2>
+      <p>Contrast requirements and what never to do</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Contrast Ratios</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <div style="display:flex;justify-content:space-between;padding-bottom:6px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">#1A202C on #EEF0F5</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#38A169;font-weight:700">11.2:1 ✓</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:6px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">White on #4F7BF7</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#38A169;font-weight:700">4.9:1 ✓</span></div>
+        <div style="display:flex;justify-content:space-between;padding-bottom:6px;border-bottom:1px solid rgba(79,123,247,.08)"><span style="color:var(--t3)">#718096 on #EEF0F5</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#38A169;font-weight:700">4.7:1 ✓</span></div>
+        <div style="display:flex;justify-content:space-between"><span style="color:var(--t3)">Minimum body text</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#38A169;font-weight:700">4.5:1 WCAG AA</span></div>
+      </div>
+    </div>
+    <div class="nm-card">
+      <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px">Design Guardrails</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--t3)">
+        <div>✅ Always use #EEF0F5 as page background</div>
+        <div>✅ Paired twin shadows (light + dark always together)</div>
+        <div>✅ Min touch target 44pt × 44pt</div>
+        <div>✅ Status shown by icon + color (not color alone)</div>
+        <div>✅ Min text size 11pt everywhere</div>
+        <hr style="border:none;border-top:1px solid rgba(79,123,247,.08);margin:4px 0">
+        <div style="color:var(--g-red1)">❌ Never use white (#FFF) as card background</div>
+        <div style="color:var(--g-red1)">❌ Never use only one-sided shadow</div>
+        <div style="color:var(--g-red1)">❌ Never gradient on card backgrounds</div>
+        <div style="color:var(--g-red1)">❌ Never mix shadow sizes on same card</div>
+        <div style="color:var(--g-red1)">❌ Never dark mode — light only</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<div class="page-footer">
+  <div style="font-family:'Inter',sans-serif;font-size:16px;font-weight:800;color:var(--t1);margin-bottom:4px">GargEnterprises · Neumorphic Design System v2.0</div>
+  <div style="font-size:13px;color:var(--t5)">Prepared by Digital Builders for Garg Enterprises, Ludhiana · Phase 1 · May 2026</div>
+  <div style="margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t5)">Ashish Gupta · Digital Builders · +91-9087021592</div>
+</div>
+
+<script>
+function copyBlock(btn) {
+  const pre = btn.previousElementSibling;
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.style.color = '#38A169';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2200);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.style.color = '#38A169';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2200);
+  });
+}
+
+// Toggle demo
+document.querySelectorAll('.nm-toggle').forEach(t => {
+  t.addEventListener('click', () => t.classList.toggle('on'));
+});
+</script>
+</body>
+</html>
