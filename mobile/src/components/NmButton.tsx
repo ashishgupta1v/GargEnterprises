@@ -127,16 +127,18 @@ export default function NmButton({
         containerStyle={[fullWidth ? styles.fullWidth : undefined]}
         style={{ borderRadius: borderRadius.sm, alignSelf: fullWidth ? 'stretch' : undefined }}
       >
-        <Shadow
-          distance={6}
-          startColor={colors.shadowDark}
-          endColor="rgba(209, 212, 222, 0)"
-          offset={[3, 3]}
-          paintInside={false}
-          style={{ borderRadius: borderRadius.sm, alignSelf: fullWidth ? 'stretch' : undefined }}
-        >
-          {buttonElement}
-        </Shadow>
+        <View style={{ borderRadius: borderRadius.sm, alignSelf: fullWidth ? 'stretch' : undefined }}>
+          <Shadow
+            distance={6}
+            startColor={colors.shadowDark}
+            endColor="rgba(209, 212, 222, 0)"
+            offset={[3, 3]}
+            paintInside={false}
+            style={{ borderRadius: borderRadius.sm, alignSelf: fullWidth ? 'stretch' : undefined }}
+          >
+            {buttonElement}
+          </Shadow>
+        </View>
       </Shadow>
     );
   }

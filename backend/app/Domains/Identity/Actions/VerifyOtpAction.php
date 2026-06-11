@@ -34,35 +34,43 @@ class VerifyOtpAction
         $role = $data['role'];
         $deviceFingerprint = $data['device_fingerprint'];
 
+        // Normalize phone number to exactly 10 digits for consistent cache keys and DB lookups
+        $cleanPhone = preg_replace('/\D/', '', $phone);
+        if (strlen($cleanPhone) > 10) {
+            $cleanPhone = substr($cleanPhone, -10);
+        }
+
         // ── Step 1: Check lockout ──
-        $this->checkLockout($phone);
+        $this->checkLockout($cleanPhone);
 
         // ── Step 2: Verify OTP ──
         $verified = false;
-        $verificationId = Cache::get("verification_id_{$phone}");
+        $verificationId = Cache::get("verification_id_{$cleanPhone}");
 
         if ($verificationId && $this->messageCentral->isConfigured()) {
             // Verify via Message Central API
             $verified = $this->messageCentral->verifyOtp($verificationId, $otp);
-        } else {
-            // Fallback: Verify via local mock OTP
-            $cachedOtp = Cache::get("otp_{$phone}");
+        }
+        
+        // Fallback: Verify via local mock OTP
+        if (!$verified) {
+            $cachedOtp = Cache::get("otp_{$cleanPhone}");
             if ($cachedOtp && $cachedOtp === $otp) {
                 $verified = true;
             }
         }
 
         if (!$verified) {
-            $this->handleFailedAttempt($phone);
+            $this->handleFailedAttempt($cleanPhone);
             throw ValidationException::withMessages([
                 'otp' => ['Invalid or expired OTP.'],
             ]);
         }
 
         // ── Step 3: Clear OTP/Verification ID and Reset fail counter ──
-        Cache::forget("otp_{$phone}");
-        Cache::forget("verification_id_{$phone}");
-        Cache::forget("otp_attempts:{$phone}");
+        Cache::forget("otp_{$cleanPhone}");
+        Cache::forget("verification_id_{$cleanPhone}");
+        Cache::forget("otp_attempts:{$cleanPhone}");
 
         // ── Step 4: Find or Create User ──
         if ($role === 'owner') {
@@ -70,11 +78,6 @@ class VerifyOtpAction
                 '9087021592' => 'Ashish Gupta',
                 '8264911447' => 'Pankaj Garg'
             ];
-            
-            $cleanPhone = preg_replace('/\D/', '', $phone);
-            if (strlen($cleanPhone) > 10) {
-                $cleanPhone = substr($cleanPhone, -10);
-            }
             
             if (!array_key_exists($cleanPhone, $allowedOwners)) {
                 throw ValidationException::withMessages([
@@ -84,11 +87,11 @@ class VerifyOtpAction
             
             $ownerName = $allowedOwners[$cleanPhone];
             
-            $user = User::where('phone', $phone)->first();
+            $user = User::where('phone', $cleanPhone)->first();
             if (!$user) {
                 $user = User::create([
                     'name' => $ownerName,
-                    'phone' => $phone,
+                    'phone' => $cleanPhone,
                     'role' => 'owner',
                     'pin_hash' => bcrypt(random_int(100000, 999999)),
                     'status' => 'active',
@@ -101,11 +104,11 @@ class VerifyOtpAction
                 ]);
             }
         } else {
-            $user = User::where('phone', $phone)->first();
+            $user = User::where('phone', $cleanPhone)->first();
             if (!$user) {
                 $user = User::create([
                     'name' => ucfirst($role) . ' User',
-                    'phone' => $phone,
+                    'phone' => $cleanPhone,
                     'role' => $role,
                     'pin_hash' => bcrypt(random_int(100000, 999999)),
                     'status' => 'active',

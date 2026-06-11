@@ -44,18 +44,20 @@ export default function NmCard({ children, variant = 'md', style, inset = false 
       containerStyle={[{ alignSelf: 'stretch' }, style]}
       style={{ borderRadius: radius, alignSelf: 'stretch' }}
     >
-      <Shadow
-        distance={distance}
-        startColor={colors.shadowDark}
-        endColor="rgba(209, 212, 222, 0)"
-        offset={[offsetVal, offsetVal]}
-        paintInside={false}
-        style={{ borderRadius: radius, alignSelf: 'stretch' }}
-      >
-        <View style={[styles.card, { borderRadius: radius, padding }]}>
-          {children}
-        </View>
-      </Shadow>
+      <View style={{ borderRadius: radius, alignSelf: 'stretch' }}>
+        <Shadow
+          distance={distance}
+          startColor={colors.shadowDark}
+          endColor="rgba(209, 212, 222, 0)"
+          offset={[offsetVal, offsetVal]}
+          paintInside={false}
+          style={{ borderRadius: radius, alignSelf: 'stretch' }}
+        >
+          <View style={[styles.card, { borderRadius: radius, padding }]}>
+            {children}
+          </View>
+        </Shadow>
+      </View>
     </Shadow>
   );
 }

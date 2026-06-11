@@ -69,6 +69,25 @@ class MessageCentralService
 
             if ($response->failed()) {
                 Log::error("Message Central Send OTP API failed: " . $response->body());
+                
+                // Parse body to check for REQUEST_ALREADY_EXISTS (responseCode 506)
+                $data = $response->json();
+                if (is_array($data)) {
+                    $verificationId = $data['data']['verificationId'] ?? $data['verificationId'] ?? null;
+                    $msg = $data['message'] ?? '';
+                    $respCode = $data['responseCode'] ?? null;
+                    $dataRespCode = $data['data']['responseCode'] ?? null;
+
+                    if ($verificationId && (
+                        $msg === 'REQUEST_ALREADY_EXISTS' ||
+                        $respCode == 506 ||
+                        $dataRespCode == 506
+                    )) {
+                        Log::info("Message Central Send OTP returned REQUEST_ALREADY_EXISTS. Reusing active Verification ID: {$verificationId}");
+                        return (string) $verificationId;
+                    }
+                }
+                
                 throw new \Exception("Message Central API returned status: " . $response->status());
             }
 
