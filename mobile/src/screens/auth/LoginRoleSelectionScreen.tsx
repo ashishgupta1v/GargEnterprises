@@ -42,7 +42,12 @@ export default function LoginRoleSelectionScreen() {
 
   return (
     <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        {...({ clipChildren: false, clipToPadding: false } as any)}
+      >
         {/* Header */}
         <View style={styles.header}>
           <NmCard style={styles.logoCard} variant="md">
@@ -51,11 +56,11 @@ export default function LoginRoleSelectionScreen() {
           <Text style={styles.brandName}>GargEnterprises</Text>
           <Text style={styles.brandSub}>Smart Inventory. Simplified.</Text>
         </View>
-
+ 
         {/* Role Selection */}
         <View style={styles.roleSection}>
           <Text style={styles.sectionLabel}>SELECT YOUR ROLE</Text>
-          <View style={styles.roleGrid}>
+          <View style={styles.roleGrid} {...({ clipChildren: false } as any)} collapsable={false}>
             {ROLES.map((r) => {
               const isSelected = selectedRole === r.id;
               return (
@@ -88,7 +93,7 @@ export default function LoginRoleSelectionScreen() {
 
         {/* Input Form */}
         <View style={styles.inputSection}>
-          <Text style={styles.inputLabel}>Phone Number</Text>
+          <Text style={styles.inputLabel}>PHONE NUMBER</Text>
           <NmCard variant="sm" inset style={styles.inputCard}>
             <View style={styles.inputRow}>
               <Ionicons name="call" size={20} color={colors.textPlaceholder} style={styles.inputIcon} />
